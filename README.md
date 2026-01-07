@@ -86,22 +86,4 @@ This project is open for educational purposes. Please refer to the specific lice
 
 ------
 
-**Maintained by:** [SIPPRE Group](https://github.com/SIPPRE)
-
-```
-### How to add this to your repo
-Since you are already in your terminal, you can create and push this file immediately:
-
-1.  **Create the file:**
-    ```bash
-    nano README.md
-    ```
-    *(Paste the text above into the editor, then press `Ctrl+O` to save and `Ctrl+X` to exit).*
-
-2.  **Upload it:**
-    ```bash
-    git add README.md
-    git commit -m "Add project documentation"
-    git push
-    ```
-```
+**Maintained by:** SIPPRE Group and Athanasios Koutras (Course Lecturer)
