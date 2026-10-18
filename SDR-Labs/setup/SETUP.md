@@ -1,4 +1,94 @@
+# Environment setup (Ubuntu · macOS)
+
+🇬🇷 [Ελληνικά παρακάτω](#ρύθμιση-περιβάλλοντος-ubuntu--macos) · 🇬🇧 English
+
+Instructions for installing the SDR toolchain for the course laboratories (Digital Communications, ECE_K510).
+For Windows, see the Lab 0 handout (radioconda + Zadig).
+
+## Ubuntu
+
+### 1. Install packages
+
+```bash
+sudo apt update
+sudo apt install gnuradio gr-osmosdr rtl-sdr hackrf
+```
+
+This installs:
+- **gnuradio** — GNU Radio 3.10 and GNU Radio Companion.
+- **gr-osmosdr** — the common source/sink driver GNU Radio uses for RTL-SDR and HackRF.
+- **rtl-sdr** — user-space tools and library for RTL-SDR dongles (`rtl_test`, etc.).
+- **hackrf** — user-space tools and library for HackRF One (`hackrf_info`, etc.).
+
+### 2. Blacklist the kernel DVB-T driver
+
+The Linux kernel recognises RTL-SDR dongles as DVB-T devices and automatically claims them with the
+`dvb_usb_rtl28xxu` module, which prevents `librtlsdr` (and therefore `gr-osmosdr`) from accessing them.
+It must be blacklisted:
+
+```bash
+echo "blacklist dvb_usb_rtl28xxu" | sudo tee /etc/modprobe.d/blacklist-rtlsdr.conf
+sudo modprobe -r dvb_usb_rtl28xxu
+```
+
+If `modprobe -r` fails because the module is in use, reboot — the blacklist file will prevent it
+from being loaded again from the next boot on.
+
+### 3. Anaconda / conda
+
+If Anaconda/Miniconda is installed, the active `base` environment may come first in `PATH` and hide the
+system `python3` — and with it the `osmosdr` module of `gr-osmosdr`, which is installed only in the system
+Python. We recommend disabling automatic activation of `base`:
+
+```bash
+conda config --set auto_activate_base false
+```
+
+then open a new terminal (or run `conda deactivate`) before running GNU Radio tools.
+
+### 4. Verify the installation
+
+```bash
+./setup/check_environment.sh
+```
+
+The script checks: `gnuradio-companion` (and the GNU Radio version), the `osmosdr` Python module,
+`rtl_test` and `hackrf_info` (including detection of a connected device), whether `dvb_usb_rtl28xxu` is
+loaded, and whether a conda environment is active. Without a connected RTL-SDR/HackRF, the related
+`[WARN]` lines for "device not connected" are expected and are not an installation problem; `[FAIL]`
+lines mean that something is missing or not working.
+
+## macOS (Intel and Apple Silicon)
+
+On macOS we recommend the self-contained [**radioconda**](https://github.com/ryanvolz/radioconda)
+distribution (GNU Radio, SDR drivers and dependencies together). No kernel driver blacklisting and
+no Zadig are needed.
+
+1. Download from the radioconda releases the `.sh` installer for your architecture:
+   **arm64** (Apple Silicon) or **x86_64** (Intel).
+2. Run it in Terminal, accepting the defaults:
+
+   ```bash
+   bash ~/Downloads/radioconda-*-MacOSX-*.sh
+   ```
+
+3. Open a new Terminal and start GRC: `gnuradio-companion`.
+4. Verify manually (`check_environment.sh` is written for Ubuntu):
+
+   ```bash
+   gnuradio-companion --version
+   rtl_test -t        # with an RTL-SDR connected
+   hackrf_info        # with a HackRF connected
+   ```
+
+If macOS blocks an executable as "from an unidentified developer":
+*System Settings → Privacy & Security → Open Anyway*.
+
+---
+
 # Ρύθμιση περιβάλλοντος (Ubuntu · macOS)
+
+🇬🇧 [English above](#environment-setup-ubuntu--macos) · 🇬🇷 Ελληνικά
 
 Οδηγίες εγκατάστασης του SDR toolchain για τα εργαστήρια του μαθήματος Ψηφιακές Επικοινωνίες (ECE_K510).
 Για τα Windows, δείτε το φυλλάδιο του Εργαστηρίου 0 (radioconda + Zadig).
