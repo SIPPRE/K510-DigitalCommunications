@@ -1,10 +1,10 @@
 # lab0-intro-sdr — flowgraphs
 
-Flowgraphs του **GNU Radio Companion** (GNU Radio 3.10) για το εισαγωγικό κεφάλαιο
-«Εισαγωγή στο SDR & GNU Radio». Ανοίξτε τα με `gnuradio-companion` και πατήστε **Run**.
+**GNU Radio Companion** flowgraphs (GNU Radio 3.10) for the introductory chapter
+"Introduction to SDR & GNU Radio". Open them with `gnuradio-companion` and press **Run**.
 
-| Αρχείο | Τι κάνει | Χρειάζεται SDR; |
+| File | What it does | SDR needed? |
 |---|---|---|
-| `hello_world.grc` | Ρυθμιζόμενος τόνος σε πεδίο χρόνου/συχνότητας, με ήχο | Όχι |
-| `sdr_first_look.grc` | Λήψη με RTL-SDR: φάσμα, waterfall, κυματομορφές I/Q | Ναι (RTL-SDR) |
-| `custom_smoother.grc` | Δικό σας block σε Python (εξομαλυντής κινητού μέσου) | Όχι |
+| `hello_world.grc` | Adjustable tone shown in time and frequency domain, with audio | No |
+| `sdr_first_look.grc` | Reception with an RTL-SDR: spectrum, waterfall, I/Q waveforms | Yes (RTL-SDR) |
+| `custom_smoother.grc` | Your own Python block (moving-average smoother) | No |
