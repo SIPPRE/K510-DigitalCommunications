@@ -1,0 +1,414 @@
+options:
+  parameters:
+    author: K510 Digital Communications Lab
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: 'A noisy sine wave cleaned up by a hand-written Embedded Python Block:
+      how to write your own GNU Radio block (lab0-intro-sdr).'
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: custom_smoother
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Custom Block Demo (Moving-Average Smoother)
+    window_size: (1200,900)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: noise_amp
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u03A0\u03BB\u03AC\u03C4\u03BF\u03C2 \u03C4\u03BF\u03C5 \u03C0\u03C1\
+      \u03BF\u03C3\u03C4\u03B9\u03B8\u03AD\u03BC\u03B5\u03BD\u03BF\u03C5 \u03BB\u03B5\
+      \u03C5\u03BA\u03BF\u03CD \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\u03C5"
+    gui_hint: 1,0,1,1
+    label: "\u03A0\u03BB\u03AC\u03C4\u03BF\u03C2 \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\
+      \u03C5"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.0'
+    step: '0.01'
+    stop: '0.5'
+    value: '0.15'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 32.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: Sample rate
+    value: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 16.0]
+    rotation: 0
+    state: enabled
+- name: tone_freq
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u03A3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1 \u03C4\u03BF\u03C5\
+      \ \u03BA\u03B1\u03B8\u03B1\u03C1\u03BF\u03CD \u03B7\u03BC\u03B9\u03C4\u03CC\u03BD\
+      \u03BF\u03C5"
+    gui_hint: 0,0,1,1
+    label: "\u03A3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1 \u03C4\u03CC\u03BD\
+      \u03BF\u03C5 (Hz)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: int
+    start: '50'
+    step: '10'
+    stop: '2000'
+    value: '200'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 24.0]
+    rotation: 0
+    state: enabled
+- name: win_len
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u039C\u03AE\u03BA\u03BF\u03C2 \u03C0\u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\
+      \u03BF\u03C5 \u03C4\u03BF\u03C5 custom \u03BA\u03B9\u03BD\u03B7\u03C4\u03BF\u03CD\
+      \ \u03BC\u03AD\u03C3\u03BF\u03C5 \u03CC\u03C1\u03BF\u03C5"
+    gui_hint: 0,2,1,1
+    label: "\u03A0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF \u03B5\u03BE\u03BF\u03BC\
+      \u03AC\u03BB\u03C5\u03BD\u03C3\u03B7\u03C2 (\u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\
+      \u03C4\u03B1)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: int
+    start: '1'
+    step: '1'
+    stop: '50'
+    value: '9'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [728, 40.0]
+    rotation: 0
+    state: enabled
+- name: analog_noise_source_x_0
+  id: analog_noise_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: noise_amp
+    comment: "\u039B\u03B5\u03C5\u03BA\u03CC\u03C2 \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\
+      \u03C2 Gauss \u03C0\u03BF\u03C5 \u03C0\u03C1\u03BF\u03C3\u03C4\u03AF\u03B8\u03B5\
+      \u03C4\u03B1\u03B9 \u03C3\u03C4\u03BF \u03B7\u03BC\u03AF\u03C4\u03BF\u03BD\u03BF"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_type: analog.GR_GAUSSIAN
+    seed: '0'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 416.0]
+    rotation: 0
+    state: enabled
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.8'
+    comment: "\u039A\u03B1\u03B8\u03B1\u03C1\u03CC \u03B7\u03BC\u03AF\u03C4\u03BF\u03BD\
+      \u03BF \u03B1\u03BD\u03B1\u03C6\u03BF\u03C1\u03AC\u03C2"
+    freq: tone_freq
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    showports: 'False'
+    type: float
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [40, 224.0]
+    rotation: 0
+    state: enabled
+- name: blocks_add_xx_0
+  id: blocks_add_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u03B8\u03BF\u03C1\u03C5\u03B2\u03BF\u03C0\u03BF\u03B9\u03B7\u03BC\u03AD\
+      \u03BD\u03BF = \u03BA\u03B1\u03B8\u03B1\u03C1\u03CC + \u03B8\u03CC\u03C1\u03C5\
+      \u03B2\u03BF\u03C2"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 360.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle_0
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u03A1\u03C5\u03B8\u03BC\u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF\u03BD\
+      \ \u03C7\u03C1\u03CC\u03BD\u03BF \u03B5\u03BA\u03C4\u03AD\u03BB\u03B5\u03C3\u03B7\
+      \u03C2 \u03C3\u03C4\u03BF samp_rate"
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 360.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\n\nclass blk(gr.sync_block):\n\
+      \    \"\"\"\n    \u03A0\u03B1\u03C1\u03AC\u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\
+      \ custom block, \u03B3\u03C1\u03B1\u03BC\u03BC\u03AD\u03BD\u03BF \u03B5\u03BE\
+      \ \u03BF\u03BB\u03BF\u03BA\u03BB\u03AE\u03C1\u03BF\u03C5 \u03C3\u03B5 Python:\
+      \ \u03AD\u03BD\u03B1\u03C2\n    \u03B5\u03BE\u03BF\u03BC\u03B1\u03BB\u03C5\u03BD\
+      \u03C4\u03AE\u03C2 \u03BA\u03B9\u03BD\u03B7\u03C4\u03BF\u03CD \u03BC\u03AD\u03C3\
+      \u03BF\u03C5 \u03CC\u03C1\u03BF\u03C5 (moving-average smoother).\n\n    \u03A0\
+      \u03B1\u03C1\u03AC\u03BC\u03B5\u03C4\u03C1\u03BF\u03C2:\n        window : \u03BC\
+      \u03AE\u03BA\u03BF\u03C2 \u03C0\u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\u03C5\
+      \ \u03B5\u03BE\u03BF\u03BC\u03AC\u03BB\u03C5\u03BD\u03C3\u03B7\u03C2 \u03C3\u03B5\
+      \ \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\u03C4\u03B1 (>= 1).\n\n    \u0394\u03B9\
+      \u03B1\u03C4\u03B7\u03C1\u03B5\u03AF \u03C4\u03B1 \u03C4\u03B5\u03BB\u03B5\u03C5\
+      \u03C4\u03B1\u03AF\u03B1 (window-1) \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\u03C4\
+      \u03B1 \u03C4\u03B7\u03C2 \u03C0\u03C1\u03BF\u03B7\u03B3\u03BF\u03CD\u03BC\u03B5\
+      \u03BD\u03B7\u03C2 \u03BA\u03BB\u03AE\u03C3\u03B7\u03C2 \u03C4\u03BF\u03C5\n\
+      \    work() \u03C9\u03C2 \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\u03B9\u03BA\u03AE\
+      \ \u03BA\u03B1\u03C4\u03AC\u03C3\u03C4\u03B1\u03C3\u03B7 (self.history), \u03CE\
+      \u03C3\u03C4\u03B5 \u03B7 \u03B5\u03BE\u03BF\u03BC\u03AC\u03BB\u03C5\u03BD\u03C3\
+      \u03B7 \u03BD\u03B1\n    \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C3\u03C5\u03BD\u03B5\
+      \u03C7\u03AE\u03C2 \u03C3\u03C4\u03B1 \u03CC\u03C1\u03B9\u03B1 \u03B1\u03BD\u03AC\
+      \u03BC\u03B5\u03C3\u03B1 \u03C3\u03B5 \u03B4\u03B9\u03B1\u03B4\u03BF\u03C7\u03B9\
+      \u03BA\u03AC buffers -- \u03C7\u03C9\u03C1\u03AF\u03C2 \u03B1\u03C5\u03C4\u03CC\
+      \ \u03B8\u03B1\n    \u03B5\u03BC\u03C6\u03B1\u03BD\u03AF\u03B6\u03BF\u03BD\u03C4\
+      \u03B1\u03BD \u03C0\u03B1\u03C1\u03B1\u03BC\u03BF\u03C1\u03C6\u03CE\u03C3\u03B5\
+      \u03B9\u03C2 \u03C3\u03C4\u03B7\u03BD \u03B1\u03C1\u03C7\u03AE \u03BA\u03AC\u03B8\
+      \u03B5 \u03BA\u03BB\u03AE\u03C3\u03B7\u03C2.\n    \"\"\"\n\n    def __init__(self,\
+      \ window=5):\n        gr.sync_block.__init__(\n            self,\n         \
+      \   name='\u0395\u03BE\u03BF\u03BC\u03B1\u03BB\u03C5\u03BD\u03C4\u03AE\u03C2\
+      \ (\u03BA\u03B9\u03BD\u03B7\u03C4\u03CC\u03C2 \u03BC\u03AD\u03C3\u03BF\u03C2\
+      )',\n            in_sig=[np.float32],\n            out_sig=[np.float32],\n \
+      \       )\n        # \u0391\u03C0\u03BB\u03CC attribute -> \u03B3\u03AF\u03BD\
+      \u03B5\u03C4\u03B1\u03B9 callback, \u03CE\u03C3\u03C4\u03B5 \u03C4\u03BF \u03C0\
+      \u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF window\n        # \u03BD\u03B1 \u03B1\
+      \u03BB\u03BB\u03AC\u03B6\u03B5\u03B9 \u03B6\u03C9\u03BD\u03C4\u03B1\u03BD\u03AC\
+      \ \u03B1\u03C0\u03CC \u03C4\u03BF QT GUI Range widget.\n        self.window\
+      \ = window\n        self.history = np.zeros(0, dtype=np.float32)\n\n    def\
+      \ work(self, input_items, output_items):\n        x = input_items[0]\n     \
+      \   w = max(1, int(self.window))\n        if len(self.history) != w - 1:\n \
+      \           # \u0386\u03BB\u03BB\u03B1\u03BE\u03B5 \u03C4\u03BF \u03C0\u03B1\
+      \u03C1\u03AC\u03B8\u03C5\u03C1\u03BF: \u03B5\u03C0\u03B1\u03BD\u03B1\u03C1\u03C7\
+      \u03B9\u03BA\u03BF\u03C0\u03BF\u03B9\u03BF\u03CD\u03BC\u03B5 \u03C4\u03BF \u03B9\
+      \u03C3\u03C4\u03BF\u03C1\u03B9\u03BA\u03CC (\u03BC\u03B5 \u03BC\u03B7\u03B4\u03B5\
+      \u03BD\u03B9\u03BA\u03AC).\n            self.history = np.zeros(w - 1, dtype=np.float32)\n\
+      \        buf = np.concatenate([self.history, x])\n        # \u039A\u03B9\u03BD\
+      \u03B7\u03C4\u03CC\u03C2 \u03BC\u03AD\u03C3\u03BF\u03C2 \u03CC\u03C1\u03BF\u03C2\
+      \ \u03BC\u03AD\u03C3\u03C9 \u03BA\u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF\
+      \u03C5 \u03B1\u03B8\u03C1\u03BF\u03AF\u03C3\u03BC\u03B1\u03C4\u03BF\u03C2 (O(N),\
+      \ \u03CC\u03C7\u03B9 O(N*w)).\n        cumsum = np.cumsum(np.insert(buf, 0,\
+      \ 0.0))\n        y = (cumsum[w:] - cumsum[:-w]) / w\n        self.history =\
+      \ buf[-(w - 1):] if w > 1 else np.zeros(0, dtype=np.float32)\n        output_items[0][:]\
+      \ = y.astype(np.float32)\n        return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    window: win_len
+  states:
+    _io_cache: "('\u0395\u03BE\u03BF\u03BC\u03B1\u03BB\u03C5\u03BD\u03C4\u03AE\u03C2\
+      \ (\u03BA\u03B9\u03BD\u03B7\u03C4\u03CC\u03C2 \u03BC\u03AD\u03C3\u03BF\u03C2\
+      )', 'blk', [('window', '5')], [('0', 'float', 1)], [('0', 'float', 1)], '\\\
+      n    \u03A0\u03B1\u03C1\u03AC\u03B4\u03B5\u03B9\u03B3\u03BC\u03B1 custom block,\
+      \ \u03B3\u03C1\u03B1\u03BC\u03BC\u03AD\u03BD\u03BF \u03B5\u03BE \u03BF\u03BB\
+      \u03BF\u03BA\u03BB\u03AE\u03C1\u03BF\u03C5 \u03C3\u03B5 Python: \u03AD\u03BD\
+      \u03B1\u03C2\\n    \u03B5\u03BE\u03BF\u03BC\u03B1\u03BB\u03C5\u03BD\u03C4\u03AE\
+      \u03C2 \u03BA\u03B9\u03BD\u03B7\u03C4\u03BF\u03CD \u03BC\u03AD\u03C3\u03BF\u03C5\
+      \ \u03CC\u03C1\u03BF\u03C5 (moving-average smoother).\\n\\n    \u03A0\u03B1\u03C1\
+      \u03AC\u03BC\u03B5\u03C4\u03C1\u03BF\u03C2:\\n        window : \u03BC\u03AE\u03BA\
+      \u03BF\u03C2 \u03C0\u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\u03C5 \u03B5\u03BE\
+      \u03BF\u03BC\u03AC\u03BB\u03C5\u03BD\u03C3\u03B7\u03C2 \u03C3\u03B5 \u03B4\u03B5\
+      \u03AF\u03B3\u03BC\u03B1\u03C4\u03B1 (>= 1).\\n\\n    \u0394\u03B9\u03B1\u03C4\
+      \u03B7\u03C1\u03B5\u03AF \u03C4\u03B1 \u03C4\u03B5\u03BB\u03B5\u03C5\u03C4\u03B1\
+      \u03AF\u03B1 (window-1) \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\u03C4\u03B1 \u03C4\
+      \u03B7\u03C2 \u03C0\u03C1\u03BF\u03B7\u03B3\u03BF\u03CD\u03BC\u03B5\u03BD\u03B7\
+      \u03C2 \u03BA\u03BB\u03AE\u03C3\u03B7\u03C2 \u03C4\u03BF\u03C5\\n    work()\
+      \ \u03C9\u03C2 \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\u03B9\u03BA\u03AE \u03BA\
+      \u03B1\u03C4\u03AC\u03C3\u03C4\u03B1\u03C3\u03B7 (self.history), \u03CE\u03C3\
+      \u03C4\u03B5 \u03B7 \u03B5\u03BE\u03BF\u03BC\u03AC\u03BB\u03C5\u03BD\u03C3\u03B7\
+      \ \u03BD\u03B1\\n    \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C3\u03C5\u03BD\u03B5\
+      \u03C7\u03AE\u03C2 \u03C3\u03C4\u03B1 \u03CC\u03C1\u03B9\u03B1 \u03B1\u03BD\u03AC\
+      \u03BC\u03B5\u03C3\u03B1 \u03C3\u03B5 \u03B4\u03B9\u03B1\u03B4\u03BF\u03C7\u03B9\
+      \u03BA\u03AC buffers -- \u03C7\u03C9\u03C1\u03AF\u03C2 \u03B1\u03C5\u03C4\u03CC\
+      \ \u03B8\u03B1\\n    \u03B5\u03BC\u03C6\u03B1\u03BD\u03AF\u03B6\u03BF\u03BD\u03C4\
+      \u03B1\u03BD \u03C0\u03B1\u03C1\u03B1\u03BC\u03BF\u03C1\u03C6\u03CE\u03C3\u03B5\
+      \u03B9\u03C2 \u03C3\u03C4\u03B7\u03BD \u03B1\u03C1\u03C7\u03AE \u03BA\u03AC\u03B8\
+      \u03B5 \u03BA\u03BB\u03AE\u03C3\u03B7\u03C2.\\n    ', ['window'])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 376.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: "\u03A0\u03AC\u03BD\u03C9: \u03B5\u03AF\u03C3\u03BF\u03B4\u03BF\u03C2\
+      \ \u03BC\u03B5 \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF. \u039A\u03AC\u03C4\u03C9\
+      : \u03AD\u03BE\u03BF\u03B4\u03BF\u03C2 \u03C4\u03BF\u03C5 custom block"
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: ''
+    label1: "\u0398\u03BF\u03C1\u03C5\u03B2\u03CE\u03B4\u03B5\u03C2"
+    label10: Signal 10
+    label2: "\u0395\u03BE\u03BF\u03BC\u03B1\u03BB\u03C5\u03BC\u03AD\u03BD\u03BF"
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: "\"\u0398\u03BF\u03C1\u03C5\u03B2\u03CE\u03B4\u03B5\u03C2 vs \u0395\u03BE\
+      \u03BF\u03BC\u03B1\u03BB\u03C5\u03BC\u03AD\u03BD\u03BF\""
+    nconnections: '2'
+    size: '1024'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: "\u03A0\u03BB\u03AC\u03C4\u03BF\u03C2"
+    ymax: '1.5'
+    ymin: '-1.5'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 248.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_noise_source_x_0, '0', blocks_add_xx_0, '1']
+- [analog_sig_source_x_0, '0', blocks_add_xx_0, '0']
+- [blocks_add_xx_0, '0', blocks_throttle_0, '0']
+- [blocks_throttle_0, '0', epy_block_0, '0']
+- [blocks_throttle_0, '0', qtgui_time_sink_x_0, '0']
+- [epy_block_0, '0', qtgui_time_sink_x_0, '1']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

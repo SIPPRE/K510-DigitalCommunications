@@ -30,6 +30,13 @@ The repository is organized by chapters corresponding to the course curriculum. 
 | `Chapter13`   | Introduction to Information Theory                       |
 | `Chapter14`   | Error Correction Coding                                  |
 | `python_code` | **Python** implementations and Jupyter Notebooks         |
+| `SDR-Labs`    | **GNU Radio / SDR laboratory** handouts and flowgraphs (RTL-SDR) |
+
+## 📡 SDR Laboratory (GNU Radio)
+
+The `SDR-Labs/` folder contains the student material for the hands-on laboratory exercises
+(handouts in Greek as PDF, GNU Radio Companion flowgraphs, setup instructions for Ubuntu, Windows and macOS).
+Start from [`SDR-Labs/README.md`](SDR-Labs/README.md).
 
 ## 🚀 Getting Started
 
