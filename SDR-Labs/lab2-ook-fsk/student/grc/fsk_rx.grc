@@ -1,0 +1,1180 @@
+options:
+  parameters:
+    author: K510 Digital Communications Lab
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: 'RTL-SDR FSK receiver: quadrature demod -> LPF -> Schmitt threshold -> recovered bit + Bell-202-style AFSK audio (lab2-ook-fsk).'
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: fsk_rx
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: FSK Receiver (RTL-SDR)
+    window_size: (1300,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 8
+    rotation: 0
+    state: enabled
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: RTL-SDR sample rate
+    value: '2048000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 12
+    rotation: 0
+    state: enabled
+- name: freq
+  id: variable_qtgui_range
+  parameters:
+    comment: Κεντρική συχνότητα RTL-SDR — προεπιλογή 433.97 MHz (fsk_tx.grc, +50 kHz πάνω από το ook_tx.grc ώστε να μη συγκρούονται)
+    gui_hint: 0,0,1,2
+    label: Συχνότητα συντονισμού (MHz)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '433.82'
+    step: '0.001'
+    stop: '434.02'
+    value: '433.97'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 136
+    - 12
+    rotation: 0
+    state: enabled
+- name: rf_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: Κέρδος (gain) του RTL-SDR
+    gui_hint: 0,2,1,2
+    label: Κέρδος RF (dB)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '49'
+    value: '30'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 264
+    - 12
+    rotation: 0
+    state: enabled
+- name: bit_rate
+  id: variable_qtgui_chooser
+  parameters:
+    comment: Πρέπει να ταιριάζει με τον ρυθμό bit του πομπού (fsk_tx.grc)
+    gui_hint: 1,0,1,2
+    label: Ρυθμός bit (baud)
+    label0: '500'
+    label1: '1000'
+    label2: '2000'
+    label3: '4000'
+    label4: ''
+    labels: '[]'
+    num_opts: '4'
+    option0: '500'
+    option1: '1000'
+    option2: '2000'
+    option3: '4000'
+    option4: '4'
+    options: '[0, 1, 2]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '1000'
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 392
+    - 12
+    rotation: 0
+    state: enabled
+- name: fsk_deviation
+  id: variable_qtgui_range
+  parameters:
+    comment: Πρέπει να ταιριάζει με το Απόκλιση Δf του πομπού (fsk_tx.grc) — καθορίζει το gain του quadrature demod
+    gui_hint: 1,2,1,2
+    label: Απόκλιση Δf (Hz)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '1000'
+    step: '100'
+    stop: '10000'
+    value: '5000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 520
+    - 12
+    rotation: 0
+    state: enabled
+- name: thresh_lo
+  id: variable_qtgui_range
+  parameters:
+    comment: Κατώφλι Schmitt-trigger (ΧΑΜΗΛΟ) πάνω στο κανονικοποιημένο σήμα διαφορικού (±1 ονομαστικά)
+    gui_hint: 2,0,1,2
+    label: Κατώφλι ΧΑΜΗΛΟ
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-1.5'
+    step: '0.02'
+    stop: '1.5'
+    value: '-0.2'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 696
+    - 12
+    rotation: 0
+    state: enabled
+- name: thresh_hi
+  id: variable_qtgui_range
+  parameters:
+    comment: Κατώφλι Schmitt-trigger (ΥΨΗΛΟ)
+    gui_hint: 2,2,1,2
+    label: Κατώφλι ΥΨΗΛΟ
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-1.5'
+    step: '0.02'
+    stop: '1.5'
+    value: '0.2'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 824
+    - 12
+    rotation: 0
+    state: enabled
+- name: audio_on
+  id: variable_qtgui_check_box
+  parameters:
+    comment: Ξεσίγαση του ακουστικού τόνου AFSK
+    'false': '0'
+    gui_hint: 3,0,1,2
+    label: Ήχος ενεργός
+    'true': '1'
+    type: int
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 952
+    - 12
+    rotation: 0
+    state: enabled
+- name: demod_gain
+  id: variable
+  parameters:
+    comment: 'Κανονικοποίηση του quadrature demod: είσοδος στην απόκλιση ±fsk_deviation Hz -> έξοδος ±1'
+    value: samp_rate/(2*math.pi*fsk_deviation)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1080
+    - 12
+    rotation: 0
+    state: enabled
+- name: spb
+  id: variable
+  parameters:
+    comment: Δείγματα ανά bit στον πλήρη ρυθμό δειγματοληψίας (samp_rate/bit_rate) — η αρχική εκτίμηση omega για την ανάκτηση χρονισμού (Clock Recovery MM)
+    value: int(round(samp_rate/bit_rate))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1208
+    - 12
+    rotation: 0
+    state: enabled
+- name: eye_sps
+  id: variable
+  parameters:
+    comment: 'Δείγματα ανά bit στο eye diagram. Το eye sink χρειάζεται ίχνη 2 συμβόλων· στον πλήρη ρυθμό (2048 δείγματα/bit στα 1000 baud) το buffer του δεν χωρά ούτε ένα, γι αυτό αποδεκατίζουμε στα eye_sps δείγματα/bit (σταθερό σε κάθε ρυθμό).'
+    value: '64'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1336
+    - 12
+    rotation: 0
+    state: enabled
+- name: soapy_rtlsdr_source_0
+  id: soapy_rtlsdr_source
+  parameters:
+    affinity: ''
+    alias: ''
+    agc: 'False'
+    bias: 'False'
+    bufflen: '16384'
+    center_freq: freq*1e6
+    comment: RTL-SDR dongle (μόνο λήψη, RX only)
+    dev_args: ''
+    freq_correction: '0'
+    gain: rf_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 40
+    - 300
+    rotation: 0
+    state: enabled
+- name: analog_quadrature_demod_cf_0
+  id: analog_quadrature_demod_cf
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'FM/FSK διακριτής: έξοδος = στιγμιαία συχνότητα κανονικοποιημένη με το demod_gain (±1 στην ονομαστική απόκλιση)'
+    gain: demod_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 304
+    - 292
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: Εξομάλυνση του σήματος διαφορικού πριν το κατώφλι. width ΣΤΑΘΕΡΟ (όχι δεμένο με bit_rate) για τον ίδιο λόγο πραγματικού χρόνου με το ook_tx.grc
+    cutoff_freq: 2*bit_rate
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_fff
+    width: '10000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 536
+    - 292
+    rotation: 0
+    state: enabled
+- name: blocks_threshold_ff_0
+  id: blocks_threshold_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Schmitt-trigger: ψηφιοποιεί το διαφορικό σε bit 0/1'
+    high: thresh_hi
+    init: '0'
+    low: thresh_lo
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 760
+    - 292
+    rotation: 0
+    state: enabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 2.048 Msps -> 48 kHz (interp=3, decim=128, λόγος ακριβής)
+    decim: '128'
+    fbw: '0'
+    interp: '3'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: fff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 380
+    rotation: 0
+    state: enabled
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.3'
+    comment: AFSK mark tone (Bell 202-style, 1200 Hz) — ακούγεται όσο recovered bit == 1
+    freq: '1200'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: '48000'
+    showports: 'False'
+    type: float
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 480
+    rotation: 0
+    state: enabled
+- name: analog_sig_source_x_1
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.3'
+    comment: AFSK space tone (Bell 202-style, 2200 Hz) — ακούγεται όσο recovered bit == 0
+    freq: '2200'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: '48000'
+    showports: 'False'
+    type: float
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 560
+    rotation: 0
+    state: enabled
+- name: blocks_sub_xx_0
+  id: blocks_sub_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'mark - space: μαζί με το multiply/add παρακάτω υλοποιεί audio = space + bit*(mark-space), δηλ. εναλλαγή ανάμεσα στους δύο τόνους ανάλογα με το bit (κλασική τεχνική AFSK)'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 500
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: (mark - space) * recovered_bit
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1352
+    - 460
+    rotation: 0
+    state: enabled
+- name: blocks_add_xx_0
+  id: blocks_add_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: + space -> τελικός τόνος AFSK
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1544
+    - 500
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Mute / un-mute του ήχου
+    const: audio_on
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1736
+    - 500
+    rotation: 0
+    state: enabled
+- name: audio_sink_0
+  id: audio_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Ακούστε το FSK σαν εναλλαγή δύο τόνων (AFSK, όπως packet radio/APRS)
+    device_name: ''
+    num_inputs: '1'
+    ok_to_block: 'True'
+    samp_rate: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1928
+    - 500
+    rotation: 0
+    state: enabled
+- name: digital_clock_recovery_mm_ff_0
+  id: digital_clock_recovery_mm_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Ανάκτηση χρονισμού bit (Mueller & Muller): παρακολουθεί προσαρμοστικά τη φάση/ρυθμό δειγματοληψίας πάνω στο ΜΑΛΑΚΟ (πριν το threshold) σήμα του διακριτή, ώστε να δειγματοληπτεί κοντά στο κέντρο κάθε bit ΑΝΕΞΑΡΤΗΤΑ από την άγνωστη αρχική φάση του λαμβανόμενου σήματος και από μικρή απόκλιση ρολογιού ανάμεσα σε πομπό/δέκτη (δύο ανεξάρτητα ταλαντωτές). Αντικαθιστά μια απλή δειγματοληψία σταθερής φάσης (Skip Head + Keep 1-in-N), η οποία δεν εγγυάται σωστή ευθυγράμμιση σε πραγματικές over-the-air συνθήκες.'
+    gain_mu: '0.175'
+    gain_omega: 0.25*0.175*0.175
+    mu: '0.5'
+    omega: spb
+    omega_relative_limit: '0.02'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 640
+    rotation: 0
+    state: enabled
+- name: blocks_threshold_ff_1
+  id: blocks_threshold_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Σκληρή απόφαση 0/1 πάνω στο 1-δείγμα/bit που παρήγαγε η ανάκτηση χρονισμού (ίδια κατώφλια με την Οθόνη/Discriminator)
+    high: thresh_hi
+    init: '0'
+    low: thresh_lo
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 640
+    rotation: 0
+    state: enabled
+- name: ascii_decoder_0
+  id: epy_block
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    _source_code: |
+      import numpy as np
+      from gnuradio import gr
+      import pmt
+      import codecs
+
+
+      PREAMBLE = 0xAAAA7E  # 0xAA 0xAA 0x7E ως 24-bit ακέραιος (MSB πρώτα)
+      PREAMBLE_INV = (~PREAMBLE) & 0xFFFFFF  # ίδιο preamble με αντεστραμμένη πολικότητα bit
+      PREAMBLE_MASK = 0xFFFFFF
+
+
+      class blk(gr.sync_block):
+          """Αποκωδικοποιητής πλαισίου FSK -> ASCII/UTF-8.
+
+          Είσοδος: 1 δείγμα/bit (0.0/1.0), ήδη ευθυγραμμισμένο στον ρυθμό bit
+          από την ανάκτηση χρονισμού (Clock Recovery MM) πριν από αυτό το block.
+          Αναζητά το preamble 0xAA 0xAA 0x7E σε ένα κυλιόμενο παράθυρο 24 bits —
+          ΚΑΙ την αντεστραμμένη εκδοχή του (PREAMBLE_INV), γιατί η πολικότητα
+          mark/space (ποιο bit αντιστοιχεί σε υψηλότερη/χαμηλότερη συχνότητα στην
+          έξοδο του quadrature demod) δεν είναι εγγυημένη a priori: αν βρεθεί η
+          ανεστραμμένη εκδοχή, όλα τα επόμενα bits αντιστρέφονται πριν τη
+          συσκευασία σε bytes. Χωρίς αυτόν τον έλεγχο, μια απλή global
+          αντιστροφή πολικότητας θα εμπόδιζε ΚΑΘΕ συγχρονισμό (καμία εμφάνιση
+          κειμένου, ποτέ) παρότι το ανακτημένο bit φαίνεται μια χαρά στο
+          παλμογράφο — αυτό ακριβώς παρατηρήθηκε τεστάροντας το lab.
+
+          Μόλις συγχρονιστεί, συγκεντρώνει τα επόμενα bits σε bytes (MSB
+          πρώτα), τα οποία αποκωδικοποιεί σταδιακά ως UTF-8 μέσω ενός
+          incremental decoder (codecs) — απαραίτητο γιατί οι ελληνικοί
+          χαρακτήρες είναι πολυ-byte UTF-8 ακολουθίες και δεν μπορούν να
+          αποκωδικοποιηθούν byte-byte ανεξάρτητα. Δημοσιεύει το συσσωρευμένο
+          κείμενο σε κάθε νέο byte μέσω μηνύματος (message port 'text') προς
+          ένα QT GUI Message Edit Box, ώστε οι φοιτητές να βλέπουν το μήνυμα
+          να «χτίζεται» χαρακτήρα-χαρακτήρα σε πραγματικό χρόνο. Κάθε νέο
+          preamble (δηλ. κάθε επανάληψη εκπομπής) καθαρίζει και ξαναρχίζει.
+
+          Τρέχει στον (χαμηλό) ρυθμό bit, όχι στον πλήρη ρυθμό δειγματοληψίας
+          του RTL-SDR — άρα ένα Python epy_block εδώ δεν κινδυνεύει από το
+          πρόβλημα ανταγωνισμού GIL/υποδοχέα υλικού που παρατηρήθηκε στο
+          ook_tx.grc (εκεί το πρόβλημα ήταν streaming source σε πραγματικό
+          χρόνο τροφοδοτώντας απευθείας το HackRF TX sink).
+          """
+
+          def __init__(self):
+              gr.sync_block.__init__(
+                  self,
+                  name='Αποκωδικοποιητής ASCII',
+                  in_sig=[np.float32],
+                  out_sig=[],
+              )
+              self.message_port_register_out(pmt.intern('text'))
+              self._reg = 0
+              self._decoder = None
+              self._byte_bits = []
+              self._text = ''
+              self._invert = False
+
+          def _publish(self):
+              self.message_port_pub(pmt.intern('text'), pmt.intern(self._text))
+
+          def work(self, input_items, output_items):
+              bits = input_items[0]
+              for sample in bits:
+                  raw_bit = 1 if sample > 0.5 else 0
+                  self._reg = ((self._reg << 1) | raw_bit) & PREAMBLE_MASK
+                  if self._reg == PREAMBLE or self._reg == PREAMBLE_INV:
+                      self._invert = (self._reg == PREAMBLE_INV)
+                      self._decoder = codecs.getincrementaldecoder('utf-8')()
+                      self._byte_bits = []
+                      self._text = ''
+                      self._publish()
+                      continue
+                  if self._decoder is None:
+                      continue
+                  bit = (raw_bit ^ 1) if self._invert else raw_bit
+                  self._byte_bits.append(bit)
+                  if len(self._byte_bits) == 8:
+                      value = 0
+                      for b in self._byte_bits:
+                          value = (value << 1) | b
+                      self._byte_bits = []
+                      try:
+                          chars = self._decoder.decode(bytes([value]))
+                      except UnicodeDecodeError:
+                          self._decoder = codecs.getincrementaldecoder('utf-8')()
+                          chars = ''
+                      if chars:
+                          self._text += chars
+                          self._publish()
+              return len(bits)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1352
+    - 640
+    rotation: 0
+    state: enabled
+- name: qtgui_edit_box_msg_0
+  id: qtgui_edit_box_msg
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: qtgui_tab_widget_0@3
+    is_pair: 'False'
+    is_static: 'True'
+    key: ''
+    label: Μήνυμα (ASCII)
+    type: string
+    value: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1544
+    - 640
+    rotation: 0
+    state: enabled
+- name: qtgui_tab_widget_0
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 4,0,1,4
+    label0: Φάσμα RF
+    label1: Waterfall
+    label2: Discriminator + bit
+    label3: Μήνυμα (ASCII)
+    label4: Eye Diagram
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    num_tabs: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 40
+    - 100
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '0.2'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: Φάσμα ραδιοσυχνότητας (RF) γύρω από την κεντρική συχνότητα
+    ctrlpanel: 'True'
+    fc: freq*1e6
+    fftsize: '16384'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@0
+    label: Relative Gain
+    label1: RF
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"RF Spectrum"'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 304
+    - 620
+    rotation: 0
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: Φασματογράφημα (waterfall) στον χρόνο
+    fc: freq*1e6
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: qtgui_tab_widget_0@1
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"RF Waterfall"'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.10'
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 304
+    - 700
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: Διαφορικό (μετά LPF) και ανακτημένο bit. size=614400 -> ~0.3 s παράθυρο στα 2.048 Msps. Το 'Number of Points' ΔΕΝ έχει live callback (κατασκευαστική παράμετρος) -> Kill+Run αν θέλετε να το αλλάξετε.
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@2
+    label1: Discriminator
+    label2: Recovered bit
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    label10: Signal 10
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '"Discriminator + Bits"'
+    nconnections: '2'
+    size: '614400'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Στάθμη
+    ymax: '1.5'
+    ymin: '-1.5'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 620
+    rotation: 0
+    state: enabled
+- name: blocks_keep_one_in_n_eye
+  id: blocks_keep_one_in_n
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Αποδεκάτιση για το eye diagram: κρατά 1 στα spb/eye_sps δείγματα -> eye_sps δείγματα/bit (500 baud: n=64, 4000 baud: n=8). Το LPF πριν (cutoff 2·bit_rate) περιορίζει το aliasing. Το n αλλάζει live με το bit_rate.'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: max(1, spb//eye_sps)
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 820
+    rotation: 0
+    state: enabled
+- name: qtgui_eye_sink_x_0
+  id: qtgui_eye_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: Eye diagram πάνω στο ΜΑΛΑΚΟ (πριν το threshold) σήμα του διακριτή, μετά από αποδεκάτιση σε eye_sps δείγματα/bit (16 σύμβολα ανά ανανέωση)· trigger AUTO στη θετική διάβαση του 0 ώστε το μάτι να μένει σταθερό — δείχνει πόσο «ανοιχτό» είναι το μάτι (περιθώριο απόφασης) για το τρέχον bit_rate/Δf/SNR.
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@4
+    label1: Discriminator
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    label10: ''
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    nconnections: '1'
+    samp_per_symbol: eye_sps
+    size: 32*eye_sps
+    srate: samp_rate/max(1, spb//eye_sps)
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_AUTO
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Στάθμη
+    ymax: '1.5'
+    ymin: '-1.5'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1352
+    - 800
+    rotation: 0
+    state: enabled
+connections:
+- - soapy_rtlsdr_source_0
+  - '0'
+  - qtgui_freq_sink_x_0
+  - '0'
+- - soapy_rtlsdr_source_0
+  - '0'
+  - qtgui_waterfall_sink_x_0
+  - '0'
+- - soapy_rtlsdr_source_0
+  - '0'
+  - analog_quadrature_demod_cf_0
+  - '0'
+- - analog_quadrature_demod_cf_0
+  - '0'
+  - low_pass_filter_0
+  - '0'
+- - low_pass_filter_0
+  - '0'
+  - blocks_threshold_ff_0
+  - '0'
+- - low_pass_filter_0
+  - '0'
+  - qtgui_time_sink_x_0
+  - '0'
+- - blocks_threshold_ff_0
+  - '0'
+  - qtgui_time_sink_x_0
+  - '1'
+- - blocks_threshold_ff_0
+  - '0'
+  - rational_resampler_xxx_0
+  - '0'
+- - rational_resampler_xxx_0
+  - '0'
+  - blocks_multiply_xx_0
+  - '0'
+- - analog_sig_source_x_0
+  - '0'
+  - blocks_sub_xx_0
+  - '0'
+- - analog_sig_source_x_1
+  - '0'
+  - blocks_sub_xx_0
+  - '1'
+- - blocks_sub_xx_0
+  - '0'
+  - blocks_multiply_xx_0
+  - '1'
+- - blocks_multiply_xx_0
+  - '0'
+  - blocks_add_xx_0
+  - '0'
+- - analog_sig_source_x_1
+  - '0'
+  - blocks_add_xx_0
+  - '1'
+- - blocks_add_xx_0
+  - '0'
+  - blocks_multiply_const_vxx_0
+  - '0'
+- - blocks_multiply_const_vxx_0
+  - '0'
+  - audio_sink_0
+  - '0'
+- - low_pass_filter_0
+  - '0'
+  - digital_clock_recovery_mm_ff_0
+  - '0'
+- - digital_clock_recovery_mm_ff_0
+  - '0'
+  - blocks_threshold_ff_1
+  - '0'
+- - blocks_threshold_ff_1
+  - '0'
+  - ascii_decoder_0
+  - '0'
+- - ascii_decoder_0
+  - text
+  - qtgui_edit_box_msg_0
+  - val
+- - low_pass_filter_0
+  - '0'
+  - blocks_keep_one_in_n_eye
+  - '0'
+- - blocks_keep_one_in_n_eye
+  - '0'
+  - qtgui_eye_sink_x_0
+  - '0'
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

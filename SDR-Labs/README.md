@@ -20,7 +20,7 @@ Transmission is performed only by the instructor.
 |---|---|---|
 | **Lab 0** — Introduction to SDR & GNU Radio | [`lab0_handout.pdf`](lab0-intro-sdr/student/handout/lab0_handout.pdf) (Greek) | [`grc/`](lab0-intro-sdr/student/grc) |
 | **Lab 1** — Sampling & PCM | [`lab1_handout.pdf`](lab1-sampling-pcm/student/handout/lab1_handout.pdf) (Greek) | [`grc/`](lab1-sampling-pcm/student/grc) |
-| Lab 2 — OOK / FSK | _coming soon_ | |
+| **Lab 2** — Digital Modulation OOK & FSK | [`lab2_handout.pdf`](lab2-ook-fsk/student/handout/lab2_handout.pdf) (Greek) | [`grc/`](lab2-ook-fsk/student/grc) |
 | Lab 3 — PSK / QAM | _coming soon_ | |
 | Lab 4 — OFDM / DVB-T | _coming soon_ | |
 

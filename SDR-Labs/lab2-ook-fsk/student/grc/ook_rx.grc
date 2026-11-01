@@ -1,0 +1,898 @@
+options:
+  parameters:
+    author: K510 Digital Communications Lab
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: 'RTL-SDR OOK/Morse receiver: envelope detect -> decimate to 32 kHz -> AGC -> Schmitt threshold -> recovered bit, Morse tape (time raster) + audible tone (lab2-ook-fsk).'
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: ook_rx
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: OOK / Morse Receiver (RTL-SDR)
+    window_size: (1300,900)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 8
+    rotation: 0
+    state: enabled
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: RTL-SDR sample rate
+    value: '2048000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 12
+    rotation: 0
+    state: enabled
+- name: env_decim
+  id: variable
+  parameters:
+    comment: 'Αποδεκατισμός του περιβλήματος μετά τον ανιχνευτή: 2.048 Msps / 64 = 32 kHz'
+    value: '64'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 100
+    rotation: 0
+    state: enabled
+- name: env_rate
+  id: variable
+  parameters:
+    comment: Ρυθμός περιβλήματος / AGC / κατωφλίου (32 kHz)
+    value: samp_rate/env_decim
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 8
+    - 180
+    rotation: 0
+    state: enabled
+- name: tape_spu
+  id: variable
+  parameters:
+    comment: Δείγματα ανά unit στην «Ταινία Morse» (σταθερά, ανεξάρτητα από τον ρυθμό)
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 136
+    - 100
+    rotation: 0
+    state: enabled
+- name: tape_units
+  id: variable
+  parameters:
+    comment: Units Morse ανά γραμμή της «Ταινίας Morse»
+    value: '40'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 136
+    - 180
+    rotation: 0
+    state: enabled
+- name: freq
+  id: variable_qtgui_range
+  parameters:
+    comment: Κεντρική συχνότητα RTL-SDR
+    gui_hint: 0,0,1,1
+    label: Συχνότητα συντονισμού (MHz)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '433.82'
+    step: '0.001'
+    stop: '434.02'
+    value: '433.92'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 136
+    - 12
+    rotation: 0
+    state: enabled
+- name: rf_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: Κέρδος (gain) του RTL-SDR
+    gui_hint: 0,1,1,1
+    label: Κέρδος RF (dB)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '49'
+    value: '30'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 264
+    - 12
+    rotation: 0
+    state: enabled
+- name: bit_rate
+  id: variable_qtgui_chooser
+  parameters:
+    comment: Πρέπει να ταιριάζει με τον ρυθμό Morse του εκπομπού
+    gui_hint: 0,2,1,1
+    label: Ρυθμός Morse (baud)
+    label0: '500'
+    label1: '1000'
+    label2: '2000'
+    label3: '4000'
+    label4: '50'
+    labels: '[]'
+    num_opts: '5'
+    option0: '500'
+    option1: '1000'
+    option2: '2000'
+    option3: '4000'
+    option4: '50'
+    options: '[0, 1, 2]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '1000'
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 392
+    - 12
+    rotation: 0
+    state: enabled
+- name: thresh_lo
+  id: variable_qtgui_range
+  parameters:
+    comment: Κατώφλι Schmitt-trigger (ΧΑΜΗΛΟ) πάνω στο περίβλημα (envelope) μετά το AGC
+    gui_hint: 0,3,1,1
+    label: Κατώφλι ΧΑΜΗΛΟ
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.02'
+    stop: '1.5'
+    value: '0.3'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 520
+    - 12
+    rotation: 0
+    state: enabled
+- name: thresh_hi
+  id: variable_qtgui_range
+  parameters:
+    comment: Κατώφλι Schmitt-trigger (ΥΨΗΛΟ)
+    gui_hint: 0,4,1,1
+    label: Κατώφλι ΥΨΗΛΟ
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.02'
+    stop: '1.5'
+    value: '0.6'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 648
+    - 12
+    rotation: 0
+    state: enabled
+- name: audio_on
+  id: variable_qtgui_check_box
+  parameters:
+    comment: Ξεσίγαση του ακουστικού τόνου CW
+    'false': '0'
+    gui_hint: 0,5,1,1
+    label: Ήχος ενεργός
+    'true': '1'
+    type: int
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 776
+    - 12
+    rotation: 0
+    state: enabled
+- name: soapy_rtlsdr_source_0
+  id: soapy_rtlsdr_source
+  parameters:
+    affinity: ''
+    alias: ''
+    agc: 'False'
+    bias: 'False'
+    bufflen: '16384'
+    center_freq: freq*1e6
+    comment: RTL-SDR dongle (μόνο λήψη, RX only)
+    dev_args: ''
+    freq_correction: '0'
+    gain: rf_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 40
+    - 300
+    rotation: 0
+    state: enabled
+- name: blocks_complex_to_mag_squared_0
+  id: blocks_complex_to_mag_squared
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Ανίχνευση περιβλήματος (envelope detector) για OOK
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 304
+    - 292
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: Εξομάλυνση περιβλήματος ΚΑΙ αποδεκατισμός ×64 (2.048 Msps -> 32 kHz). width ΣΤΑΘΕΡΟ (όχι δεμένο με το bit_rate) για τον ίδιο λόγο πραγματικού χρόνου με το ook_tx.grc· ζώνη αποκοπής από 2·4000+5000 = 13 kHz < 16 kHz (Nyquist στα 32 kHz)
+    cutoff_freq: 2*bit_rate
+    decim: env_decim
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_fff
+    width: '10000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 520
+    - 292
+    rotation: 0
+    state: enabled
+- name: analog_agc2_xx_0
+  id: analog_agc2_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    attack_rate: '0.3'
+    comment: max_gain περιορισμένο ώστε να μην ενισχύεται υπερβολικά ο θόρυβος στις σιωπές. Ρυθμοί για τα 32 kHz (decay 1e-3 × 64 = 0.064)· ίδιες σταθερές χρόνου με την αρχική έκδοση στα 2.048 Msps, άρα ισχύουν τα ίδια κατώφλια 0.3/0.6
+    decay_rate: '0.064'
+    gain: '1.0'
+    max_gain: '100'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    reference: '1.0'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 744
+    - 292
+    rotation: 0
+    state: enabled
+- name: blocks_threshold_ff_0
+  id: blocks_threshold_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Schmitt-trigger: ψηφιοποιεί το περίβλημα σε bit 0/1'
+    high: thresh_hi
+    init: '0'
+    low: thresh_lo
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 292
+    rotation: 0
+    state: enabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 32 kHz -> 48 kHz (interp=3, decim=2, λόγος ακριβής)
+    decim: '2'
+    fbw: '0'
+    interp: '3'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: fff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 420
+    rotation: 0
+    state: enabled
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.3'
+    comment: Ακουστικός τόνος CW (700 Hz)
+    freq: '700'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: '48000'
+    showports: 'False'
+    type: float
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 500
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Πύλη τόνου: ακούγεται μόνο όσο το recovered bit == 1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 420
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Mute / un-mute του ήχου
+    const: audio_on
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1352
+    - 420
+    rotation: 0
+    state: enabled
+- name: audio_sink_0
+  id: audio_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: Ακούστε το Morse σαν CW τόνο
+    device_name: ''
+    num_inputs: '1'
+    ok_to_block: 'True'
+    samp_rate: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1544
+    - 420
+    rotation: 0
+    state: enabled
+- name: qtgui_tab_widget_0
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 1,0,1,6
+    label0: Φάσμα RF
+    label1: Waterfall
+    label2: Περίβλημα + recovered bit
+    label3: Ταινία Morse
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    num_tabs: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 40
+    - 100
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '0.2'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: Φάσμα ραδιοσυχνότητας (RF) γύρω από την κεντρική συχνότητα
+    ctrlpanel: 'True'
+    fc: freq*1e6
+    fftsize: '16384'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@0
+    label: Relative Gain
+    label1: RF
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"RF Spectrum"'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 304
+    - 620
+    rotation: 0
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: 'Φασματογράφημα (waterfall). ΠΡΟΣΟΧΗ: μία γραμμή ανά update_time (0.1 s), και κάθε γραμμή είναι ΕΝΑ FFT 1024 δειγμάτων (0.5 ms)· τα ενδιάμεσα δείγματα απορρίπτονται. Δείχνει συχνότητα, ριπές και περίοδο, όχι μεμονωμένες τελείες Morse.'
+    fc: freq*1e6
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: qtgui_tab_widget_0@1
+    int_max: '0'
+    int_min: '-60'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"RF Waterfall"'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.10'
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 304
+    - 700
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: 'Περίβλημα (μετά AGC) και ανακτημένο bit, στα 32 kHz. size=32000 -> παράθυρο 1 s (50 units στα 50 baud, ολόκληρο το μήνυμα από 500 baud και πάνω). Trigger AUTO στην ανερχόμενη ακμή του bit (κανάλι 1): η εικόνα «στέκεται»· χωρίς ακμές τρέχει ελεύθερα. Δεξί κλικ -> Stop για πάγωμα, Number of Points για άλλο παράθυρο.'
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@2
+    label1: Περίβλημα (AGC)
+    label2: Recovered bit
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    label10: Signal 10
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '"Envelope + Bits"'
+    nconnections: '2'
+    size: '32000'
+    srate: env_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '1'
+    tr_delay: '0.02'
+    tr_level: '0.5'
+    tr_mode: qtgui.TRIG_MODE_AUTO
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Στάθμη
+    ymax: '1.5'
+    ymin: '-0.2'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 620
+    rotation: 0
+    state: enabled
+- name: blocks_keep_one_in_n_0
+  id: blocks_keep_one_in_n
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Κρατά 1 στα 32000/(4·bit_rate) δείγματα -> 4 δείγματα ανά unit σε κάθε ρυθμό (50 baud: n=160, 4000 baud: n=2). Σήμα 0/1, δεν χρειάζεται φίλτρο. Το n αλλάζει live με το bit_rate.'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: int(env_rate/(tape_spu*bit_rate))
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 968
+    - 860
+    rotation: 0
+    state: enabled
+- name: qtgui_time_raster_sink_x_0
+  id: qtgui_time_raster_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    color1: '2'
+    color10: '1'
+    color2: '1'
+    color3: '1'
+    color4: '1'
+    color5: '1'
+    color6: '1'
+    color7: '1'
+    color8: '1'
+    color9: '1'
+    comment: '«Ταινία Morse»: το recovered bit σε γραμμές των tape_units (40) units· κάθε γραμμή συνεχίζει από εκεί που σταμάτησε η προηγούμενη. Το πλάτος γραμμής είναι ΣΤΑΘΕΡΟ (160 στήλες = 40 units × 4)· με το bit_rate αλλάζει μόνο ο αποδεκατισμός πριν από εδώ, άρα ο άξονας x μένει πάντα σε units. (Αλλαγή του ncols εν ώρα εκτέλεσης χαλάει τον άξονα στο GNU Radio 3.10.)'
+    grid: 'False'
+    gui_hint: qtgui_tab_widget_0@3
+    label1: Recovered bit
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    mult: '[]'
+    name: '"Ταινία Morse (1 γραμμή = 40 units)"'
+    ncols: tape_units*tape_spu
+    nconnections: '1'
+    nrows: '30'
+    offset: '[]'
+    samp_rate: tape_spu*bit_rate
+    type: float
+    update_time: '0.10'
+    x_end_value: tape_units
+    x_label: '"units (1 unit = 1/R)"'
+    x_start_value: '0'
+    y_end_value: '30'
+    y_label: '"γραμμή"'
+    y_start_value: '0'
+    zmax: '1'
+    zmin: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate:
+    - 1160
+    - 860
+    rotation: 0
+    state: enabled
+connections:
+- - soapy_rtlsdr_source_0
+  - '0'
+  - qtgui_freq_sink_x_0
+  - '0'
+- - soapy_rtlsdr_source_0
+  - '0'
+  - qtgui_waterfall_sink_x_0
+  - '0'
+- - soapy_rtlsdr_source_0
+  - '0'
+  - blocks_complex_to_mag_squared_0
+  - '0'
+- - blocks_complex_to_mag_squared_0
+  - '0'
+  - low_pass_filter_0
+  - '0'
+- - low_pass_filter_0
+  - '0'
+  - analog_agc2_xx_0
+  - '0'
+- - analog_agc2_xx_0
+  - '0'
+  - blocks_threshold_ff_0
+  - '0'
+- - analog_agc2_xx_0
+  - '0'
+  - qtgui_time_sink_x_0
+  - '0'
+- - blocks_threshold_ff_0
+  - '0'
+  - qtgui_time_sink_x_0
+  - '1'
+- - blocks_threshold_ff_0
+  - '0'
+  - rational_resampler_xxx_0
+  - '0'
+- - blocks_threshold_ff_0
+  - '0'
+  - blocks_keep_one_in_n_0
+  - '0'
+- - blocks_keep_one_in_n_0
+  - '0'
+  - qtgui_time_raster_sink_x_0
+  - '0'
+- - rational_resampler_xxx_0
+  - '0'
+  - blocks_multiply_xx_0
+  - '0'
+- - analog_sig_source_x_0
+  - '0'
+  - blocks_multiply_xx_0
+  - '1'
+- - blocks_multiply_xx_0
+  - '0'
+  - blocks_multiply_const_vxx_0
+  - '0'
+- - blocks_multiply_const_vxx_0
+  - '0'
+  - audio_sink_0
+  - '0'
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
