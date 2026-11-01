@@ -42,7 +42,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 12]
+    coordinate: [568, 16.0]
     rotation: 0
     state: enabled
 - name: freq
@@ -63,7 +63,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 108]
+    coordinate: [712, 16.0]
     rotation: 0
     state: enabled
 - name: quad_rate
@@ -75,7 +75,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 12]
+    coordinate: [344, 16.0]
     rotation: 0
     state: enabled
 - name: rf_gain
@@ -96,7 +96,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [408, 108]
+    coordinate: [920, 16.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -108,7 +108,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 12]
+    coordinate: [208, 16.0]
+    rotation: 0
+    state: enabled
+- name: analog_quadrature_demod_cf_0
+  id: analog_quadrature_demod_cf
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gain: '0.5433'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [672, 424.0]
     rotation: 0
     state: enabled
 - name: analog_wfm_rcv_0
@@ -125,9 +141,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [608, 276]
+    coordinate: [672, 280.0]
     rotation: 0
     state: enabled
+- name: analog_wfm_rcv_pll_0
+  id: analog_wfm_rcv_pll
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_decimation: '1'
+    comment: ''
+    deemph_tau: 75e-6
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quad_rate: quad_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [672, 664.0]
+    rotation: 0
+    state: disabled
 - name: audio_sink_0
   id: audio_sink
   parameters:
@@ -142,9 +176,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1016, 276]
+    coordinate: [1096, 288.0]
     rotation: 0
     state: enabled
+- name: audio_sink_1
+  id: audio_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    device_name: ''
+    num_inputs: '2'
+    ok_to_block: 'True'
+    samp_rate: '48000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1112, 672.0]
+    rotation: 0
+    state: disabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -250,6 +301,87 @@ blocks:
     coordinate: [376, 420]
     rotation: 0
     state: enabled
+- name: qtgui_freq_sink_x_1
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: '256000'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'True'
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"Pilot"'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: float
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 400.0]
+    rotation: 0
+    state: enabled
 - name: qtgui_waterfall_sink_x_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -328,9 +460,49 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [800, 268]
+    coordinate: [888, 264.0]
     rotation: 0
     state: enabled
+- name: rational_resampler_xxx_1
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '16'
+    fbw: '0'
+    interp: '3'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: fff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [888, 608.0]
+    rotation: 0
+    state: disabled
+- name: rational_resampler_xxx_2
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '16'
+    fbw: '0'
+    interp: '3'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: fff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [888, 720.0]
+    rotation: 0
+    state: disabled
 - name: soapy_rtlsdr_source_0
   id: soapy_rtlsdr_source
   parameters:
@@ -352,14 +524,21 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [80, 260]
+    coordinate: [88, 432.0]
     rotation: 0
     state: enabled
 
 connections:
+- [analog_quadrature_demod_cf_0, '0', qtgui_freq_sink_x_1, '0']
 - [analog_wfm_rcv_0, '0', rational_resampler_xxx_0, '0']
+- [analog_wfm_rcv_pll_0, '0', rational_resampler_xxx_1, '0']
+- [analog_wfm_rcv_pll_0, '1', rational_resampler_xxx_2, '0']
+- [low_pass_filter_0, '0', analog_quadrature_demod_cf_0, '0']
 - [low_pass_filter_0, '0', analog_wfm_rcv_0, '0']
+- [low_pass_filter_0, '0', analog_wfm_rcv_pll_0, '0']
 - [rational_resampler_xxx_0, '0', audio_sink_0, '0']
+- [rational_resampler_xxx_1, '0', audio_sink_1, '0']
+- [rational_resampler_xxx_2, '0', audio_sink_1, '1']
 - [soapy_rtlsdr_source_0, '0', low_pass_filter_0, '0']
 - [soapy_rtlsdr_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [soapy_rtlsdr_source_0, '0', qtgui_waterfall_sink_x_0, '0']

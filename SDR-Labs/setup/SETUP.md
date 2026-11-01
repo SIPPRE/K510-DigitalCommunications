@@ -3,7 +3,8 @@
 🇬🇷 [Ελληνικά παρακάτω](#ρύθμιση-περιβάλλοντος-ubuntu--macos) · 🇬🇧 English
 
 Instructions for installing the SDR toolchain for the course laboratories (Digital Communications, ECE_K510).
-For Windows, see the Lab 0 handout (radioconda + Zadig).
+For Windows, see the Lab 0 handout (radioconda + Zadig). To test the RTL-SDR on Windows, open
+[`windows-test/rtl_windows_test.grc`](windows-test/rtl_windows_test.grc) in GNU Radio Companion and press **Run**.
 
 ## Ubuntu
 
@@ -91,7 +92,8 @@ If macOS blocks an executable as "from an unidentified developer":
 🇬🇧 [English above](#environment-setup-ubuntu--macos) · 🇬🇷 Ελληνικά
 
 Οδηγίες εγκατάστασης του SDR toolchain για τα εργαστήρια του μαθήματος Ψηφιακές Επικοινωνίες (ECE_K510).
-Για τα Windows, δείτε το φυλλάδιο του Εργαστηρίου 0 (radioconda + Zadig).
+Για τα Windows, δείτε το φυλλάδιο του Εργαστηρίου 0 (radioconda + Zadig). Για δοκιμή του RTL-SDR στα Windows,
+ανοίξτε το [`windows-test/rtl_windows_test.grc`](windows-test/rtl_windows_test.grc) στο GNU Radio Companion και πατήστε **Run**.
 
 ## 1. Εγκατάσταση πακέτων
 
