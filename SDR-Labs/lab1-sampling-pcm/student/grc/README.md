@@ -6,7 +6,7 @@ resolves) and press **Run**.
 
 | File | Part | What it does | SDR needed? |
 |---|---|---|---|
-| `fm_receiver.grc` | A | Mono FM receiver: RF spectrum, waterfall, audio | Yes (RTL-SDR) |
+| `fm_receiver.grc` | A | FM receiver: RF spectrum, waterfall, mono audio, MPX spectrum ("Pilot", 19 kHz pilot); disabled stereo path (WBFM Receive PLL) | Yes (RTL-SDR) |
 | `aliasing_demo.grc` | B | Down-sampling a tone and reconstructing it: see and hear aliasing | No |
 | `audio_sampling.grc` | B | Effect of the anti-alias filter on a test chirp (`media/test_chirp.wav`) | No |
 | `quantization_pcm.grc` | C | Uniform mid-rise quantizer, quantization staircase, live SQNR meter | No |
