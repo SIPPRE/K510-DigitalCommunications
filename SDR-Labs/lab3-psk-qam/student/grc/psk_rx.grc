@@ -1,0 +1,1867 @@
+options:
+  parameters:
+    author: K510 Digital Communications Lab
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: "QPSK RX (RTL-SDR): matched RRC + Symbol Sync + Costas Loop + BER/SER\
+      \ \u03BC\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2. student (lab3-psk-qam)."
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: psk_rx
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: QPSK Receiver (RTL-SDR)
+    window_size: (1300,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: actual_sps
+  id: variable
+  parameters:
+    comment: "\u03A0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03AC \u03B4\u03B5\
+      \u03AF\u03B3\u03BC\u03B1\u03C4\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF\
+      \ (\u03CC\u03C7\u03B9 \u03B1\u03C0\u03B1\u03C1\u03B1\u03AF\u03C4\u03B7\u03C4\
+      \u03B1 \u03B1\u03BA\u03AD\u03C1\u03B1\u03B9\u03BF) \u2014 \u03C4\u03C1\u03BF\
+      \u03C6\u03BF\u03B4\u03BF\u03C4\u03B5\u03AF \u03C4\u03BF matched filter \u03BA\
+      \u03B1\u03B9 \u03C4\u03BF\u03BD Symbol Sync"
+    value: quad_rate/symbol_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 228]
+    rotation: 0
+    state: enabled
+- name: channel_decim
+  id: variable
+  parameters:
+    comment: "\u0394\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C6\u03AF\
+      \u03BB\u03C4\u03C1\u03BF\u03C5 \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD\
+      \ (\u03BA\u03B1\u03C4\u03B1\u03C3\u03BA\u03B5\u03C5\u03B1\u03C3\u03C4\u03B9\u03BA\
+      \u03AE \u03C0\u03B1\u03C1\u03AC\u03BC\u03B5\u03C4\u03C1\u03BF\u03C2 \u2014 \u03B1\
+      \u03BB\u03BB\u03AC\u03B6\u03B5\u03B9 \u03BC\u03CC\u03BD\u03BF \u03BC\u03B5 Kill+Run,\
+      \ \u03B2\u03BB. \u03C3\u03B7\u03BC\u03B5\u03AF\u03C9\u03C3\u03B7)"
+    value: max(1, int(round(rtl_samp_rate/(symbol_rate*4))))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 228]
+    rotation: 0
+    state: enabled
+- name: costas_bw
+  id: variable
+  parameters:
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ Costas (\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03CC)"
+    value: 2*np.pi/100.0
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 228]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: "Roll-off RRC \u2014 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1\
+      \ \u03C4\u03B1\u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\
+      \u03BF psk_tx.grc"
+    value: '0.35'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 228]
+    rotation: 0
+    state: enabled
+- name: fll_bw
+  id: variable
+  parameters:
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ FLL Band-Edge (\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03CC) \u2014 \u03C7\u03BF\
+      \u03BD\u03B4\u03C1\u03B9\u03BA\u03AE \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\
+      \u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C6\u03AD\
+      \u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (\u03AD\u03C9\u03C2 \xB1\u03BC\u03B5\u03C1\
+      \u03B9\u03BA\u03AC kHz \u03B1\u03C0\u03CC \u03C4\u03B7 \u03B4\u03B9\u03B1\u03C6\
+      \u03BF\u03C1\u03AC \u03BA\u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD\
+      \ HackRF/RTL-SDR)"
+    value: 2*np.pi/250.0
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 228]
+    rotation: 0
+    state: enabled
+- name: freq
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u039A\u03B5\u03BD\u03C4\u03C1\u03B9\u03BA\u03AE \u03C3\u03C5\u03C7\u03BD\
+      \u03CC\u03C4\u03B7\u03C4\u03B1 RTL-SDR \u2014 \u03C0\u03C1\u03BF\u03B5\u03C0\
+      \u03B9\u03BB\u03BF\u03B3\u03AE 434.02 MHz (psk_tx.grc: 433.92 + 100 kHz)"
+    gui_hint: 0,0,1,2
+    label: "\u03A3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1 \u03C3\u03C5\u03BD\
+      \u03C4\u03BF\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD (MHz)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '433.82'
+    step: '0.001'
+    stop: '434.22'
+    value: '434.02'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 12]
+    rotation: 0
+    state: enabled
+- name: quad_rate
+  id: variable
+  parameters:
+    comment: "\u03A0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC\u03C2 \u03C1\
+      \u03C5\u03B8\u03BC\u03CC\u03C2 \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\
+      \u03BB\u03B7\u03C8\u03AF\u03B1\u03C2 \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF\u03BD\
+      \ \u03B4\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC"
+    value: rtl_samp_rate/channel_decim
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 228]
+    rotation: 0
+    state: enabled
+- name: rf_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u039A\u03AD\u03C1\u03B4\u03BF\u03C2 RF \u03C4\u03BF\u03C5 RTL-SDR"
+    gui_hint: 0,2,1,2
+    label: "\u039A\u03AD\u03C1\u03B4\u03BF\u03C2 RF (dB)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '49'
+    value: '30'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 12]
+    rotation: 0
+    state: enabled
+- name: rtl_samp_rate
+  id: variable
+  parameters:
+    comment: "\u0394\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\
+      \u03B1 RTL-SDR (\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03AE)"
+    value: '2048000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [136, 228]
+    rotation: 0
+    state: enabled
+- name: symbol_rate
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u03A1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03BF\u03C5 (baud) \u2014 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1\
+      \ \u03C4\u03B1\u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\
+      \u03BF psk_tx.grc"
+    gui_hint: 1,0,1,2
+    label: "\u03A1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03BF\u03C5 (baud)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '10000'
+    step: '1000'
+    stop: '50000'
+    value: '20000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 84]
+    rotation: 0
+    state: enabled
+- name: symbol_rate_note
+  id: variable
+  parameters:
+    comment: ''
+    value: "\"\u26A0 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1 \u03C4\u03B1\
+      \u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\u03BF\u03BD \u03C0\
+      \u03BF\u03BC\u03C0\u03CC (psk_tx.grc)\""
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 84]
+    rotation: 0
+    state: enabled
+- name: symbol_rate_note_label
+  id: variable_qtgui_label
+  parameters:
+    comment: ''
+    formatter: None
+    gui_hint: 1,2,1,2
+    label: ''
+    type: string
+    value: symbol_rate_note
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 156]
+    rotation: 0
+    state: enabled
+- name: sync_bw
+  id: variable
+  parameters:
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ Symbol Sync (\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03CC)"
+    value: '0.045'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [968, 228]
+    rotation: 0
+    state: enabled
+- name: analog_agc2_xx_0
+  id: analog_agc2_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    attack_rate: '0.1'
+    comment: "\u0395\u03BE\u03BF\u03BC\u03AC\u03BB\u03C5\u03BD\u03C3\u03B7 \u03C4\u03B7\
+      \u03C2 \u03BB\u03B1\u03BC\u03B2\u03B1\u03BD\u03CC\u03BC\u03B5\u03BD\u03B7\u03C2\
+      \ \u03B9\u03C3\u03C7\u03CD\u03BF\u03C2 \u03C0\u03C1\u03B9\u03BD \u03C4\u03BF\
+      \ matched filter"
+    decay_rate: 1e-2
+    gain: '1.0'
+    max_gain: '1000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    reference: '1.0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 360.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u03A3\u03C4\u03B1\u03B8\u03B5\u03C1\u03AE \u03C0\u03B5\u03C1\u03B9\u03C3\
+      \u03C4\u03C1\u03BF\u03C6\u03AE +45\xB0 \u2014 \u03B5\u03C5\u03B8\u03C5\u03B3\
+      \u03C1\u03B1\u03BC\u03BC\u03AF\u03B6\u03B5\u03B9 \u03C4\u03B7 \u03C3\u03CD\u03BC\
+      \u03B2\u03B1\u03C3\u03B7 \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BC\u03B1\u03C4\
+      \u03BF\u03C2 \u03C4\u03BF\u03C5 Costas Loop (\u03B4\u03B9\u03B1\u03B3\u03CE\u03BD\
+      \u03B9\u03BF QPSK) \u03BC\u03B5 \u03C4\u03B1 \u03B4\u03B9\u03BA\u03AC \u03BC\
+      \u03B1\u03C2 \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1 QPSK_POINTS (\u03B5\u03C5\u03B8\
+      \u03C5\u03B3\u03C1\u03B1\u03BC\u03BC\u03B9\u03C3\u03BC\u03AD\u03BD\u03B1 \u03BC\
+      \u03B5 \u03C4\u03BF\u03C5\u03C2 \u03AC\u03BE\u03BF\u03BD\u03B5\u03C2)\xB7 \u03B2\
+      \u03BB. \u03C3\u03B7\u03BC\u03B5\u03AF\u03C9\u03C3\u03B7 \u03C3\u03C4\u03BF\
+      \ import block."
+    const: DEROTATE
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 540]
+    rotation: 0
+    state: enabled
+- name: blocks_unpack_k_bits_bb_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "chunk (0..3) -> 2 bits (1 bit/byte, MSB \u03C0\u03C1\u03CE\u03C4\u03B1\
+      ) \u2014 \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\u03BC\u03AD\u03BD\u03B7 \u03C1\
+      \u03BF\u03AE bits"
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1880, 540]
+    rotation: 0
+    state: enabled
+- name: digital_constellation_decoder_cb_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u0391\u03C0\u03CC\u03C6\u03B1\u03C3\u03B7 \u03C0\u03BB\u03B7\u03C3\u03B9\
+      \u03AD\u03C3\u03C4\u03B5\u03C1\u03BF\u03C5 \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\
+      \u03C5 -> chunk 0..3"
+    constellation: QPSK_CONSTELLATION
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 540]
+    rotation: 0
+    state: enabled
+- name: digital_costas_loop_cc_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u0394\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C5\u03C0\u03BF\u03BB\
+      \u03B5\u03B9\u03C0\u03CC\u03BC\u03B5\u03BD\u03B7\u03C2 \u03C6\u03AC\u03C3\u03B7\
+      \u03C2/\u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C6\u03AD\
+      \u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (4\u03B7\u03C2 \u03C4\u03AC\u03BE\u03B7\
+      \u03C2, \u03B3\u03B9\u03B1 QPSK)"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: '4'
+    use_snr: 'False'
+    w: costas_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1208, 352.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: "\u0391\u03BD\u03C4\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\u03B9 \u03C4\
+      \u03B7 \u03B4\u03B9\u03B1\u03C6\u03BF\u03C1\u03B9\u03BA\u03AE \u03BA\u03C9\u03B4\
+      \u03B9\u03BA\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\u03B7 \u03C4\u03BF\u03C5 \u03C0\
+      \u03BF\u03BC\u03C0\u03BF\u03CD"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1560, 540]
+    rotation: 0
+    state: enabled
+- name: digital_fll_band_edge_cc_0
+  id: digital_fll_band_edge_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u03A7\u039F\u039D\u0394\u03A1\u0399\u039A\u0397 \u03B4\u03B9\u03CC\u03C1\
+      \u03B8\u03C9\u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (FLL Band-Edge). \u039F\
+      \u03B9 \u03BA\u03C1\u03CD\u03C3\u03C4\u03B1\u03BB\u03BB\u03BF\u03B9 HackRF \u03BA\
+      \u03B1\u03B9 RTL-SDR \u03B4\u03B9\u03B1\u03C6\u03AD\u03C1\u03BF\u03C5\u03BD\
+      \ \u03BA\u03B1\u03C4\u03AC \u03B4\u03B5\u03BA\u03AC\u03B4\u03B5\u03C2 ppm \u2192\
+      \ \u03C3\u03C4\u03B1 434 MHz \u03C4\u03BF offset \u03C6\u03C4\u03AC\u03BD\u03B5\
+      \u03B9 \xB15-15 kHz, \u03A0\u039F\u039B\u03A5 \u03AD\u03BE\u03C9 \u03B1\u03C0\
+      \u03CC \u03C4\u03B7\u03BD \u03C0\u03B5\u03C1\u03B9\u03BF\u03C7\u03AE \u03AD\u03BB\
+      \u03BE\u03B7\u03C2 \u03C4\u03BF\u03C5 Costas Loop. \u03A7\u03C9\u03C1\u03AF\u03C2\
+      \ \u03B1\u03C5\u03C4\u03CC \u03C4\u03BF \u03C3\u03C4\u03AC\u03B4\u03B9\u03BF\
+      \ \u03BF \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C0\
+      \u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\u03C4\u03B1\u03B9 \u03C3\
+      \u03C5\u03BD\u03B5\u03C7\u03CE\u03C2 (\u03C3\u03B7\u03BC\u03B5\u03AF\u03B1 \u03C0\
+      \u03B1\u03BD\u03C4\u03BF\u03CD \u03C3\u03C4\u03BF \u03B4\u03B9\u03AC\u03B3\u03C1\
+      \u03B1\u03BC\u03BC\u03B1 IQ). \u03A4\u03BF FLL \u03BA\u03BB\u03B5\u03B9\u03B4\
+      \u03CE\u03BD\u03B5\u03B9 \u03C3\u03B5 offset \u03AD\u03C9\u03C2 ~\xB1symbol_rate/2\
+      \ \u03BA\u03B1\u03B9 \u03B1\u03C6\u03AE\u03BD\u03B5\u03B9 \u03BC\u03CC\u03BD\
+      \u03BF \u03AD\u03BD\u03B1 \u03BC\u03B9\u03BA\u03C1\u03CC \u03C5\u03C0\u03CC\u03BB\
+      \u03BF\u03B9\u03C0\u03BF \u03B3\u03B9\u03B1 \u03C4\u03BF Costas Loop."
+    filter_size: int(11*actual_sps)+1
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rolloff: excess_bw
+    samps_per_sym: actual_sps
+    type: cc
+    w: fll_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 584.0]
+    rotation: 0
+    state: enabled
+- name: digital_map_bb_0
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u0391\u03BD\u03C4\u03AF\u03C3\u03C4\u03C1\u03BF\u03C6\u03B7 Gray (\u03B1\
+      \u03BD\u03C4\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\u03B9 \u03C4\u03BF Map\
+      \ \u03C4\u03BF\u03C5 \u03C0\u03BF\u03BC\u03C0\u03BF\u03CD)"
+    map: INV_GRAY_MAP
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1720, 540]
+    rotation: 0
+    state: enabled
+- name: digital_symbol_sync_xx_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u0391\u03BD\u03AC\u03BA\u03C4\u03B7\u03C3\u03B7 \u03C7\u03C1\u03BF\u03BD\
+      \u03B9\u03C3\u03BC\u03BF\u03CD \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5\
+      \ (Symbol Sync, TED = GARDNER) \u2014 \u03C0\u03B1\u03C1\u03AC\u03B3\u03B5\u03B9\
+      \ 1 \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\
+      \u03BF, \u03A0\u03A1\u0399\u039D \u03B1\u03C0\u03CC \u03C4\u03B7 \u03BB\u03B5\
+      \u03C0\u03C4\u03AE \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\u03AC\
+      \u03C3\u03B7\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (Costas).\
+      \ \u039F \u03B1\u03BD\u03B9\u03C7\u03BD\u03B5\u03C5\u03C4\u03AE\u03C2 Gardner\
+      \ \u03B5\u03C0\u03B9\u03BB\u03AD\u03C7\u03B8\u03B7\u03BA\u03B5 \u0395\u03A0\u0399\
+      \u03A4\u0397\u0394\u0395\u03A3 \u03B1\u03BD\u03C4\u03AF \u03C4\u03BF\u03C5 Mueller\
+      \ & Muller: \u03BF Gardner \u03B4\u03B5\u03BD \u03C7\u03C1\u03B7\u03C3\u03B9\
+      \u03BC\u03BF\u03C0\u03BF\u03B9\u03B5\u03AF \u03B1\u03C0\u03BF\u03C6\u03AC\u03C3\
+      \u03B5\u03B9\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\u03BD, \u03AC\u03C1\
+      \u03B1 \u03B5\u03AF\u03BD\u03B1\u03B9 \u0391\u039D\u0395\u039E\u0391\u03A1\u03A4\
+      \u0397\u03A4\u039F\u03A3 \u03B1\u03C0\u03CC \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\
+      \u03C1\u03BF\u03C6\u03AE \u03C4\u03BF\u03C5 \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\
+      \u03C3\u03BC\u03BF\u03CD \u2014 \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03B5\
+      \u03B9 \u03C4\u03BF\u03BD \u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03CC \u03B1\
+      \u03BA\u03CC\u03BC\u03B7 \u03BA\u03B9 \u03CC\u03C3\u03BF \u03C5\u03C0\u03AC\u03C1\
+      \u03C7\u03B5\u03B9 \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03BF \u03C3\u03C6\
+      \u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \u03C2/\u03C6\u03AC\u03C3\u03B7\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\
+      \u03C2 (\u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03AD\u03C2 \u03C3\
+      \u03C5\u03BD\u03B8\u03AE\u03BA\u03B5\u03C2: \u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\
+      \u03C4\u03B7\u03C4\u03BF\u03B9 \u03BA\u03C1\u03CD\u03C3\u03C4\u03B1\u03BB\u03BB\
+      \u03BF\u03B9 HackRF/RTL-SDR). \u039F M&M \u03B5\u03AF\u03BD\u03B1\u03B9 decision-directed\
+      \ \u03BA\u03B1\u03B9 \u03B1\u03C0\u03BF\u03C4\u03C5\u03B3\u03C7\u03AC\u03BD\u03B5\
+      \u03B9 \u03CC\u03C4\u03B1\u03BD \u03BF \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\
+      \u03BC\u03CC\u03C2 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\
+      \u03C4\u03B1\u03B9. \u03A3\u03C4\u03BF GRC 3.10 \u03C0\u03C1\u03BF\u03C4\u03B9\
+      \u03BC\u03AE\u03B8\u03B7\u03BA\u03B5 \u03C4\u03BF symbol_sync_cc \u03B1\u03BD\
+      \u03C4\u03AF \u03C4\u03BF\u03C5 \u03C0\u03B1\u03BB\u03B1\u03B9\u03CC\u03C4\u03B5\
+      \u03C1\u03BF\u03C5 digital_clock_recovery_mm_cc, \u03C0\u03BF\u03C5 \u03B5\u03C0\
+      \u03B9\u03B2\u03B5\u03B2\u03B1\u03B9\u03CE\u03B8\u03B7\u03BA\u03B5 \u03B5\u03BC\
+      \u03C0\u03B5\u03B9\u03C1\u03B9\u03BA\u03AC \u03CC\u03C4\u03B9 \u0394\u0395\u039D\
+      \ \u03C3\u03C5\u03B3\u03BA\u03BB\u03AF\u03BD\u03B5\u03B9 \u03B1\u03BE\u03B9\u03CC\
+      \u03C0\u03B9\u03C3\u03C4\u03B1 \u03C3\u03B5 \u03B1\u03C5\u03C4\u03CC \u03C4\u03BF\
+      \ \u03C3\u03AE\u03BC\u03B1."
+    constellation: QPSK_CONSTELLATION
+    damping: '1.0'
+    loop_bw: sync_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: '1'
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: actual_sps
+    ted_gain: '1.0'
+    ted_type: digital.TED_GARDNER
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 476.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\nPREAMBLE_SYMBOLS\
+      \ = 64\nPREAMBLE_SEED = 42\nMESSAGE_TEXT = \"K510 PSK-QAM TEST\"\nWINDOW_BITS\
+      \ = 5000\n\n\ndef _expected_frame_bits():\n    rng = np.random.RandomState(PREAMBLE_SEED)\n\
+      \    preamble_syms = rng.randint(0, 4, size=PREAMBLE_SYMBOLS)\n    preamble_bits\
+      \ = np.zeros((PREAMBLE_SYMBOLS, 2), dtype=np.int8)\n    preamble_bits[:, 0]\
+      \ = (preamble_syms >> 1) & 1\n    preamble_bits[:, 1] = preamble_syms & 1\n\
+      \    preamble_bits = preamble_bits.flatten()\n    payload_bits = np.unpackbits(\n\
+      \        np.frombuffer(MESSAGE_TEXT.encode('ascii'), dtype=np.uint8)).astype(np.int8)\n\
+      \    return np.concatenate([preamble_bits, payload_bits])\n\n\nEXPECTED_FRAME_BITS\
+      \ = _expected_frame_bits()\nFRAME_LEN = len(EXPECTED_FRAME_BITS)\nPREAMBLE_PM1\
+      \ = EXPECTED_FRAME_BITS[:2 * PREAMBLE_SYMBOLS].astype(np.float32) * 2 - 1\n\
+      PREAMBLE_LEN = len(PREAMBLE_PM1)\nRECHECK_INTERVAL = FRAME_LEN * 8  # \u03C0\
+      \u03B5\u03C1\u03AF\u03C0\u03BF\u03C5 \u03BA\u03AC\u03B8\u03B5 8 \u03B5\u03C0\
+      \u03B1\u03BD\u03B1\u03BB\u03AE\u03C8\u03B5\u03B9\u03C2 \u03C0\u03BB\u03B1\u03B9\
+      \u03C3\u03AF\u03BF\u03C5\n\n\nclass blk(gr.sync_block):\n    \"\"\"\u039C\u03B5\
+      \u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER: \u03B5\u03BD\u03C4\u03BF\u03C0\
+      \u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF \u03B3\u03BD\u03C9\u03C3\u03C4\u03CC preamble\
+      \ (64 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1,\n    fixed-seed=42 \u2014\
+      \ \u0399\u0394\u0399\u039F\u03A3 \u03C3\u03C0\u03CC\u03C1\u03BF\u03C2 \u03BC\
+      \u03B5 \u03C4\u03BF psk_tx.grc) \u03BC\u03AD\u03C3\u03C9 \u03C3\u03C5\u03C3\u03C7\
+      \u03AD\u03C4\u03B9\u03C3\u03B7\u03C2 (correlation)\n    \u03C0\u03AC\u03BD\u03C9\
+      \ \u03C3\u03C4\u03B7 \u03C1\u03BF\u03AE \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\
+      \u03BC\u03AD\u03BD\u03C9\u03BD bits, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\
+      \u03B5\u03B9 \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1\
+      \ \u03C3\u03C4\u03BF \u03B5\u03C0\u03B1\u03BD\u03B1\u03BB\u03B1\u03BC\u03B2\u03B1\
+      \u03BD\u03CC\u03BC\u03B5\u03BD\u03BF\n    \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\
+      \u03BF (preamble+\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1 \xABK510 PSK-QAM TEST\xBB\
+      , \u0399\u0394\u0399\u039F \u03BA\u03B5\u03AF\u03BC\u03B5\u03BD\u03BF \u03BC\
+      \u03B5 \u03C4\u03BF psk_tx.grc),\n    \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\u03AC\
+      \ \u03C3\u03C5\u03B3\u03BA\u03C1\u03AF\u03BD\u03B5\u03B9 \u039A\u0391\u0398\u0395\
+      \ \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF bit \u03BC\u03B5 \u03C4\u03BF \u03B1\
+      \u03BD\u03B1\u03BC\u03B5\u03BD\u03CC\u03BC\u03B5\u03BD\u03BF, \u03B4\u03B9\u03B1\
+      \u03C4\u03B7\u03C1\u03CE\u03BD\u03C4\u03B1\u03C2 \u03AD\u03BD\u03B1\n    \u03BA\
+      \u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\
+      \u03C5\u03C1\u03BF (sliding window) \u03C4\u03C9\u03BD \u03C4\u03B5\u03BB\u03B5\
+      \u03C5\u03C4\u03B1\u03AF\u03C9\u03BD 5000 bits \u2014 BER = \u03C0\u03BF\u03C3\
+      \u03BF\u03C3\u03C4\u03CC\n    \u03BB\u03B1\u03BD\u03B8\u03B1\u03C3\u03BC\u03AD\
+      \u03BD\u03C9\u03BD bits, SER = \u03C0\u03BF\u03C3\u03BF\u03C3\u03C4\u03CC \u03C3\
+      \u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\u03BD (\u03B6\u03B5\u03CD\u03B3\u03B7 2\
+      \ bits) \u03BC\u03B5 \u03C4\u03BF\u03C5\u03BB\u03AC\u03C7\u03B9\u03C3\u03C4\u03BF\
+      \u03BD \u03AD\u03BD\u03B1\n    \u03BB\u03AC\u03B8\u03BF\u03C2 bit. \u0388\u03BE\
+      \u03BF\u03B4\u03BF\u03B9: \u03B4\u03CD\u03BF \u03C3\u03C5\u03BD\u03B5\u03C7\u03AE\
+      \ \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03B1 float (BER, SER) \u2014 \u03B7\
+      \ \u03C4\u03C1\u03AD\u03C7\u03BF\u03C5\u03C3\u03B1 \u03C4\u03B9\u03BC\u03AE\
+      \ \u03C3\u03B5\n    \u03BA\u03AC\u03B8\u03B5 \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\
+      \ \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5, \u03B3\u03B9\u03B1 \u03B1\u03C0\
+      \u03B5\u03C5\u03B8\u03B5\u03AF\u03B1\u03C2 \u03C3\u03CD\u03BD\u03B4\u03B5\u03C3\
+      \u03B7 \u03C3\u03B5 QT GUI Number Sink.\n\n    \u03A4\u03C1\u03AD\u03C7\u03B5\
+      \u03B9 \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC BIT (\u03AD\u03C9\
+      \u03C2 ~100 kbps \u03B3\u03B9\u03B1 QPSK \u03C3\u03C4\u03B1 50 kbaud), \u03CC\
+      \u03C7\u03B9 \u03C3\u03C4\u03BF\u03BD\n    \u03C0\u03BB\u03AE\u03C1\u03B7 \u03C1\
+      \u03C5\u03B8\u03BC\u03CC \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\u03BB\
+      \u03B7\u03C8\u03AF\u03B1\u03C2 RF \u2014 \u03B3\u03B9' \u03B1\u03C5\u03C4\u03CC\
+      \ \u03AD\u03BD\u03B1 epy_block \u03B5\u03B4\u03CE \u03B4\u03B5\u03BD \u03BA\u03B9\
+      \u03BD\u03B4\u03C5\u03BD\u03B5\u03CD\u03B5\u03B9\n    \u03B1\u03C0\u03CC \u03C4\
+      \u03BF \u03C0\u03C1\u03CC\u03B2\u03BB\u03B7\u03BC\u03B1 \u03B1\u03BD\u03C4\u03B1\
+      \u03B3\u03C9\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD GIL/\u03C5\u03C0\u03BF\u03B4\
+      \u03BF\u03C7\u03AD\u03B1 \u03C5\u03BB\u03B9\u03BA\u03BF\u03CD (lab2 ook_tx.grc)\xB7\
+      \ \u03B7\n    \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\u03B9\u03BA\u03AE \u03BB\u03BF\
+      \u03B3\u03B9\u03BA\u03AE \u03B5\u03AF\u03BD\u03B1\u03B9 \u03B4\u03B9\u03B1\u03BD\
+      \u03C5\u03C3\u03BC\u03B1\u03C4\u03BF\u03C0\u03BF\u03B9\u03B7\u03BC\u03AD\u03BD\
+      \u03B7 (numpy, \u03CC\u03C7\u03B9 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2 Python\
+      \ \u03B1\u03BD\u03AC\n    bit) \u03CE\u03C3\u03C4\u03B5 \u03BD\u03B1 \u03AD\u03C7\
+      \u03B5\u03B9 \u03AC\u03BD\u03B5\u03C4\u03BF \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\
+      \u03C1\u03B9\u03BF \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03BF\
+      \u03CD \u03C7\u03C1\u03CC\u03BD\u03BF\u03C5 (~190x \u03B5\u03C0\u03B9\u03B2\u03B5\
+      \u03B2\u03B1\u03B9\u03CE\u03B8\u03B7\u03BA\u03B5).\n    \"\"\"\n\n    def __init__(self):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='\u039C\
+      \u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER',\n            in_sig=[np.uint8],\n\
+      \            out_sig=[np.float32, np.float32],\n        )\n        self._synced\
+      \ = False\n        self._history = np.zeros(0, dtype=np.int8)\n        self._frame_pos\
+      \ = 0\n        self._bits_since_check = 0\n        self.resync_count = 0\n \
+      \       self._bit_err_buf = np.zeros(WINDOW_BITS, dtype=np.uint8)\n        self._buf_ptr\
+      \ = 0\n        self._buf_filled = 0\n        self._bit_err_sum = 0\n       \
+      \ self._sym_err_buf = np.zeros(WINDOW_BITS // 2, dtype=np.uint8)\n        self._sym_ptr\
+      \ = 0\n        self._sym_filled = 0\n        self._sym_err_sum = 0\n       \
+      \ self._pending_bit = None\n        self.ber = 0.0\n        self.ser = 0.0\n\
+      \n    def _update_bit_window(self, err_batch):\n        n = len(err_batch)\n\
+      \        if n == 0:\n            return\n        buf = self._bit_err_buf\n \
+      \       L = len(buf)\n        if n >= L:\n            buf[:] = err_batch[-L:]\n\
+      \            self._bit_err_sum = int(buf.sum())\n            self._buf_ptr =\
+      \ 0\n            self._buf_filled = L\n            return\n        ptr = self._buf_ptr\n\
+      \        end = ptr + n\n        if end <= L:\n            old_sum = int(buf[ptr:end].sum())\n\
+      \            buf[ptr:end] = err_batch\n        else:\n            first = L\
+      \ - ptr\n            old_sum = int(buf[ptr:].sum()) + int(buf[:end - L].sum())\n\
+      \            buf[ptr:] = err_batch[:first]\n            buf[:end - L] = err_batch[first:]\n\
+      \        self._bit_err_sum += int(err_batch.sum()) - old_sum\n        self._buf_ptr\
+      \ = end % L\n        self._buf_filled = min(self._buf_filled + n, L)\n\n   \
+      \ def _update_sym_window(self, err_batch):\n        n = len(err_batch)\n   \
+      \     if n == 0:\n            return\n        buf = self._sym_err_buf\n    \
+      \    L = len(buf)\n        if n >= L:\n            buf[:] = err_batch[-L:]\n\
+      \            self._sym_err_sum = int(buf.sum())\n            self._sym_ptr =\
+      \ 0\n            self._sym_filled = L\n            return\n        ptr = self._sym_ptr\n\
+      \        end = ptr + n\n        if end <= L:\n            old_sum = int(buf[ptr:end].sum())\n\
+      \            buf[ptr:end] = err_batch\n        else:\n            first = L\
+      \ - ptr\n            old_sum = int(buf[ptr:].sum()) + int(buf[:end - L].sum())\n\
+      \            buf[ptr:] = err_batch[:first]\n            buf[:end - L] = err_batch[first:]\n\
+      \        self._sym_err_sum += int(err_batch.sum()) - old_sum\n        self._sym_ptr\
+      \ = end % L\n        self._sym_filled = min(self._sym_filled + n, L)\n\n   \
+      \ def _record_bits(self, err_batch):\n        self._update_bit_window(err_batch)\n\
+      \        if self._pending_bit is not None:\n            err_batch = np.concatenate([[self._pending_bit],\
+      \ err_batch])\n            self._pending_bit = None\n        if len(err_batch)\
+      \ % 2 == 1:\n            self._pending_bit = err_batch[-1]\n            err_batch\
+      \ = err_batch[:-1]\n        if len(err_batch) > 0:\n            sym_err = err_batch.reshape(-1,\
+      \ 2).any(axis=1).astype(np.uint8)\n            self._update_sym_window(sym_err)\n\
+      \n    def _correlate_best(self, probe):\n        \"\"\"\u0395\u03C0\u03B9\u03C3\
+      \u03C4\u03C1\u03AD\u03C6\u03B5\u03B9 (idx, \u03C4\u03B9\u03BC\u03AE \u03C3\u03C5\
+      \u03C3\u03C7\u03AD\u03C4\u03B9\u03C3\u03B7\u03C2) \u03C4\u03B7\u03C2 \u03BA\u03B1\
+      \u03BB\u03CD\u03C4\u03B5\u03C1\u03B7\u03C2 \u03B8\u03AD\u03C3\u03B7\u03C2 preamble\n\
+      \        \u03BC\u03AD\u03C3\u03B1 \u03C3\u03C4\u03BF probe, \u03AE (None, None)\
+      \ \u03B1\u03BD \u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9\
+      \ \u03B1\u03C1\u03BA\u03B5\u03C4\u03AC \u03BA\u03B1\u03BB\u03CC \u03C4\u03B1\
+      \u03AF\u03C1\u03B9\u03B1\u03C3\u03BC\u03B1.\"\"\"\n        if len(probe) < PREAMBLE_LEN:\n\
+      \            return None, None\n        pm1 = probe.astype(np.float32) * 2 -\
+      \ 1\n        corr = np.correlate(pm1, PREAMBLE_PM1, mode='valid')\n        idx\
+      \ = int(np.argmax(corr))\n        # \u0391\u03C0\u03B1\u03B9\u03C4\u03BF\u03CD\
+      \u03BC\u03B5 \u03C3\u03C7\u03B5\u03B4\u03CC\u03BD \u03A4\u0395\u039B\u0395\u0399\
+      \u039F \u03C4\u03B1\u03AF\u03C1\u03B9\u03B1\u03C3\u03BC\u03B1 (\u03AD\u03C9\u03C2\
+      \ 2 \u03BB\u03AC\u03B8\u03B7 bit \u03C3\u03C4\u03B1 128) \u2014 \u039F\u03A7\
+      \u0399 \u03AD\u03BD\u03B1\n        # \u03C7\u03B1\u03BB\u03B1\u03C1\u03CC 90%\
+      \ \u03BA\u03B1\u03C4\u03CE\u03C6\u03BB\u03B9. \u0392\u03C1\u03AD\u03B8\u03B7\
+      \u03BA\u03B5 \u03B5\u03BC\u03C0\u03B5\u03B9\u03C1\u03B9\u03BA\u03AC (\u03BA\u03BB\
+      \u03B5\u03B9\u03C3\u03C4\u03CC\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2, \u03C0\
+      \u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC\n        # \u03C0\u03B1\
+      \u03C1\u03B1\u03B3\u03CC\u03BC\u03B5\u03BD\u03BF flowgraph): \u03BA\u03B1\u03C4\
+      \u03AC \u03C4\u03B7 \u03BC\u03B5\u03C4\u03B1\u03B2\u03B1\u03C4\u03B9\u03BA\u03AE\
+      \ \u03C3\u03CD\u03B3\u03BA\u03BB\u03B9\u03C3\u03B7 \u03C4\u03BF\u03C5 Symbol\
+      \ Sync/\n        # Costas Loop, \u03B7 \u03B1\u03C0\u03BF\u03BA\u03C9\u03B4\u03B9\
+      \u03BA\u03BF\u03C0\u03BF\u03B9\u03B7\u03BC\u03AD\u03BD\u03B7 \u03C1\u03BF\u03AE\
+      \ bits \u03B5\u03AF\u03BD\u03B1\u03B9 \u03BF\u03C5\u03C3\u03B9\u03B1\u03C3\u03C4\
+      \u03B9\u03BA\u03AC \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2 \u03B3\u03B9\u03B1\
+      \n        # \u03BC\u03B5\u03C1\u03B9\u03BA\u03AD\u03C2 \u03B5\u03BA\u03B1\u03C4\
+      \u03BF\u03BD\u03C4\u03AC\u03B4\u03B5\u03C2 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\
+      \u03B1\xB7 \u03B5\u03BB\u03AD\u03B3\u03C7\u03BF\u03BD\u03C4\u03B1\u03C2 \u03A7\
+      \u0399\u039B\u0399\u0391\u0394\u0395\u03A3 \u03C5\u03C0\u03BF\u03C8\u03AE\u03C6\
+      \u03B9\u03B1 \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03B1 \u03C3\u03B5\n\
+      \        # \u03B1\u03C5\u03C4\u03CC \u03C4\u03BF \u03B4\u03B9\u03AC\u03C3\u03C4\
+      \u03B7\u03BC\u03B1, \u03AD\u03BD\u03B1 \u03BA\u03B1\u03C4\u03CE\u03C6\u03BB\u03B9\
+      \ 90% \u03AD\u03B2\u03C1\u03B9\u03C3\u03BA\u03B5 \u03BA\u03B1\u03C4\u03AC \u03BA\
+      \u03B1\u03B9\u03C1\u03BF\u03CD\u03C2 \u03A8\u0395\u03A5\u0394\u0395\u0399\u03A3\
+      \n        # \u03C3\u03C5\u03C3\u03C7\u03B5\u03C4\u03AF\u03C3\u03B5\u03B9\u03C2\
+      \ \u03C4\u03C5\u03C7\u03B1\u03AF\u03B1, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\
+      \u03BD\u03BF\u03BD\u03C4\u03B1\u03C2 \u03BC\u03CC\u03BD\u03B9\u03BC\u03B1 \u03C3\
+      \u03B5 \u03BB\u03AC\u03B8\u03BF\u03C2 \u03B8\u03AD\u03C3\u03B7.\n        if\
+      \ corr[idx] >= PREAMBLE_LEN - 4:\n            return idx, int(corr[idx])\n \
+      \       return None, None\n\n    def _frame_pos_for_next_bit(self, idx):\n \
+      \       \"\"\"idx = \u03B8\u03AD\u03C3\u03B7 \u03CC\u03C0\u03BF\u03C5 \u03BE\
+      \u03B5\u03BA\u03B9\u03BD\u03AC \u03C4\u03BF preamble \u03BC\u03AD\u03C3\u03B1\
+      \ \u03C3\u03C4\u03BF \u03A4\u03A1\u0395\u03A7\u039F\u039D self._history\n  \
+      \      (\u03AE\u03B4\u03B7 \u03B5\u03BD\u03B7\u03BC\u03B5\u03C1\u03C9\u03BC\u03AD\
+      \u03BD\u03BF \u03CE\u03C3\u03C4\u03B5 \u03BD\u03B1 \u03C0\u03B5\u03C1\u03B9\u03BB\
+      \u03B1\u03BC\u03B2\u03AC\u03BD\u03B5\u03B9 \u03C4\u03BF \u03C4\u03C1\u03AD\u03C7\
+      \u03BF\u03BD batch). \u0395\u03C0\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\u03B9\
+      \ \u03C4\u03B7\n        \u03B8\u03AD\u03C3\u03B7-\u03BC\u03AD\u03C3\u03B1-\u03C3\
+      \u03C4\u03BF-\u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\u03BF \u03C4\u03BF\u03C5 bit\
+      \ \u03C0\u03BF\u03C5 \u03B8\u03B1 \u03C6\u03C4\u03AC\u03C3\u03B5\u03B9 \u03C3\
+      \u03C4\u03B7\u03BD \u0391\u03A1\u03A7\u0397 \u03C4\u03B7\u03C2 \u03B5\u03C0\u03CC\
+      \u03BC\u03B5\u03BD\u03B7\u03C2\n        \u03BA\u03BB\u03AE\u03C3\u03B7\u03C2\
+      \ work().\"\"\"\n        return int((len(self._history) - idx) % FRAME_LEN)\n\
+      \n    def work(self, input_items, output_items):\n        x = input_items[0].astype(np.int8)\n\
+      \        ber_out = output_items[0]\n        ser_out = output_items[1]\n    \
+      \    n = len(x)\n        # \u03A4\u039F\u03A5\u039B\u0391\u03A7\u0399\u03A3\u03A4\
+      \u039F\u039D \u03BC\u03AF\u03B1 \u03C0\u03BB\u03AE\u03C1\u03B7 \u03C0\u03B5\u03C1\
+      \u03AF\u03BF\u03B4\u03BF \u03C0\u03BB\u03B1\u03B9\u03C3\u03AF\u03BF\u03C5 +\
+      \ \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF \u2014 \u03B1\u03BB\
+      \u03BB\u03B9\u03CE\u03C2 \u03C4\u03BF\n        # \u03BA\u03C5\u03BB\u03B9\u03CC\
+      \u03BC\u03B5\u03BD\u03BF \u03B9\u03C3\u03C4\u03BF\u03C1\u03B9\u03BA\u03CC \u03B4\
+      \u03B5\u03BD \u03B5\u03B3\u03B3\u03C5\u03AC\u03C4\u03B1\u03B9 \u03BD\u03B1 \u03C0\
+      \u03B5\u03C1\u03B9\u03AD\u03C7\u03B5\u03B9 \u039A\u0391\u039D\u0395\u039D\u0391\
+      \ \u03C0\u03BB\u03AE\u03C1\u03B5\u03C2 preamble\n        # (verified bug: \u03BC\
+      \u03B5 \u03BC\u03B9\u03BA\u03C1\u03CC\u03C4\u03B5\u03C1\u03BF \u03B9\u03C3\u03C4\
+      \u03BF\u03C1\u03B9\u03BA\u03CC, chunk_size >= \u03BC\u03B5\u03C1\u03B9\u03BA\
+      \u03AD\u03C2 \u03C7\u03B9\u03BB\u03B9\u03AC\u03B4\u03B5\u03C2\n        # bits\
+      \ \u03AD\u03BA\u03B1\u03BD\u03B5 \u03C4\u03B7\u03BD \u03B1\u03BD\u03B1\u03B6\
+      \u03AE\u03C4\u03B7\u03C3\u03B7 \u03BD\u03B1 \u03B1\u03C0\u03BF\u03C4\u03C5\u03B3\
+      \u03C7\u03AC\u03BD\u03B5\u03B9 \u03B5\u03BD\u03C4\u03B5\u03BB\u03CE\u03C2 \u2014\
+      \ \u03BA\u03B1\u03B9 \u03BF \u03C0\u03B5\u03C1\u03B9\u03BF\u03B4\u03B9\u03BA\
+      \u03CC\u03C2\n        # \u03AD\u03BB\u03B5\u03B3\u03C7\u03BF\u03C2 \u03B5\u03C0\
+      \u03B1\u03BB\u03AE\u03B8\u03B5\u03C5\u03C3\u03B7\u03C2 \u03C7\u03C1\u03B5\u03B9\
+      \u03AC\u03B6\u03B5\u03C4\u03B1\u03B9 \u03A4\u0397\u039D \u0399\u0394\u0399\u0391\
+      \ \u03B5\u03B3\u03B3\u03CD\u03B7\u03C3\u03B7, \u03B1\u03BB\u03BB\u03B9\u03CE\
+      \u03C2 \xAB\u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9\xBB\n    \
+      \    # \u03BC\u03B5 \u03B2\u03AC\u03C3\u03B7 \u03C8\u03B5\u03C5\u03B4\u03B5\u03AF\
+      \u03C2 \u03C3\u03C5\u03C3\u03C7\u03B5\u03C4\u03AF\u03C3\u03B5\u03B9\u03C2 \u03C0\
+      \u03AC\u03BD\u03C9 \u03C3\u03B5 \u03AD\u03BD\u03B1 \u03B9\u03C3\u03C4\u03BF\u03C1\
+      \u03B9\u03BA\u03CC \u03C7\u03C9\u03C1\u03AF\u03C2 \u03C0\u03BB\u03AE\u03C1\u03B5\
+      \u03C2\n        # preamble \u03BC\u03AD\u03C3\u03B1 \u03C4\u03BF\u03C5).\n \
+      \       HIST_LEN = FRAME_LEN + 64\n\n        if not self._synced:\n        \
+      \    # \u0391\u03BD\u03B1\u03B6\u03AE\u03C4\u03B7\u03C3\u03B7 \u03C3\u03C4\u03BF\
+      \ \u03A0\u039B\u0397\u03A1\u0395\u03A3 (\u03BC\u03B7 \u03C0\u03B5\u03C1\u03B9\
+      \u03BA\u03BF\u03BC\u03BC\u03AD\u03BD\u03BF) probe \u2014 \u03B1\u03BD \u03C0\
+      \u03B5\u03C1\u03B9\u03BA\u03CC\u03C0\u03C4\u03B1\u03C4\u03B5\n            #\
+      \ \u03A0\u03A1\u0399\u039D \u03C4\u03B7\u03BD \u03B1\u03BD\u03B1\u03B6\u03AE\
+      \u03C4\u03B7\u03C3\u03B7, \u03AD\u03BD\u03B1 \u03BC\u03B5\u03B3\u03AC\u03BB\u03BF\
+      \ \u03C0\u03C1\u03CE\u03C4\u03BF batch \u03B8\u03B1 \u03BC\u03C0\u03BF\u03C1\
+      \u03BF\u03CD\u03C3\u03B5 \u03BD\u03B1\n            # \xAB\u03C3\u03C0\u03C1\u03CE\
+      \u03BE\u03B5\u03B9 \u03AD\u03BE\u03C9\xBB \u03C4\u03BF \u03AF\u03B4\u03B9\u03BF\
+      \ \u03C4\u03BF preamble \u03C0\u03C1\u03B9\u03BD \u03C0\u03C1\u03BF\u03BB\u03AC\
+      \u03B2\u03B5\u03B9 \u03BD\u03B1 \u03B2\u03C1\u03B5\u03B8\u03B5\u03AF\n     \
+      \       # (verified bug: \u03BC\u03B5\u03B3\u03AC\u03BB\u03B1 batch \u03BC\u03B5\
+      \u03B3\u03AD\u03B8\u03B7 \u03B1\u03C0\u03AD\u03C4\u03C5\u03C7\u03B1\u03BD \u03B5\
+      \u03BD\u03C4\u03B5\u03BB\u03CE\u03C2 \u03BD\u03B1\n            # \u03C3\u03C5\
+      \u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03C4\u03BF\u03CD\u03BD).\n     \
+      \       probe = np.concatenate([self._history, x])\n            idx, corr_val\
+      \ = self._correlate_best(probe)\n            if idx is not None:\n         \
+      \       self._synced = True\n                base = len(probe) - n  # \u03B8\
+      \u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1 \u03C3\u03C4\u03BF probe \u03CC\u03C0\
+      \u03BF\u03C5 \u03BE\u03B5\u03BA\u03B9\u03BD\u03AC \u03C4\u03BF x\n         \
+      \       positions = (np.arange(n, dtype=np.int64) + base - idx) % FRAME_LEN\n\
+      \                expected = EXPECTED_FRAME_BITS[positions]\n               \
+      \ err_batch = (x != expected).astype(np.uint8)\n                self._record_bits(err_batch)\n\
+      \                self._frame_pos = (len(probe) - idx) % FRAME_LEN\n        \
+      \        self._bits_since_check = 0\n            self._history = probe[-HIST_LEN:]\n\
+      \        else:\n            self._history = np.concatenate([self._history, x])[-HIST_LEN:]\n\
+      \            idxs = (self._frame_pos + np.arange(n)) % FRAME_LEN\n         \
+      \   expected = EXPECTED_FRAME_BITS[idxs]\n            err_batch = (x != expected).astype(np.uint8)\n\
+      \            self._record_bits(err_batch)\n            self._frame_pos = (self._frame_pos\
+      \ + n) % FRAME_LEN\n            self._bits_since_check += n\n\n            #\
+      \ \u03A0\u03B5\u03C1\u03B9\u03BF\u03B4\u03B9\u03BA\u03AE \u03B5\u03C0\u03B1\u03BB\
+      \u03AE\u03B8\u03B5\u03C5\u03C3\u03B7/\u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\
+      \u03B7: \u03B1\u03BA\u03CC\u03BC\u03B7 \u03BA\u03B1\u03B9 \u03BC\u03B5 \u03BC\
+      \u03B7\u03B4\u03B5\u03BD\u03B9\u03BA\u03CC \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\
+      ,\n            # \u03B2\u03C1\u03AD\u03B8\u03B7\u03BA\u03B5 \u03B5\u03BC\u03C0\
+      \u03B5\u03B9\u03C1\u03B9\u03BA\u03AC \u03BC\u03B9\u03B1 \u03B1\u03C1\u03B3\u03AE\
+      , \u03B5\u03C0\u03AF\u03BC\u03BF\u03BD\u03B7 \u03BF\u03BB\u03AF\u03C3\u03B8\u03B7\
+      \u03C3\u03B7 \u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD \u03C3\u03C5\
+      \u03BC\u03B2\u03CC\u03BB\u03BF\u03C5\n            # (~1 \u03C3\u03CD\u03BC\u03B2\
+      \u03BF\u03BB\u03BF \u03B1\u03BD\u03AC ~1250 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\
+      \u03B1, \u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03B7 \u03B1\u03C0\
+      \u03CC \u03C4\u03BF loop bandwidth\n            # \u03C4\u03BF\u03C5 Symbol\
+      \ Sync \u2014 \u03C0\u03B9\u03B8\u03B1\u03BD\u03AE \u03BC\u03B5\u03C1\u03BF\u03BB\
+      \u03B7\u03C8\u03AF\u03B1 \u03C4\u03BF\u03C5 \u03AF\u03B4\u03B9\u03BF\u03C5 \u03C4\
+      \u03BF\u03C5 Mueller & Muller\n            # TED). \u03A3\u03B5 \u03C0\u03C1\
+      \u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03B1\u03C3\u03CD\u03C1\u03BC\
+      \u03B1\u03C4\u03BF \u03B6\u03B5\u03CD\u03B3\u03BF\u03C2 TX/RX \u03BC\u03B5 \u03B1\
+      \u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03BF\u03C5\u03C2\n       \
+      \     # \u03C4\u03B1\u03BB\u03B1\u03BD\u03C4\u03C9\u03C4\u03AD\u03C2 \u03B8\u03B1\
+      \ \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03BF\u03CD\u03C4\u03C9\u03C2\
+      \ \u03AE \u03AC\u03BB\u03BB\u03C9\u03C2 \u03BA\u03AC\u03C0\u03BF\u03B9\u03B1\
+      \ \u03B1\u03C0\u03CC\u03BA\u03BB\u03B9\u03C3\u03B7 \u03C1\u03BF\u03BB\u03BF\u03B3\
+      \u03B9\u03BF\u03CD \u2014\n            # \u03BF\u03C0\u03CC\u03C4\u03B5 \u03C4\
+      \u03BF \u03A3\u03A9\u03A3\u03A4\u039F, \u03B1\u03BD\u03B8\u03B5\u03BA\u03C4\u03B9\
+      \u03BA\u03CC \u03C3\u03C7\u03AD\u03B4\u03B9\u03BF \u03B5\u03AF\u03BD\u03B1\u03B9\
+      \ \u03BD\u03B1 \u03B5\u03C0\u03B1\u03BB\u03B7\u03B8\u03B5\u03CD\u03BF\u03C5\u03BC\
+      \u03B5 \u03A0\u0395\u03A1\u0399\u039F\u0394\u0399\u039A\u0391\n            #\
+      \ \u03C4\u03B7 \u03C3\u03C4\u03BF\u03AF\u03C7\u03B9\u03C3\u03B7 \u03B1\u03BD\
+      \u03C4\u03AF \u03BD\u03B1 \xAB\u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03BF\
+      \u03C5\u03BC\u03B5 \u03BC\u03AF\u03B1 \u03C6\u03BF\u03C1\u03AC \u03B3\u03B9\u03B1\
+      \ \u03C0\u03AC\u03BD\u03C4\u03B1\xBB.\n            if self._bits_since_check\
+      \ >= RECHECK_INTERVAL:\n                self._bits_since_check = 0\n       \
+      \         idx, corr_val = self._correlate_best(self._history)\n            \
+      \    if idx is not None:\n                    corrected = self._frame_pos_for_next_bit(idx)\n\
+      \                    if corrected != self._frame_pos:\n                    \
+      \    self.resync_count += 1\n                    self._frame_pos = corrected\n\
+      \n        if self._buf_filled > 0:\n            self.ber = self._bit_err_sum\
+      \ / float(self._buf_filled)\n        if self._sym_filled > 0:\n            self.ser\
+      \ = self._sym_err_sum / float(self._sym_filled)\n\n        ber_out[:] = self.ber\n\
+      \        ser_out[:] = self.ser\n        return n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: "('\u039C\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER', 'blk',\
+      \ [], [('0', 'byte', 1)], [('0', 'float', 1), ('1', 'float', 1)], \"\u039C\u03B5\
+      \u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER: \u03B5\u03BD\u03C4\u03BF\u03C0\
+      \u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF \u03B3\u03BD\u03C9\u03C3\u03C4\u03CC preamble\
+      \ (64 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1,\\n    fixed-seed=42 \u2014\
+      \ \u0399\u0394\u0399\u039F\u03A3 \u03C3\u03C0\u03CC\u03C1\u03BF\u03C2 \u03BC\
+      \u03B5 \u03C4\u03BF psk_tx.grc) \u03BC\u03AD\u03C3\u03C9 \u03C3\u03C5\u03C3\u03C7\
+      \u03AD\u03C4\u03B9\u03C3\u03B7\u03C2 (correlation)\\n    \u03C0\u03AC\u03BD\u03C9\
+      \ \u03C3\u03C4\u03B7 \u03C1\u03BF\u03AE \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\
+      \u03BC\u03AD\u03BD\u03C9\u03BD bits, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\
+      \u03B5\u03B9 \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1\
+      \ \u03C3\u03C4\u03BF \u03B5\u03C0\u03B1\u03BD\u03B1\u03BB\u03B1\u03BC\u03B2\u03B1\
+      \u03BD\u03CC\u03BC\u03B5\u03BD\u03BF\\n    \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\
+      \u03BF (preamble+\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1 \xABK510 PSK-QAM TEST\xBB\
+      , \u0399\u0394\u0399\u039F \u03BA\u03B5\u03AF\u03BC\u03B5\u03BD\u03BF \u03BC\
+      \u03B5 \u03C4\u03BF psk_tx.grc),\\n    \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\
+      \u03AC \u03C3\u03C5\u03B3\u03BA\u03C1\u03AF\u03BD\u03B5\u03B9 \u039A\u0391\u0398\
+      \u0395 \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF bit \u03BC\u03B5 \u03C4\u03BF\
+      \ \u03B1\u03BD\u03B1\u03BC\u03B5\u03BD\u03CC\u03BC\u03B5\u03BD\u03BF, \u03B4\
+      \u03B9\u03B1\u03C4\u03B7\u03C1\u03CE\u03BD\u03C4\u03B1\u03C2 \u03AD\u03BD\u03B1\
+      \\n    \u03BA\u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\
+      \u03AC\u03B8\u03C5\u03C1\u03BF (sliding window) \u03C4\u03C9\u03BD \u03C4\u03B5\
+      \u03BB\u03B5\u03C5\u03C4\u03B1\u03AF\u03C9\u03BD 5000 bits \u2014 BER = \u03C0\
+      \u03BF\u03C3\u03BF\u03C3\u03C4\u03CC\\n    \u03BB\u03B1\u03BD\u03B8\u03B1\u03C3\
+      \u03BC\u03AD\u03BD\u03C9\u03BD bits, SER = \u03C0\u03BF\u03C3\u03BF\u03C3\u03C4\
+      \u03CC \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\u03BD (\u03B6\u03B5\u03CD\u03B3\
+      \u03B7 2 bits) \u03BC\u03B5 \u03C4\u03BF\u03C5\u03BB\u03AC\u03C7\u03B9\u03C3\
+      \u03C4\u03BF\u03BD \u03AD\u03BD\u03B1\\n    \u03BB\u03AC\u03B8\u03BF\u03C2 bit.\
+      \ \u0388\u03BE\u03BF\u03B4\u03BF\u03B9: \u03B4\u03CD\u03BF \u03C3\u03C5\u03BD\
+      \u03B5\u03C7\u03AE \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03B1 float (BER, SER)\
+      \ \u2014 \u03B7 \u03C4\u03C1\u03AD\u03C7\u03BF\u03C5\u03C3\u03B1 \u03C4\u03B9\
+      \u03BC\u03AE \u03C3\u03B5\\n    \u03BA\u03AC\u03B8\u03B5 \u03B4\u03B5\u03AF\u03B3\
+      \u03BC\u03B1 \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5, \u03B3\u03B9\u03B1\
+      \ \u03B1\u03C0\u03B5\u03C5\u03B8\u03B5\u03AF\u03B1\u03C2 \u03C3\u03CD\u03BD\u03B4\
+      \u03B5\u03C3\u03B7 \u03C3\u03B5 QT GUI Number Sink.\\n\\n    \u03A4\u03C1\u03AD\
+      \u03C7\u03B5\u03B9 \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC BIT\
+      \ (\u03AD\u03C9\u03C2 ~100 kbps \u03B3\u03B9\u03B1 QPSK \u03C3\u03C4\u03B1 50\
+      \ kbaud), \u03CC\u03C7\u03B9 \u03C3\u03C4\u03BF\u03BD\\n    \u03C0\u03BB\u03AE\
+      \u03C1\u03B7 \u03C1\u03C5\u03B8\u03BC\u03CC \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\
+      \u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\u03B1\u03C2 RF \u2014 \u03B3\u03B9' \u03B1\
+      \u03C5\u03C4\u03CC \u03AD\u03BD\u03B1 epy_block \u03B5\u03B4\u03CE \u03B4\u03B5\
+      \u03BD \u03BA\u03B9\u03BD\u03B4\u03C5\u03BD\u03B5\u03CD\u03B5\u03B9\\n    \u03B1\
+      \u03C0\u03CC \u03C4\u03BF \u03C0\u03C1\u03CC\u03B2\u03BB\u03B7\u03BC\u03B1 \u03B1\
+      \u03BD\u03C4\u03B1\u03B3\u03C9\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD GIL/\u03C5\
+      \u03C0\u03BF\u03B4\u03BF\u03C7\u03AD\u03B1 \u03C5\u03BB\u03B9\u03BA\u03BF\u03CD\
+      \ (lab2 ook_tx.grc)\xB7 \u03B7\\n    \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\u03B9\
+      \u03BA\u03AE \u03BB\u03BF\u03B3\u03B9\u03BA\u03AE \u03B5\u03AF\u03BD\u03B1\u03B9\
+      \ \u03B4\u03B9\u03B1\u03BD\u03C5\u03C3\u03BC\u03B1\u03C4\u03BF\u03C0\u03BF\u03B9\
+      \u03B7\u03BC\u03AD\u03BD\u03B7 (numpy, \u03CC\u03C7\u03B9 \u03B2\u03C1\u03CC\
+      \u03C7\u03BF\u03C2 Python \u03B1\u03BD\u03AC\\n    bit) \u03CE\u03C3\u03C4\u03B5\
+      \ \u03BD\u03B1 \u03AD\u03C7\u03B5\u03B9 \u03AC\u03BD\u03B5\u03C4\u03BF \u03C0\
+      \u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF \u03C0\u03C1\u03B1\u03B3\u03BC\
+      \u03B1\u03C4\u03B9\u03BA\u03BF\u03CD \u03C7\u03C1\u03CC\u03BD\u03BF\u03C5 (~190x\
+      \ \u03B5\u03C0\u03B9\u03B2\u03B5\u03B2\u03B1\u03B9\u03CE\u03B8\u03B7\u03BA\u03B5\
+      ).\\n    \", [])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 660]
+    rotation: 0
+    state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ os\nimport csv\nimport datetime\n\n\nclass blk(gr.sync_block):\n    \"\"\"\
+      \u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\u03B7\u03BC\u03B5\
+      \u03AF\u03BF\u03C5 BER/SER \u03C3\u03B5 CSV, \u03BC\u03B5 \u03C4\u03BF \u03C0\
+      \u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5 QT GUI Message\n    Push Button\
+      \ \xAB\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\u03B7\u03BC\
+      \u03B5\u03AF\u03BF\u03C5\xBB. \u0394\u03B9\u03B1\u03B2\u03AC\u03B6\u03B5\u03B9\
+      \ \u03C4\u03B9\u03C2 \u03A4\u0395\u039B\u0395\u03A5\u03A4\u0391\u0399\u0395\u03A3\
+      \ \u03C4\u03B9\u03BC\u03AD\u03C2 BER/SER \u03B1\u03C0\u03CC\n    \u03C4\u03B1\
+      \ \u03B4\u03CD\u03BF \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03B1 \u03B5\u03B9\
+      \u03C3\u03CC\u03B4\u03BF\u03C5 (\u03C4\u03B1 \u03AF\u03B4\u03B9\u03B1 \u03C0\
+      \u03BF\u03C5 \u03C4\u03C1\u03BF\u03C6\u03BF\u03B4\u03BF\u03C4\u03BF\u03CD\u03BD\
+      \ \u03C4\u03B1 QT GUI Number Sinks) \u03BA\u03B1\u03B9\n    \u03C0\u03C1\u03BF\
+      \u03C3\u03B8\u03AD\u03C4\u03B5\u03B9 \u03BC\u03B9\u03B1 \u03B3\u03C1\u03B1\u03BC\
+      \u03BC\u03AE \u03C3\u03C4\u03BF student/results/psk_measurements.csv (\u03C3\
+      \u03C7\u03B5\u03C4\u03B9\u03BA\u03AC \u03BC\u03B5\n    \u03C4\u03B7 \u03B8\u03AD\
+      \u03C3\u03B7 \u03B1\u03C5\u03C4\u03BF\u03CD \u03C4\u03BF\u03C5 \u03B1\u03C1\u03C7\
+      \u03B5\u03AF\u03BF\u03C5, \u03B4\u03B7\u03BB. student/grc/../results/...). \u0394\
+      \u03B7\u03BC\u03B9\u03BF\u03C5\u03C1\u03B3\u03B5\u03AF \u03C4\u03BF\n    \u03B1\
+      \u03C1\u03C7\u03B5\u03AF\u03BF (\u03BC\u03B5 \u03B3\u03C1\u03B1\u03BC\u03BC\u03AE\
+      \ \u03B5\u03C0\u03B9\u03BA\u03B5\u03C6\u03B1\u03BB\u03AF\u03B4\u03B1\u03C2)\
+      \ \u03B1\u03BD \u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9\
+      \ \u03AE\u03B4\u03B7. \u0397 \u03B5\u03B3\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\
+      \u03C4\u03BF \u03B4\u03AF\u03C3\u03BA\u03BF\n    \u03B3\u03AF\u03BD\u03B5\u03C4\
+      \u03B1\u03B9 \u03BC\u03CC\u03BD\u03BF \u03BA\u03B1\u03C4\u03AC \u03C4\u03BF\
+      \ \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5 \u03BA\u03BF\u03C5\
+      \u03BC\u03C0\u03B9\u03BF\u03CD (\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1), \u03CC\
+      \u03C7\u03B9 \u03B1\u03BD\u03AC \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1 \u2014\
+      \ \u03BA\u03B1\u03BC\u03AF\u03B1\n    \u03B5\u03C0\u03AF\u03C0\u03C4\u03C9\u03C3\
+      \u03B7 \u03C3\u03C4\u03BF\u03BD \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\
+      \u03BA\u03CC \u03C7\u03C1\u03CC\u03BD\u03BF \u03C4\u03B7\u03C2 \u03C1\u03BF\u03AE\
+      \u03C2.\"\"\"\n\n    def __init__(self, symbol_rate=20000.0):\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\
+      \u03C6\u03AE CSV',\n            in_sig=[np.float32, np.float32],\n         \
+      \   out_sig=[],\n        )\n        self.symbol_rate = symbol_rate\n       \
+      \ self._last_ber = 0.0\n        self._last_ser = 0.0\n        self.message_port_register_in(pmt.intern('trigger'))\n\
+      \        self.set_msg_handler(pmt.intern('trigger'), self._on_trigger)\n   \
+      \     # \u03A3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03B4\u03C1\
+      \u03BF\u03BC\u03AE \u03C9\u03C2 \u03C0\u03C1\u03BF\u03C2 \u03C4\u03BF \u03A4\
+      \u03A1\u0395\u03A7\u039F\u039D WORKING DIRECTORY \u03BA\u03B1\u03C4\u03AC \u03C4\
+      \u03B7\u03BD \u03B5\u03BA\u03C4\u03AD\u03BB\u03B5\u03C3\u03B7\n        # (\u039F\
+      \u03A7\u0399 __file__ \u2014 \u03C4\u03BF GRC \u03B5\u03BA\u03C4\u03B5\u03BB\
+      \u03B5\u03AF exec() \u03C3\u03B5 \u03B1\u03C5\u03C4\u03CC\u03BD \u03C4\u03BF\
+      \u03BD \u03BA\u03CE\u03B4\u03B9\u03BA\u03B1 \u03A7\u03A9\u03A1\u0399\u03A3 __file__\n\
+      \        # \u03AE\u03B4\u03B7 \u03BA\u03B1\u03C4\u03AC \u03C4\u03B7 \u03C6\u03CC\
+      \u03C1\u03C4\u03C9\u03C3\u03B7/\u03AD\u03BB\u03B5\u03B3\u03C7\u03BF \u03C4\u03BF\
+      \u03C5 .grc, \u03C0\u03C1\u03B9\u03BD \u03BA\u03B1\u03BD \u03C4\u03C1\u03AD\u03BE\
+      \u03B5\u03B9 \u03C4\u03BF flowgraph, \u03BF\u03C0\u03CC\u03C4\u03B5\n      \
+      \  # \u03BC\u03B9\u03B1 \u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C3\u03B7 \u03B1\
+      \u03C0\u03CC __file__ \u03B5\u03B4\u03CE \u03B8\u03B1 \u03AD\u03C3\u03C0\u03B1\
+      \u03B3\u03B5 \u03C4\u03BF \u03AF\u03B4\u03B9\u03BF \u03C4\u03BF \u03AC\u03BD\
+      \u03BF\u03B9\u03B3\u03BC\u03B1 \u03C4\u03BF\u03C5 \u03B1\u03C1\u03C7\u03B5\u03AF\
+      \u03BF\u03C5).\n        # \u03A4\u03C1\u03AD\u03BE\u03C4\u03B5 \u03C4\u03BF\
+      \ flowgraph \u03B1\u03C0\u03CC \u03C4\u03BF\u03BD \u03C6\u03AC\u03BA\u03B5\u03BB\
+      \u03BF student/grc/, \u03CC\u03C0\u03C9\u03C2 \u03BA\u03B1\u03B9 \u03C4\u03B1\
+      \ \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03B1\n        # \u03B5\u03C1\u03B3\
+      \u03B1\u03C3\u03C4\u03AE\u03C1\u03B9\u03B1, \u03CE\u03C3\u03C4\u03B5 \u03B7\
+      \ \u03C3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03B4\u03C1\u03BF\
+      \u03BC\u03AE \u03BD\u03B1 \u03B5\u03C0\u03B9\u03BB\u03CD\u03B5\u03C4\u03B1\u03B9\
+      \ \u03C3\u03C9\u03C3\u03C4\u03AC.\n        self._csv_path = os.path.join('..',\
+      \ 'results', 'psk_measurements.csv')\n\n    def _on_trigger(self, msg):\n  \
+      \      new_file = not os.path.exists(self._csv_path)\n        os.makedirs(os.path.dirname(self._csv_path),\
+      \ exist_ok=True)\n        with open(self._csv_path, 'a', newline='') as f:\n\
+      \            writer = csv.writer(f)\n            if new_file:\n            \
+      \    writer.writerow(['timestamp', 'scheme', 'symbol_rate', 'ber', 'ser'])\n\
+      \            writer.writerow([\n                datetime.datetime.now().isoformat(timespec='seconds'),\n\
+      \                'QPSK',\n                f'{self.symbol_rate:.0f}',\n     \
+      \           f'{self._last_ber:.6f}',\n                f'{self._last_ser:.6f}',\n\
+      \            ])\n\n    def work(self, input_items, output_items):\n        ber\
+      \ = input_items[0]\n        ser = input_items[1]\n        if len(ber):\n   \
+      \         self._last_ber = float(ber[-1])\n        if len(ser):\n          \
+      \  self._last_ser = float(ser[-1])\n        return len(ber)\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    symbol_rate: symbol_rate
+  states:
+    _io_cache: "('\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE CSV', 'blk',\
+      \ [('symbol_rate', '20000.0')], [('0', 'float', 1), ('1', 'float', 1), ('trigger',\
+      \ 'message', 1)], [], '\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE\
+      \ \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\u03C5 BER/SER \u03C3\u03B5 CSV, \u03BC\
+      \u03B5 \u03C4\u03BF \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5\
+      \ QT GUI Message\\n    Push Button \xAB\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\
+      \u03C6\u03AE \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\u03C5\xBB. \u0394\u03B9\u03B1\
+      \u03B2\u03AC\u03B6\u03B5\u03B9 \u03C4\u03B9\u03C2 \u03A4\u0395\u039B\u0395\u03A5\
+      \u03A4\u0391\u0399\u0395\u03A3 \u03C4\u03B9\u03BC\u03AD\u03C2 BER/SER \u03B1\
+      \u03C0\u03CC\\n    \u03C4\u03B1 \u03B4\u03CD\u03BF \u03C1\u03B5\u03CD\u03BC\u03B1\
+      \u03C4\u03B1 \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5 (\u03C4\u03B1 \u03AF\
+      \u03B4\u03B9\u03B1 \u03C0\u03BF\u03C5 \u03C4\u03C1\u03BF\u03C6\u03BF\u03B4\u03BF\
+      \u03C4\u03BF\u03CD\u03BD \u03C4\u03B1 QT GUI Number Sinks) \u03BA\u03B1\u03B9\
+      \\n    \u03C0\u03C1\u03BF\u03C3\u03B8\u03AD\u03C4\u03B5\u03B9 \u03BC\u03B9\u03B1\
+      \ \u03B3\u03C1\u03B1\u03BC\u03BC\u03AE \u03C3\u03C4\u03BF student/results/psk_measurements.csv\
+      \ (\u03C3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AC \u03BC\u03B5\\n    \u03C4\u03B7\
+      \ \u03B8\u03AD\u03C3\u03B7 \u03B1\u03C5\u03C4\u03BF\u03CD \u03C4\u03BF\u03C5\
+      \ \u03B1\u03C1\u03C7\u03B5\u03AF\u03BF\u03C5, \u03B4\u03B7\u03BB. student/grc/../results/...).\
+      \ \u0394\u03B7\u03BC\u03B9\u03BF\u03C5\u03C1\u03B3\u03B5\u03AF \u03C4\u03BF\\\
+      n    \u03B1\u03C1\u03C7\u03B5\u03AF\u03BF (\u03BC\u03B5 \u03B3\u03C1\u03B1\u03BC\
+      \u03BC\u03AE \u03B5\u03C0\u03B9\u03BA\u03B5\u03C6\u03B1\u03BB\u03AF\u03B4\u03B1\
+      \u03C2) \u03B1\u03BD \u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\
+      \u03B9 \u03AE\u03B4\u03B7. \u0397 \u03B5\u03B3\u03B3\u03C1\u03B1\u03C6\u03AE\
+      \ \u03C3\u03C4\u03BF \u03B4\u03AF\u03C3\u03BA\u03BF\\n    \u03B3\u03AF\u03BD\
+      \u03B5\u03C4\u03B1\u03B9 \u03BC\u03CC\u03BD\u03BF \u03BA\u03B1\u03C4\u03AC \u03C4\
+      \u03BF \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5 \u03BA\u03BF\u03C5\
+      \u03BC\u03C0\u03B9\u03BF\u03CD (\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1), \u03CC\
+      \u03C7\u03B9 \u03B1\u03BD\u03AC \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1 \u2014\
+      \ \u03BA\u03B1\u03BC\u03AF\u03B1\\n    \u03B5\u03C0\u03AF\u03C0\u03C4\u03C9\u03C3\
+      \u03B7 \u03C3\u03C4\u03BF\u03BD \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\
+      \u03BA\u03CC \u03C7\u03C1\u03CC\u03BD\u03BF \u03C4\u03B7\u03C2 \u03C1\u03BF\u03AE\
+      \u03C2.', ['symbol_rate'])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1500, 780]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: "import numpy as np\nfrom math import pi\nfrom cmath import exp\nfrom\
+      \ gnuradio import digital\nfrom gnuradio.digital.utils import gray_code\n\n\
+      # --- \u03A0\u03A1\u0395\u03A0\u0395\u0399 \u03BD\u03B1 \u03C4\u03B1\u03B9\u03C1\
+      \u03B9\u03AC\u03B6\u03BF\u03C5\u03BD \u03B1\u03BA\u03C1\u03B9\u03B2\u03CE\u03C2\
+      \ \u03BC\u03B5 \u03C4\u03B1 \u03AF\u03B4\u03B9\u03B1 \u03C3\u03CD\u03BC\u03B2\
+      \u03BF\u03BB\u03B1 \u03C3\u03C4\u03BF psk_tx.grc ---\nQPSK_POINTS = [complex(exp(2\
+      \ * pi * (0 + 1j) * i / 4)) for i in range(4)]\nQPSK_GRAY_MAP = list(gray_code.gray_code(4))\n\
+      INV_GRAY_MAP = [0] * 4\nfor _i, _g in enumerate(QPSK_GRAY_MAP):\n    INV_GRAY_MAP[_g]\
+      \ = _i\n\n# \u0391\u03BD\u03C4\u03B9\u03BA\u03B5\u03AF\u03BC\u03B5\u03BD\u03BF\
+      \ \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03CD (\u03AF\u03B4\
+      \u03B9\u03B1 \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1/\u03B5\u03C5\u03C1\u03B5\u03C4\
+      \u03AE\u03C1\u03B9\u03BF \u03BC\u03B5 \u03C4\u03BF\u03BD \u03C0\u03BF\u03BC\u03C0\
+      \u03CC \u2014 \u03B1\u03C0\u03BB\u03AE/\u03BC\u03B7\n# \u03B1\u03BD\u03B1\u03B4\
+      \u03B9\u03B1\u03C4\u03B1\u03B3\u03BC\u03AD\u03BD\u03B7 \u03B1\u03BD\u03C4\u03B9\
+      \u03C3\u03C4\u03BF\u03AF\u03C7\u03B9\u03C3\u03B7, \u03AF\u03B4\u03B9\u03B1 \u03BB\
+      \u03BF\u03B3\u03B9\u03BA\u03AE \u03BC\u03B5 \u03C4\u03BF QPSK_POINTS/GRAY_MAP\
+      \ \u03B5\u03B4\u03CE)\xB7\n# \u03C7\u03C1\u03B7\u03C3\u03B9\u03BC\u03BF\u03C0\
+      \u03BF\u03B9\u03B5\u03AF\u03C4\u03B1\u03B9 \u039A\u0391\u0399 \u03B1\u03C0\u03CC\
+      \ \u03C4\u03BF\u03BD Symbol Sync (decision-directed TED) \u039A\u0391\u0399\
+      \ \u03B1\u03C0\u03CC \u03C4\u03BF\u03BD\n# Constellation Decoder, \u03CE\u03C3\
+      \u03C4\u03B5 \u03BA\u03B1\u03B9 \u03BF\u03B9 \u03B4\u03CD\u03BF \u03BD\u03B1\
+      \ \xAB\u03B2\u03BB\u03AD\u03C0\u03BF\u03C5\u03BD\xBB \u03B1\u03BA\u03C1\u03B9\
+      \u03B2\u03CE\u03C2 \u03C4\u03B1 \u03AF\u03B4\u03B9\u03B1 \u03C3\u03B7\u03BC\u03B5\
+      \u03AF\u03B1.\nQPSK_CONSTELLATION = digital.constellation_calcdist(\n    QPSK_POINTS,\
+      \ list(range(4)), 4, 1).base()\n\n# \u03A3\u03C4\u03B1\u03B8\u03B5\u03C1\u03AE\
+      \ \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03BF\u03C6\u03AE +45\xB0 \u03BC\
+      \u03B5\u03C4\u03AC \u03C4\u03BF\u03BD \u03B2\u03C1\u03CC\u03C7\u03BF Costas:\
+      \ \u03BF 4\u03B7\u03C2 \u03C4\u03AC\u03BE\u03B7\u03C2 Costas Loop \u03C4\u03BF\
+      \u03C5\n# GNU Radio \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03B5\u03B9 \u03C3\
+      \u03B5 \u03B1\u03BD\u03B1\u03C6\u03BF\u03C1\u03AC \xAB\u03B4\u03B9\u03B1\u03B3\
+      \u03CE\u03BD\u03B9\u03BF\u03C5\xBB QPSK (\u03C3\u03B7\u03BC\u03B5\u03AF\u03B1\
+      \ \u03C3\u03C4\u03B9\u03C2 \xB145\xB0/\xB1135\xB0),\n# \u039F\u03A7\u0399 \u03C3\
+      \u03C4\u03B7\u03BD \u03B1\u03C0\u03CC\u03BB\u03C5\u03C4\u03B7 \u03B5\u03C5\u03B8\
+      \u03C5\u03B3\u03C1\u03AC\u03BC\u03BC\u03B9\u03C3\u03B7 \u03B1\u03BE\u03CC\u03BD\
+      \u03C9\u03BD (0\xB0/90\xB0/180\xB0/270\xB0) \u03C0\u03BF\u03C5 \u03C7\u03C1\u03B7\
+      \u03C3\u03B9\u03BC\u03BF\u03C0\u03BF\u03B9\u03B5\u03AF \u03C4\u03BF\n# QPSK_POINTS\
+      \ \u03B5\u03B4\u03CE \u2014 \u03B5\u03C0\u03B9\u03B2\u03B5\u03B2\u03B1\u03B9\
+      \u03CE\u03B8\u03B7\u03BA\u03B5 \u03B5\u03BC\u03C0\u03B5\u03B9\u03C1\u03B9\u03BA\
+      \u03AC (\u03BA\u03BB\u03B5\u03B9\u03C3\u03C4\u03CC\u03C2 \u03B2\u03C1\u03CC\u03C7\
+      \u03BF\u03C2, \u03BC\u03B7\u03B4\u03B5\u03BD\u03B9\u03BA\u03CC BER\n# \u03BC\
+      \u03CC\u03BD\u03BF \u03BC\u03B5 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03BF\
+      \u03C6\u03AE \xB145\xB0/\xB1135\xB0). \u0397 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\
+      \u03C1\u03BF\u03C6\u03AE \u03B5\u03AF\u03BD\u03B1\u03B9 \u03A3\u03A4\u0391\u0398\
+      \u0395\u03A1\u0397 (\u03BA\u03B1\u03B8\u03B1\u03C1\u03AC \u03C3\u03CD\u03BC\u03B2\
+      \u03B1\u03C3\u03B7),\n# \u03CC\u03C7\u03B9 \u03BC\u03AD\u03C1\u03BF\u03C2 \u03BF\
+      \u03C0\u03BF\u03B9\u03B1\u03C3\u03B4\u03AE\u03C0\u03BF\u03C4\u03B5 \u03B1\u03C3\
+      \u03AC\u03C6\u03B5\u03B9\u03B1\u03C2 \u03C6\u03AC\u03C3\u03B7\u03C2\xB7 \u03B7\
+      \ \u03B1\u03C3\u03AC\u03C6\u03B5\u03B9\u03B1 \u039D \u03C6\u03AC\u03C3\u03B5\
+      \u03C9\u03BD (\u03B5\u03B4\u03CE 4-\u03C0\u03BB\u03AE) \u03C0\u03BF\u03C5\n\
+      # \u03A0\u0391\u03A1\u0391\u039C\u0395\u039D\u0395\u0399 \u03BC\u03B5\u03C4\u03AC\
+      \ \u03C4\u03BF \u03BA\u03BB\u03B5\u03AF\u03B4\u03C9\u03BC\u03B1 Costas \u03B5\
+      \u03C0\u03B9\u03BB\u03CD\u03B5\u03C4\u03B1\u03B9 \u03BE\u03B5\u03C7\u03C9\u03C1\
+      \u03B9\u03C3\u03C4\u03AC \u03B1\u03C0\u03CC \u03C4\u03B7 \u03B4\u03B9\u03B1\u03C6\
+      \u03BF\u03C1\u03B9\u03BA\u03AE\n# \u03B1\u03C0\u03BF\u03BA\u03C9\u03B4\u03B9\
+      \u03BA\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\u03B7 (Diff Decoder) \u03C0\u03B1\
+      \u03C1\u03B1\u03BA\u03AC\u03C4\u03C9 \u03C3\u03C4\u03B7\u03BD \u03B1\u03BB\u03C5\
+      \u03C3\u03AF\u03B4\u03B1.\nDEROTATE = complex(np.cos(np.pi / 4), np.sin(np.pi\
+      \ / 4))\n"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 60]
+    rotation: 0
+    state: enabled
+- name: log_point_button
+  id: variable_qtgui_msg_push_button
+  parameters:
+    comment: ''
+    gui_hint: 3,0,1,2
+    label: "\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\u03B7\u03BC\
+      \u03B5\u03AF\u03BF\u03C5"
+    msgName: pressed
+    relBackgroundColor: default
+    relFontColor: default
+    type: int
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1500, 660]
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: "\u03A6\u03AF\u03BB\u03C4\u03C1\u03BF \u03B5\u03C0\u03B9\u03BB\u03BF\u03B3\
+      \u03AE\u03C2 \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD + \u03B4\u03B5\
+      \u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C3\u03C4\u03BF\u03BD \u03C1\
+      \u03C5\u03B8\u03BC\u03CC quad_rate. \u03A4\u03BF cutoff \u03AD\u03C7\u03B5\u03B9\
+      \ +10 kHz \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF \u03CE\u03C3\
+      \u03C4\u03B5 \u03C4\u03BF \u03C3\u03AE\u03BC\u03B1 \u03BD\u03B1 \u03C0\u03B5\
+      \u03C1\u03BD\u03AC \u039A\u0391\u0399 \u03BC\u03B5 \u03C3\u03C6\u03AC\u03BB\u03BC\
+      \u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03BA\u03C1\
+      \u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD \xB110 kHz (\u03C4\u03BF \u03B4\
+      \u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9 \u03BC\u03B5\u03C4\u03AC \u03C4\
+      \u03BF FLL Band-Edge). width \u03A3\u03A4\u0391\u0398\u0395\u03A1\u039F (\u03CC\
+      \u03C7\u03B9 \u03B4\u03B5\u03BC\u03AD\u03BD\u03BF \u03BC\u03B5 symbol_rate)\
+      \ \u03B3\u03B9\u03B1 \u03C4\u03BF\u03BD \u03AF\u03B4\u03B9\u03BF \u03BB\u03CC\
+      \u03B3\u03BF \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03BF\u03CD\
+      \ \u03C7\u03C1\u03CC\u03BD\u03BF\u03C5 \u03BC\u03B5 \u03C4\u03B1 \u03C6\u03AF\
+      \u03BB\u03C4\u03C1\u03B1 \u03C4\u03BF\u03C5 Lab 2."
+    cutoff_freq: symbol_rate*(1+excess_bw)/2 + 10e3
+    decim: channel_decim
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: rtl_samp_rate
+    type: fir_filter_ccf
+    width: '5000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 384.0]
+    rotation: 0
+    state: enabled
+- name: note_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: "\u03A1\u03A5\u0398\u039C\u039F\u03A3 \u03A3\u03A5\u039C\u0392\u039F\u039B\
+      \u039F\u03A5: \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1 \u03C4\u03B1\
+      \u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u0391\u039A\u03A1\u0399\u0392\u03A9\
+      \u03A3 \u03BC\u03B5 \u03C4\u03BF psk_tx.grc \u2014 \u03B1\u03BD \u03B1\u03BB\
+      \u03BB\u03AC\u03BE\u03B5\u03C4\u03B5 \u03C4\u03BF\u03BD \xAB\u03A1\u03C5\u03B8\
+      \u03BC\u03CC \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5\xBB \u03B6\u03C9\
+      \u03BD\u03C4\u03B1\u03BD\u03AC, \u03C4\u03BF \u03A6\u0399\u039B\u03A4\u03A1\u039F\
+      \ \u039A\u0391\u039D\u0391\u039B\u0399\u039F\u03A5 (\u03B4\u03B5\u03BA\u03B1\
+      \u03C4\u03B9\u03C3\u03BC\u03CC\u03C2) \u0394\u0395\u039D \u03B5\u03BD\u03B7\u03BC\
+      \u03B5\u03C1\u03CE\u03BD\u03B5\u03C4\u03B1\u03B9 \u03BC\u03AD\u03C7\u03C1\u03B9\
+      \ Kill+Run (\u03C4\u03BF decim \u03B5\u03BD\u03CC\u03C2 \u03C6\u03AF\u03BB\u03C4\
+      \u03C1\u03BF\u03C5 \u03B5\u03AF\u03BD\u03B1\u03B9 \u03BA\u03B1\u03C4\u03B1\u03C3\
+      \u03BA\u03B5\u03C5\u03B1\u03C3\u03C4\u03B9\u03BA\u03AE \u03C0\u03B1\u03C1\u03AC\
+      \u03BC\u03B5\u03C4\u03C1\u03BF\u03C2). \u039F Symbol Sync \u03B5\u03BD\u03B7\
+      \u03BC\u03B5\u03C1\u03CE\u03BD\u03B5\u03B9 \u03C4\u03BF sps \u03B6\u03C9\u03BD\
+      \u03C4\u03B1\u03BD\u03AC, \u03B1\u03BB\u03BB\u03AC \u03B8\u03B1 \xAB\u03C0\u03B1\
+      \u03BB\u03B5\u03CD\u03B5\u03B9\xBB \u03BC\u03B5 \u03AD\u03BD\u03B1\u03BD \u03BC\
+      \u03C0\u03B1\u03B3\u03B9\u03AC\u03C4\u03B9\u03BA\u03BF \u03BB\u03CC\u03B3\u03BF\
+      \ \u03B4\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03BF\u03CD \u03BC\u03AD\u03C7\
+      \u03C1\u03B9 \u03BD\u03B1 \u03BA\u03AC\u03BD\u03B5\u03C4\u03B5 Kill+Run.\n\n\
+      \u03A3\u0397\u039C\u0395\u0399\u03A9\u03A3\u0397 \u0391\u03A1\u03A7\u0399\u03A4\
+      \u0395\u039A\u03A4\u039F\u039D\u0399\u039A\u0397\u03A3: \u03B1\u03BD\u03C4\u03AF\
+      \ \u03B3\u03B9\u03B1 \u03C4\u03BF hier block digital_psk_demod (\u03B1\u03B4\
+      \u03B9\u03B1\u03C6\u03B1\u03BD\u03AD\u03C2, \u03C7\u03C9\u03C1\u03AF\u03C2 \u03C0\
+      \u03C1\u03BF\u03C3\u03B2\u03AC\u03C3\u03B9\u03BC\u03BF \u03B5\u03BD\u03B4\u03B9\
+      \u03AC\u03BC\u03B5\u03C3\u03BF \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF \xAB\u03C0\
+      \u03C1\u03B9\u03BD/\u03BC\u03B5\u03C4\u03AC\xBB \u03C4\u03B7 \u03B4\u03B9\u03CC\
+      \u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\u03AC\u03C3\u03B7\u03C2 \u2014 \u03C4\u03BF\
+      \ \u03AF\u03B4\u03B9\u03BF \u03C0\u03C1\u03CC\u03B2\u03BB\u03B7\u03BC\u03B1\
+      \ \u03BC\u03B5 \u03C4\u03BF digital_psk_mod \u03C3\u03C4\u03BF psk_tx.grc),\
+      \ \u03B7 \u03B1\u03C0\u03BF\u03B4\u03B9\u03B1\u03BC\u03CC\u03C1\u03C6\u03C9\u03C3\
+      \u03B7 \u03C7\u03C4\u03AF\u03B6\u03B5\u03C4\u03B1\u03B9 \u03B5\u03B4\u03CE \u03C7\
+      \u03B5\u03B9\u03C1\u03BF\u03BA\u03AF\u03BD\u03B7\u03C4\u03B1: AGC -> FLL Band-Edge\
+      \ (\u03A7\u039F\u039D\u0394\u03A1\u0399\u039A\u0397 \u03B4\u03B9\u03CC\u03C1\
+      \u03B8\u03C9\u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 \u2014 \u03B1\u03C0\u03B1\
+      \u03C1\u03B1\u03AF\u03C4\u03B7\u03C4\u03B7 \u03C3\u03B5 \u03C0\u03C1\u03B1\u03B3\
+      \u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03B6\u03B5\u03CD\u03B3\u03BF\u03C2 TX/RX:\
+      \ \u03BF\u03B9 \u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03BF\u03B9\
+      \ \u03BA\u03C1\u03CD\u03C3\u03C4\u03B1\u03BB\u03BB\u03BF\u03B9 HackRF/RTL-SDR\
+      \ \u03B4\u03AF\u03BD\u03BF\u03C5\u03BD offset \u03B1\u03C1\u03BA\u03B5\u03C4\
+      \u03CE\u03BD kHz \u03C3\u03C4\u03B1 434 MHz, \u03C0\u03BF\u03BB\u03CD \u03AD\
+      \u03BE\u03C9 \u03B1\u03C0\u03CC \u03C4\u03B7\u03BD \u03C0\u03B5\u03C1\u03B9\u03BF\
+      \u03C7\u03AE \u03AD\u03BB\u03BE\u03B7\u03C2 \u03C4\u03BF\u03C5 Costas) -> Matched\
+      \ RRC -> Symbol Sync (Gardner \u2014 \u0391\u039D\u0395\u039E\u0391\u03A1\u03A4\
+      \u0397\u03A4\u039F\u03A3 \u03B1\u03C0\u03CC \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\
+      \u03C1\u03BF\u03C6\u03AE \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\
+      \u03CD, \u03C1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03BF\u03C5) -> [\u03A0\u03A1\u0399\u039D] -> Costas Loop (\u03C4\u03AC\u03BE\
+      \u03B7 4, \u039B\u0395\u03A0\u03A4\u0397 \u03C6\u03AC\u03C3\u03B7 \u03C6\u03AD\
+      \u03C1\u03BF\u03BD\u03C4\u03BF\u03C2) -> \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\
+      \u03C1\u03BF\u03C6\u03AE +45\xB0 -> [\u039C\u0395\u03A4\u0391] -> Constellation\
+      \ Decoder -> Diff Decoder -> \u03B1\u03BD\u03C4\u03AF\u03C3\u03C4\u03C1\u03BF\
+      \u03C6\u03B7 Gray -> Unpack."
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 300]
+    rotation: 0
+    state: enabled
+- name: qtgui_const_sink_x_after
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u039C\u0395\
+      \u03A4\u0391 \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 Costas\
+      \ \u2014 \u03BA\u03BB\u03B5\u03B9\u03B4\u03C9\u03BC\u03AD\u03BD\u03BF\u03C2\
+      \ \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2"
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@2
+    label1: "\u03BC\u03B5\u03C4\u03AC"
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: "\"\u03BC\u03B5\u03C4\u03AC\""
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '1.5'
+    xmin: '-1.5'
+    ymax: '1.5'
+    ymin: '-1.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [960, 980]
+    rotation: 0
+    state: enabled
+- name: qtgui_const_sink_x_before
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03A0\u03A1\
+      \u0399\u039D \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 Costas\
+      \ \u2014 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03B5\u03C6\u03CC\u03BC\u03B5\
+      \u03BD\u03BF \u03BD\u03AD\u03C6\u03BF\u03C2 \u03BB\u03CC\u03B3\u03C9 \u03BC\u03B7\
+      \ \u03B4\u03B9\u03BF\u03C1\u03B8\u03C9\u03BC\u03AD\u03BD\u03B7\u03C2 \u03C6\u03AC\
+      \u03C3\u03B7\u03C2/\u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2\
+      \ \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (\u03C4\u03BF \xAB\u03C0\u03C1\
+      \u03CC\u03B2\u03BB\u03B7\u03BC\u03B1\xBB)"
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@1
+    label1: "\u03C0\u03C1\u03B9\u03BD"
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: "\"\u03C0\u03C1\u03B9\u03BD\""
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '1.5'
+    xmin: '-1.5'
+    ymax: '1.5'
+    ymin: '-1.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [960, 900]
+    rotation: 0
+    state: enabled
+- name: qtgui_const_sink_x_live
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "\u0396\u03C9\u03BD\u03C4\u03B1\u03BD\u03CC\u03C2 \u03B1\u03C3\u03C4\u03B5\
+      \u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 (\u03BC\u03B5\u03C4\u03AC \u03C4\u03B7\
+      \ \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7) \u2014 \u03C0\u03B1\u03C1\
+      \u03B1\u03BA\u03BF\u03BB\u03BF\u03C5\u03B8\u03AE\u03C3\u03C4\u03B5 \u03C4\u03BF\
+      \ \u03B5\u03BD\u03CE \u03BC\u03B5\u03C4\u03B1\u03B2\u03AC\u03BB\u03BB\u03B5\u03C4\
+      \u03B5 \u03C4\u03BF \u03BA\u03AD\u03C1\u03B4\u03BF\u03C2 \u03C4\u03BF\u03C5\
+      \ \u03C0\u03BF\u03BC\u03C0\u03BF\u03CD"
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@3
+    label1: live
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: '"live"'
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '1.5'
+    xmin: '-1.5'
+    ymax: '1.5'
+    ymin: '-1.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [960, 1060]
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '0.2'
+    axislabels: 'True'
+    bw: quad_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "\u03A6\u03AC\u03C3\u03BC\u03B1 \u03B2\u03B1\u03C3\u03B9\u03BA\u03AE\u03C2\
+      \ \u03B6\u03CE\u03BD\u03B7\u03C2 \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF \u03C6\
+      \u03AF\u03BB\u03C4\u03C1\u03BF \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD\
+      /AGC"
+    ctrlpanel: 'True'
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: qtgui_tab_widget_0@0
+    label: Relative Gain
+    label1: "\u03C0\u03C1\u03B9\u03BD FLL"
+    label10: ''''''
+    label2: "\u03BC\u03B5\u03C4\u03AC FLL"
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"RX Spectrum"'
+    nconnections: '2'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 900]
+    rotation: 0
+    state: enabled
+- name: qtgui_number_sink_0
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: 2,0,1,2
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '0.5'
+    min: '0'
+    name: "\"BER (\u03BC\u03B5\u03C4\u03C1\u03B7\u03BC\u03AD\u03BD\u03BF)\""
+    nconnections: '1'
+    type: float
+    unit1: '""'
+    unit10: '""'
+    unit2: '""'
+    unit3: '""'
+    unit4: '""'
+    unit5: '""'
+    unit6: '""'
+    unit7: '""'
+    unit8: '""'
+    unit9: '""'
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [960, 660]
+    rotation: 0
+    state: enabled
+- name: qtgui_number_sink_1
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: 2,2,1,2
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '0.75'
+    min: '0'
+    name: "\"SER (\u03BC\u03B5\u03C4\u03C1\u03B7\u03BC\u03AD\u03BD\u03BF)\""
+    nconnections: '1'
+    type: float
+    unit1: '""'
+    unit10: '""'
+    unit2: '""'
+    unit3: '""'
+    unit4: '""'
+    unit5: '""'
+    unit6: '""'
+    unit7: '""'
+    unit8: '""'
+    unit9: '""'
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [960, 740]
+    rotation: 0
+    state: enabled
+- name: qtgui_tab_widget_0
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 4,0,1,4
+    label0: "\u03A6\u03AC\u03C3\u03BC\u03B1 RF"
+    label1: "\u03A0\u03C1\u03B9\u03BD \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7\
+      \ (Costas)"
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: "\u039C\u03B5\u03C4\u03AC \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7"
+    label3: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C3\u03B5\
+      \ \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03C7\u03C1\u03CC\
+      \u03BD\u03BF"
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 528.0]
+    rotation: 0
+    state: enabled
+- name: root_raised_cosine_filter_0
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: excess_bw
+    comment: "Matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF RRC (\u03C7\u03C9\u03C1\
+      \u03AF\u03C2 \u03B5\u03C0\u03B1\u03BD\u03B1\u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\
+      \u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\u03B1 \u2014 \u03AF\u03B4\u03B9\u03BF\u03C2\
+      \ \u03C1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5\
+      /\u03B5\u03BE\u03CC\u03B4\u03BF\u03C5, quad_rate)"
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: int(11*actual_sps)+1
+    samp_rate: actual_sps
+    sym_rate: '1.0'
+    type: fir_filter_ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 360.0]
+    rotation: 0
+    state: enabled
+- name: soapy_rtlsdr_source_0
+  id: soapy_rtlsdr_source
+  parameters:
+    affinity: ''
+    agc: 'False'
+    alias: ''
+    bias: 'False'
+    bufflen: '16384'
+    center_freq: freq*1e6
+    comment: "RTL-SDR dongle (\u03BC\u03CC\u03BD\u03BF \u03BB\u03AE\u03C8\u03B7, RX\
+      \ only)"
+    dev_args: ''
+    freq_correction: '0'
+    gain: rf_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: rtl_samp_rate
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [40, 420]
+    rotation: 0
+    state: enabled
+- name: snippet_square_const
+  id: snippet
+  parameters:
+    alias: ''
+    code: |-
+      # Κρατά τους αστερισμούς ΤΕΤΡΑΓΩΝΟΥΣ (ίση κλίμακα στους άξονες I και Q),
+      # όποιο μέγεθος κι αν έχει το παράθυρο (π.χ. σε πλήρη οθόνη).
+      # Το QT GUI Constellation Sink δεν έχει τέτοια επιλογή, οπότε κάθε
+      # αστερισμός τυλίγεται σε ένα πλαίσιο που τον κεντράρει και κρατά
+      # τετράγωνη την περιοχή σχεδίασης (canvas) του γραφήματος.
+      from PyQt5 import Qt, QtCore
+
+      class SquarePlot(Qt.QWidget):
+          def __init__(self, inner):
+              Qt.QWidget.__init__(self)
+              self.inner = inner
+              self.setMinimumSize(260, 260)
+              self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)
+
+          def sizeHint(self):
+              return QtCore.QSize(480, 480)
+
+          def canvas(self):
+              for w in self.inner.findChildren(Qt.QWidget):
+                  if w.metaObject().className() == 'QwtPlotCanvas':
+                      return w
+              return None
+
+          def fit(self):
+              # περιθώρια = τίτλος, άξονες, υπόμνημα (ό,τι δεν είναι canvas)
+              mw = mh = 0
+              c = self.canvas()
+              if c is not None and c.width() > 1 and c.height() > 1:
+                  mw = self.inner.width() - c.width()
+                  mh = self.inner.height() - c.height()
+              side = max(50, min(self.width() - mw, self.height() - mh))
+              w, h = side + mw, side + mh
+              self.inner.setGeometry((self.width() - w) // 2,
+                                     (self.height() - h) // 2, w, h)
+
+          def resizeEvent(self, event):
+              self.fit()
+              # δεύτερο πέρασμα, αφού το γράφημα ξαναϋπολογίσει τα περιθώριά του
+              QtCore.QTimer.singleShot(0, self.fit)
+              QtCore.QTimer.singleShot(100, self.fit)
+
+      def find_layout(layout, widget):
+          for i in range(layout.count()):
+              item = layout.itemAt(i)
+              if item.widget() is widget:
+                  return layout
+              if item.layout() is not None:
+                  found = find_layout(item.layout(), widget)
+                  if found is not None:
+                      return found
+          return None
+
+      self._square_plots = []
+      for name in sorted(vars(self)):
+          if not (name.startswith('_qtgui_const_sink_x') and name.endswith('_win')):
+              continue
+          win = getattr(self, name)
+          parent = win.parentWidget()
+          layout = find_layout(parent.layout(), win) if parent is not None else None
+          if layout is None:
+              continue
+          box = SquarePlot(win)
+          layout.replaceWidget(win, box)
+          win.setParent(box)
+          win.show()
+          self._square_plots.append(box)
+          # Στο πλέγμα: η γραμμή των αστερισμών παίρνει το περισσότερο ύψος,
+          # οι γραμμές με ολισθητήρες μόνο όσο χρειάζονται.
+          if isinstance(layout, Qt.QGridLayout):
+              plots = [getattr(self, n) for n in vars(self)
+                       if n.startswith('_qtgui_') and n.endswith('_win')
+                       and 'number_sink' not in n and 'const_sink' not in n]
+              for i in range(layout.count()):
+                  row = layout.getItemPosition(i)[0]
+                  w = layout.itemAt(i).widget()
+                  if isinstance(w, SquarePlot):
+                      layout.setRowStretch(row, 3)
+                  elif any(w is p for p in plots):
+                      layout.setRowStretch(row, 2)
+                  elif layout.rowStretch(row) == 1:
+                      layout.setRowStretch(row, 0)
+    comment: "Τετράγωνοι αστερισμοί: κρατά ίση
+      κλίμακα I/Q σε κάθε μέγεθος παραθύρου
+      (και σε πλήρη οθόνη)"
+    priority: '0'
+    section: main_after_init
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 700]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_agc2_xx_0, '0', digital_fll_band_edge_cc_0, '0']
+- [analog_agc2_xx_0, '0', qtgui_freq_sink_x_0, '0']
+- [blocks_multiply_const_vxx_0, '0', digital_constellation_decoder_cb_0, '0']
+- [blocks_multiply_const_vxx_0, '0', qtgui_const_sink_x_after, '0']
+- [blocks_multiply_const_vxx_0, '0', qtgui_const_sink_x_live, '0']
+- [blocks_unpack_k_bits_bb_0, '0', epy_block_0, '0']
+- [digital_constellation_decoder_cb_0, '0', digital_diff_decoder_bb_0, '0']
+- [digital_costas_loop_cc_0, '0', blocks_multiply_const_vxx_0, '0']
+- [digital_diff_decoder_bb_0, '0', digital_map_bb_0, '0']
+- [digital_fll_band_edge_cc_0, '0', qtgui_freq_sink_x_0, '1']
+- [digital_fll_band_edge_cc_0, '0', root_raised_cosine_filter_0, '0']
+- [digital_map_bb_0, '0', blocks_unpack_k_bits_bb_0, '0']
+- [digital_symbol_sync_xx_0, '0', digital_costas_loop_cc_0, '0']
+- [digital_symbol_sync_xx_0, '0', qtgui_const_sink_x_before, '0']
+- [epy_block_0, '0', epy_block_1, '0']
+- [epy_block_0, '0', qtgui_number_sink_0, '0']
+- [epy_block_0, '1', epy_block_1, '1']
+- [epy_block_0, '1', qtgui_number_sink_1, '0']
+- [log_point_button, pressed, epy_block_1, trigger]
+- [low_pass_filter_0, '0', analog_agc2_xx_0, '0']
+- [root_raised_cosine_filter_0, '0', digital_symbol_sync_xx_0, '0']
+- [soapy_rtlsdr_source_0, '0', low_pass_filter_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0

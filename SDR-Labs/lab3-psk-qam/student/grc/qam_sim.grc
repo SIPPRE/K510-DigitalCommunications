@@ -1,0 +1,1295 @@
+options:
+  parameters:
+    author: K510 Digital Communications Lab
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: "16-QAM προσομοίωση σε πραγματικό χρόνο (χωρίς SDR): TX -> μοντέλο
+      καναλιού -> RX, με ρυθμιζόμενο θόρυβο, σφάλμα συχνότητας φέροντος και σφάλμα
+      ρολογιού. student (lab3-psk-qam, Μέρος Β)."
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: qam_sim
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: "16-QAM Προσομοίωση (χωρίς SDR)"
+    window_size: (1300,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: clock_ppm
+  id: variable_qtgui_range
+  parameters:
+    comment: "Σφάλμα ρολογιού δειγματοληψίας
+      του «δέκτη» σε ppm — το epsilon του
+      μοντέλου καναλιού."
+    gui_hint: 1,0,1,2
+    label: "Σφάλμα ρολογιού (ppm)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-300'
+    step: '10'
+    stop: '300'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 12]
+    rotation: 0
+    state: enabled
+- name: costas_bw
+  id: variable
+  parameters:
+    comment: "Εύρος βρόχου Costas = 2π/N"
+    value: 2*np.pi/costas_bw_div
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 156]
+    rotation: 0
+    state: enabled
+- name: costas_bw_div
+  id: variable_qtgui_range
+  parameters:
+    comment: "ΖΩΝΤΑΝΗ ρύθμιση εύρους βρόχου
+      Costas (= 2π/N). Στο 16-QAM μόνο τα 4
+      γωνιακά σημεία «μοιάζουν» με QPSK στον
+      ανιχνευτή 4ης τάξης — τα υπόλοιπα 12
+      εισάγουν θόρυβο σχηματισμού (pattern
+      noise). Εδώ (προσομοίωση, ΧΩΡΙΣ θόρυβο
+      φάσης ταλαντωτών) όσο μεγαλύτερο το N
+      τόσο καθαρότερος ο αστερισμός —
+      δοκιμάστε N=100 (τιμή QPSK!) και δείτε
+      το EVM να ανεβαίνει. Στον ΠΡΑΓΜΑΤΙΚΟ
+      δέκτη (qam_rx.grc) υπάρχει και θόρυβος
+      φάσης -> το βέλτιστο N είναι ενδιάμεσο
+      (~300), όχι το μέγιστο."
+    gui_hint: 1,2,1,2
+    label: "Costas N (εύρος = 2π/N)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '50'
+    step: '25'
+    stop: '2000'
+    value: '1000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 84]
+    rotation: 0
+    state: enabled
+- name: excess_bw
+  id: variable
+  parameters:
+    comment: "Roll-off συντελεστής RRC"
+    value: '0.35'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 156]
+    rotation: 0
+    state: enabled
+- name: fll_bw
+  id: variable
+  parameters:
+    comment: "Εύρος βρόχου FLL Band-Edge
+      (χονδρική διόρθωση συχνότητας) —
+      ίδιο με το QPSK: το FLL δουλεύει
+      στο φάσμα του σήματος, όχι στα
+      σημεία του αστερισμού, οπότε δεν
+      τον επηρεάζει το μεταβλητό μέτρο
+      του 16-QAM."
+    value: 2*np.pi/250.0
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [768, 156]
+    rotation: 0
+    state: enabled
+- name: freq_offset_hz
+  id: variable_qtgui_range
+  parameters:
+    comment: "Σφάλμα συχνότητας φέροντος
+      TX-RX (Hz). Στα 434 MHz, 20 ppm
+      διαφορά κρυστάλλων = ~8,7 kHz."
+    gui_hint: 0,3,1,3
+    label: "Σφάλμα συχνότητας φέροντος (Hz)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-15000'
+    step: '500'
+    stop: '15000'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 12]
+    rotation: 0
+    state: enabled
+- name: noise_voltage
+  id: variable_qtgui_range
+  parameters:
+    comment: "Τάση θορύβου AWGN — προσέξτε
+      ότι το 16-QAM «σπάει» σε ΠΟΛΥ
+      χαμηλότερο θόρυβο από το QPSK: τα
+      16 σημεία απέχουν μεταξύ τους 2/√10
+      ≈ 0,63, έναντι √2 ≈ 1,41 του QPSK."
+    gui_hint: 0,0,1,3
+    label: "Θόρυβος (τάση)"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.01'
+    stop: '0.5'
+    value: '0.02'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 12]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: "Ρυθμός δειγματοληψίας
+      προσομοίωσης = ρυθμός συμβόλου
+      x δείγματα/σύμβολο"
+    value: symbol_rate*sps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 156]
+    rotation: 0
+    state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: "Δείγματα ανά σύμβολο"
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [136, 156]
+    rotation: 0
+    state: enabled
+- name: symbol_rate
+  id: variable
+  parameters:
+    comment: "Ρυθμός συμβόλου (baud) —
+      ίδιος με το QPSK, ώστε η σύγκριση
+      να είναι δίκαιη: ίδιο εύρος ζώνης,
+      διπλάσιος ρυθμός bit (4 αντί 2
+      bits/σύμβολο)"
+    value: '20000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [248, 156]
+    rotation: 0
+    state: enabled
+- name: sync_bw
+  id: variable
+  parameters:
+    comment: "Εύρος βρόχου Symbol Sync —
+      στενότερο από το QPSK (0.045) γιατί
+      ο ανιχνευτής Gardner έχει
+      αυτοθόρυβο σε σήμα μεταβλητού
+      μέτρου (16-QAM)"
+    value: '0.01'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [888, 156]
+    rotation: 0
+    state: enabled
+- name: analog_agc2_xx_0
+  id: analog_agc2_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    attack_rate: 1e-3
+    comment: "ΑΡΓΟ AGC — κρίσιμο για QAM!
+      Ένα γρήγορο AGC (όπως του QPSK,
+      attack 0.1) «ισοπεδώνει» τις
+      διαφορετικές στάθμες πλάτους του
+      16-QAM, καταστρέφοντας την ίδια
+      την πληροφορία. Το AGC πρέπει να
+      σταθεροποιεί μόνο τη ΜΕΣΗ ισχύ,
+      πολύ πιο αργά από τον ρυθμό
+      συμβόλου."
+    decay_rate: 1e-4
+    gain: '1.0'
+    max_gain: '1000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    reference: '1.0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 692]
+    rotation: 0
+    state: enabled
+- name: analog_random_source_x_0
+  id: analog_random_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Τυχαία bytes -> ομοιόμορφη
+      κατάληψη και των 16 σημείων"
+    max: '256'
+    maxoutbuf: '0'
+    min: '0'
+    num_samps: '10000'
+    repeat: 'True'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 300]
+    rotation: 0
+    state: enabled
+- name: blocks_packed_to_unpacked_xx_0
+  id: blocks_packed_to_unpacked_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    bits_per_chunk: '4'
+    comment: "4 bits/chunk (16-QAM) — εδώ
+      η ΜΟΝΗ δομική διαφορά από το QPSK
+      στον πομπό: κάθε σύμβολο μεταφέρει
+      4 bits αντί 2"
+    endianness: gr.GR_MSB_FIRST
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 300]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle_0
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Ρυθμίζει την προσομοίωση
+      σε πραγματικό χρόνο"
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1128, 300]
+    rotation: 0
+    state: enabled
+- name: channels_channel_model_0
+  id: channels_channel_model
+  parameters:
+    affinity: ''
+    alias: ''
+    block_tags: 'False'
+    comment: "Το «ασύρματο κανάλι»:
+      AWGN + σφάλμα συχνότητας φέροντος + σφάλμα ρολογιού δειγματοληψίας. ΣΗΜ.: το σφάλμα συχνότητας πολλαπλασιάζεται επί 1.00137, ώστε ο λόγος Δf/Rs να μην είναι «στρογγυλός» — αλλιώς ο δακτύλιος του αστερισμού «πριν» θα φαινόταν σαν λίγες ακίνητες κουκκίδες (στροβοσκοπικό φαινόμενο). Οι πραγματικοί κρύσταλλοι δεν είναι ποτέ «στρογγυλοί»."
+    epsilon: 1.0 + clock_ppm*1e-6
+    freq_offset: 1.00137*freq_offset_hz/samp_rate
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_voltage: noise_voltage
+    seed: '42'
+    taps: '[1.0]'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1336, 280]
+    rotation: 0
+    state: enabled
+- name: digital_chunks_to_symbols_xx_0
+  id: digital_chunks_to_symbols_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Χαρτογράφηση σε σύμβολα
+      16-QAM: 2 bits -> στάθμη I, 2 bits ->
+      στάθμη Q (Gray ανά άξονα), 16 σημεία
+      σε τετράγωνο πλέγμα 4x4 — ΔΕΝ έχουν
+      όλα το ίδιο πλάτος (3 «δακτύλιοι»
+      ισχύος), σε αντίθεση με το QPSK"
+    dimension: '1'
+    in_type: byte
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    out_type: complex
+    symbol_table: QAM16_POINTS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 300]
+    rotation: 0
+    state: enabled
+- name: digital_costas_loop_cc_0
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "ΛΕΠΤΗ διόρθωση φάσης
+      φέροντος. Σε αντίθεση με το QPSK,
+      στο τετράγωνο 16-QAM ο βρόχος
+      κλειδώνει ΕΥΘΥΓΡΑΜΜΙΣΜΕΝΑ με τους
+      άξονες — δεν χρειάζεται περιστροφή
+      +45° μετά (επιβεβαιωμένο εμπειρικά)."
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: '4'
+    use_snr: 'False'
+    w: costas_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1016, 692]
+    rotation: 0
+    state: enabled
+- name: digital_fll_band_edge_cc_0
+  id: digital_fll_band_edge_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "ΧΟΝΔΡΙΚΗ διόρθωση συχνότητας
+      φέροντος (FLL Band-Edge) — ίδια
+      με τον δέκτη QPSK"
+    filter_size: 11*sps+1
+    rolloff: excess_bw
+    samps_per_sym: sps
+    type: cc
+    w: fll_bw
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 692]
+    rotation: 0
+    state: enabled
+- name: digital_symbol_sync_xx_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Ανάκτηση χρονισμού συμβόλου
+      (Gardner TED) — 1 δείγμα/σύμβολο"
+    constellation: QAM16_CONSTELLATION
+    damping: '1.0'
+    loop_bw: sync_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: '1'
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: sps
+    ted_gain: '1.0'
+    ted_type: digital.TED_GARDNER
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 692]
+    rotation: 0
+    state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: |
+      import numpy as np
+      from gnuradio import gr
+
+      _S = 2.0 / np.sqrt(10.0)  # απόσταση σταθμών 16-QAM (μέση ισχύς 1)
+
+
+      class blk(gr.sync_block):
+          """Διορθωτής DD-LMS ενός συντελεστή (decision-directed, 1 complex tap).
+
+          Διορθώνει ό,τι δεν μπορεί το Costas: στατικό σφάλμα ΚΛΙΜΑΚΑΣ του AGC
+          (στο 16-QAM μέσο πλάτος ≠ RMS ισχύς — το AGC ρυθμίζει το πλάτος, οπότε
+          η ισχύς βγαίνει ~5% εκτός), αργή αναπνοή κέρδους, υπόλοιπο λίκνισμα
+          φάσης. y = w·x, d = πλησιέστερο σημείο (διαχωρίσιμη απόφαση ανά άξονα),
+          w += μ·(d−y)·conj(x). Ίδιο block με το qam_rx.grc."""
+
+          def __init__(self, mu=0.05):
+              gr.sync_block.__init__(
+                  self,
+                  name='DD-LMS διορθωτής (1 tap)',
+                  in_sig=[np.complex64],
+                  out_sig=[np.complex64],
+              )
+              self.mu = float(mu)
+              self._w = 1.0 + 0.0j
+
+          def work(self, input_items, output_items):
+              x = input_items[0]
+              out = output_items[0]
+              w = self._w
+              mu = float(self.mu)
+              for k in range(len(x)):
+                  xi = complex(x[k])
+                  y = w * xi
+                  ii = y.real / _S + 1.5
+                  qq = y.imag / _S + 1.5
+                  ii = 0 if ii < 0 else (3 if ii > 3 else int(ii + 0.5))
+                  qq = 0 if qq < 0 else (3 if qq > 3 else int(qq + 0.5))
+                  d = complex((ii - 1.5) * _S, (qq - 1.5) * _S)
+                  w += mu * (d - y) * xi.conjugate()
+                  # Στενό όριο |w|: το AGC εγγυάται μέσο πλάτος ~1, άρα το σωστό
+                  # |w| είναι πάντα ~0.9-1.1. Χωρίς αυτό, ένα απότομο μεταβατικό
+                  # μπορεί να «καταρρεύσει» το w σε ψευδο-ισορροπία |w|~0.37 όπου
+                  # ΟΛΑ τα σύμβολα αποφασίζονται στα 4 εσωτερικά σημεία
+                  # (scale-collapse false lock, αναπαράχθηκε στην πράξη).
+                  if not (0.5 < abs(w) < 2.0):
+                      w = 1.0 + 0.0j
+                  out[k] = y
+              self._w = w
+              return len(x)
+    affinity: ''
+    alias: ''
+    comment: "Διόρθωση κλίμακας/κέρδους/
+      υπόλοιπης φάσης με αποφάσεις —
+      ίδιο block με το qam_rx.grc"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.05'
+  states:
+    _io_cache: ''
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 780]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: |
+      import numpy as np
+      from gnuradio import gr
+
+      WINDOW = 4096
+
+
+      class blk(gr.sync_block):
+          """Μετρητής EVM (%): για κάθε ληφθέν σύμβολο βρίσκει το πλησιέστερο από
+          τα 16 ιδανικά σημεία 16-QAM και μετρά το διανυσματικό σφάλμα. EVM =
+          RMS(σφάλμα) / RMS(ιδανική ισχύς = 1) x 100%, σε κυλιόμενο παράθυρο 4096
+          συμβόλων. Το EVM είναι ανεξάρτητο από την 4-πλή ασάφεια φάσης του
+          Costas (το τετράγωνο 16-QAM είναι συμμετρικό στις στροφές 90°), οπότε
+          δεν χρειάζεται διαφορική κωδικοποίηση ή συγχρονισμός πλαισίου —
+          κατάλληλο και απλό μέτρο ποιότητας για σύγκριση QPSK/16-QAM."""
+
+          def __init__(self):
+              gr.sync_block.__init__(
+                  self,
+                  name='Μετρητής EVM',
+                  in_sig=[np.complex64],
+                  out_sig=[np.float32],
+              )
+              lv = np.array([-3.0, -1.0, 1.0, 3.0], dtype=np.float32) / np.float32(np.sqrt(10.0))
+              self._ideal = (lv[:, None] + 1j * lv[None, :]).flatten().astype(np.complex64)
+              self._buf = np.zeros(WINDOW, dtype=np.float32)
+              self._ptr = 0
+              self._filled = 0
+              self.evm = 0.0
+
+          def work(self, input_items, output_items):
+              x = input_items[0]
+              d = np.abs(x[:, None] - self._ideal[None, :]).min(axis=1)
+              e2 = (d * d).astype(np.float32)
+              n = len(e2)
+              L = WINDOW
+              if n >= L:
+                  self._buf[:] = e2[-L:]
+                  self._ptr = 0
+                  self._filled = L
+              else:
+                  end = self._ptr + n
+                  if end <= L:
+                      self._buf[self._ptr:end] = e2
+                  else:
+                      k = L - self._ptr
+                      self._buf[self._ptr:] = e2[:k]
+                      self._buf[:end - L] = e2[k:]
+                  self._ptr = end % L
+                  self._filled = min(self._filled + n, L)
+              if self._filled:
+                  self.evm = float(np.sqrt(self._buf[:self._filled].mean()) * 100.0)
+              output_items[0][:] = self.evm
+              return n
+    affinity: ''
+    alias: ''
+    comment: "Τρέχει στον ρυθμό συμβόλου
+      (20 kS/s) — ασφαλές για epy_block"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ''
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1408, 780]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: |-
+      import numpy as np
+      from gnuradio import digital
+
+      # --- 16-QAM: Gray ανά άξονα (2 bits -> στάθμη I, 2 bits -> στάθμη Q),
+      # κανονικοποιημένο σε μέση ισχύ 1. Ίδιοι πίνακες στα qam_tx.grc/qam_rx.grc. ---
+      QAM16_LEVELS = [lv / np.sqrt(10.0) for lv in (-3.0, -1.0, 1.0, 3.0)]
+      _G = [0, 1, 3, 2]  # Gray 2-bit -> δείκτης στάθμης
+      QAM16_POINTS = [complex(QAM16_LEVELS[_G.index((i >> 2) & 3)],
+                              QAM16_LEVELS[_G.index(i & 3)]) for i in range(16)]
+      QAM16_CONSTELLATION = digital.constellation_calcdist(
+          QAM16_POINTS, list(range(16)), 4, 1).base()
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 84]
+    rotation: 0
+    state: enabled
+- name: note_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: "ΠΡΟΣΟΜΟΙΩΣΗ 16-QAM ΧΩΡΙΣ SDR — Μέρος Β του Lab 3. Ίδια δομή με το
+      qpsk psk_sim.grc για άμεση σύγκριση: ίδιος ρυθμός συμβόλου (ίδιο εύρος
+      ζώνης!) αλλά 4 bits/σύμβολο αντί 2 -> διπλάσιος ρυθμός bit. Το τίμημα:
+      (1) τα 16 σημεία απέχουν 2/√10 ≈ 0,63 αντί √2 ≈ 1,41 του QPSK -> ο ίδιος
+      θόρυβος προκαλεί λάθη πολύ νωρίτερα (δοκιμάστε θόρυβο 0,15 σε αυτό και
+      στο psk_sim.grc)· (2) το σήμα ΔΕΝ έχει σταθερό μέτρο -> θέλει αργό AGC
+      και γραμμικό ενισχυτή· (3) η ανάκτηση φέροντος είναι δυσκολότερη (στενό
+      εύρος Costas). Πειραματιστείτε με τους ίδιους 3 ολισθητήρες όπως στο QPSK
+      και συγκρίνετε το EVM στις ίδιες συνθήκες."
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 396]
+    rotation: 0
+    state: enabled
+- name: qtgui_const_sink_x_after
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "Αστερισμός ΜΕΤΑ τη διόρθωση
+      φάσης — 16 καθαρά σημεία σε πλέγμα 4x4"
+    grid: 'True'
+    gui_hint: 2,4,1,2
+    label1: "μετά"
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: "\"3. RX μετά τη διόρθωση\""
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '1.5'
+    xmin: '-1.5'
+    ymax: '1.5'
+    ymin: '-1.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1408, 692]
+    rotation: 0
+    state: enabled
+- name: qtgui_const_sink_x_before
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"red"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "Αστερισμός ΠΡΙΝ τη διόρθωση
+      φάσματος/φάσης — ξεχωριστός κλάδος
+      (RRC + Symbol Sync, ΧΩΡΙΣ FLL/Costas):
+      με μηδενικό σφάλμα συχνότητας δείχνει
+      καθαρά σημεία· με σφάλμα συχνότητας
+      (π.χ. 2 kHz): 3 περιστρεφόμενοι
+      δακτύλιοι (οι 3 στάθμες ισχύος του
+      16-QAM), όχι ένας όπως στο QPSK!"
+    grid: 'True'
+    gui_hint: 2,2,1,2
+    label1: "πριν"
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: "\"2. RX πριν τη διόρθωση\""
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '1.5'
+    xmin: '-1.5'
+    ymax: '1.5'
+    ymin: '-1.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 1040]
+    rotation: 0
+    state: enabled
+- name: qtgui_const_sink_x_tx
+  id: qtgui_const_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: '"green"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "Αστερισμός πομπού — τα 16
+      ιδανικά σημεία (πριν το RRC)"
+    grid: 'True'
+    gui_hint: 2,0,1,2
+    label1: "TX"
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    marker1: '0'
+    marker10: '0'
+    marker2: '0'
+    marker3: '0'
+    marker4: '0'
+    marker5: '0'
+    marker6: '0'
+    marker7: '0'
+    marker8: '0'
+    marker9: '0'
+    name: "\"1. Σύμβολα TX\""
+    nconnections: '1'
+    size: '1024'
+    style1: '0'
+    style10: '0'
+    style2: '0'
+    style3: '0'
+    style4: '0'
+    style5: '0'
+    style6: '0'
+    style7: '0'
+    style8: '0'
+    style9: '0'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    xmax: '1.5'
+    xmin: '-1.5'
+    ymax: '1.5'
+    ymin: '-1.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 452]
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '0.2'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: "Φάσμα πριν/μετά το FLL —
+      παρατηρήστε ότι το φάσμα 16-QAM
+      είναι ΙΔΙΟ με του QPSK (ίδιο RRC,
+      ίδιος ρυθμός συμβόλου) παρότι
+      μεταφέρει διπλάσια bits!"
+    ctrlpanel: 'False'
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: 3,0,1,6
+    label: Relative Gain
+    label1: "πριν FLL"
+    label10: ''''''
+    label2: "μετά FLL"
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: "\"Φάσμα δέκτη\""
+    nconnections: '2'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 852]
+    rotation: 0
+    state: enabled
+- name: qtgui_number_sink_0
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: "Τυπικές τιμές: <10% καθαρό,
+      ~20% οριακό, >30% λάθη συμβόλων"
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: 1,4,1,2
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '100'
+    min: '0'
+    name: "\"EVM (%)\""
+    nconnections: '1'
+    type: float
+    unit1: '"%"'
+    unit10: '""'
+    unit2: '""'
+    unit3: '""'
+    unit4: '""'
+    unit5: '""'
+    unit6: '""'
+    unit7: '""'
+    unit8: '""'
+    unit9: '""'
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1704, 780]
+    rotation: 0
+    state: enabled
+- name: root_raised_cosine_filter_rx
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: excess_bw
+    comment: "Matched φίλτρο RRC του δέκτη"
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: 11*sps+1
+    samp_rate: sps
+    sym_rate: '1.0'
+    type: fir_filter_ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 692]
+    rotation: 0
+    state: enabled
+- name: root_raised_cosine_filter_tx
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: excess_bw
+    comment: "Φίλτρο μορφοποίησης RRC
+      του πομπού"
+    decim: '1'
+    gain: sps
+    interp: sps
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: 11*sps + 1
+    samp_rate: sps
+    sym_rate: '1.0'
+    type: interp_fir_filter_ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 284]
+    rotation: 0
+    state: enabled
+- name: snippet_square_const
+  id: snippet
+  parameters:
+    alias: ''
+    code: |-
+      # Κρατά τους αστερισμούς ΤΕΤΡΑΓΩΝΟΥΣ (ίση κλίμακα στους άξονες I και Q),
+      # όποιο μέγεθος κι αν έχει το παράθυρο (π.χ. σε πλήρη οθόνη).
+      # Το QT GUI Constellation Sink δεν έχει τέτοια επιλογή, οπότε κάθε
+      # αστερισμός τυλίγεται σε ένα πλαίσιο που τον κεντράρει και κρατά
+      # τετράγωνη την περιοχή σχεδίασης (canvas) του γραφήματος.
+      from PyQt5 import Qt, QtCore
+
+      class SquarePlot(Qt.QWidget):
+          def __init__(self, inner):
+              Qt.QWidget.__init__(self)
+              self.inner = inner
+              self.setMinimumSize(260, 260)
+              self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)
+
+          def sizeHint(self):
+              return QtCore.QSize(480, 480)
+
+          def canvas(self):
+              for w in self.inner.findChildren(Qt.QWidget):
+                  if w.metaObject().className() == 'QwtPlotCanvas':
+                      return w
+              return None
+
+          def fit(self):
+              # περιθώρια = τίτλος, άξονες, υπόμνημα (ό,τι δεν είναι canvas)
+              mw = mh = 0
+              c = self.canvas()
+              if c is not None and c.width() > 1 and c.height() > 1:
+                  mw = self.inner.width() - c.width()
+                  mh = self.inner.height() - c.height()
+              side = max(50, min(self.width() - mw, self.height() - mh))
+              w, h = side + mw, side + mh
+              self.inner.setGeometry((self.width() - w) // 2,
+                                     (self.height() - h) // 2, w, h)
+
+          def resizeEvent(self, event):
+              self.fit()
+              # δεύτερο πέρασμα, αφού το γράφημα ξαναϋπολογίσει τα περιθώριά του
+              QtCore.QTimer.singleShot(0, self.fit)
+              QtCore.QTimer.singleShot(100, self.fit)
+
+      def find_layout(layout, widget):
+          for i in range(layout.count()):
+              item = layout.itemAt(i)
+              if item.widget() is widget:
+                  return layout
+              if item.layout() is not None:
+                  found = find_layout(item.layout(), widget)
+                  if found is not None:
+                      return found
+          return None
+
+      self._square_plots = []
+      for name in sorted(vars(self)):
+          if not (name.startswith('_qtgui_const_sink_x') and name.endswith('_win')):
+              continue
+          win = getattr(self, name)
+          parent = win.parentWidget()
+          layout = find_layout(parent.layout(), win) if parent is not None else None
+          if layout is None:
+              continue
+          box = SquarePlot(win)
+          layout.replaceWidget(win, box)
+          win.setParent(box)
+          win.show()
+          self._square_plots.append(box)
+          # Στο πλέγμα: η γραμμή των αστερισμών παίρνει το περισσότερο ύψος,
+          # οι γραμμές με ολισθητήρες μόνο όσο χρειάζονται.
+          if isinstance(layout, Qt.QGridLayout):
+              plots = [getattr(self, n) for n in vars(self)
+                       if n.startswith('_qtgui_') and n.endswith('_win')
+                       and 'number_sink' not in n and 'const_sink' not in n]
+              for i in range(layout.count()):
+                  row = layout.getItemPosition(i)[0]
+                  w = layout.itemAt(i).widget()
+                  if isinstance(w, SquarePlot):
+                      layout.setRowStretch(row, 3)
+                  elif any(w is p for p in plots):
+                      layout.setRowStretch(row, 2)
+                  elif layout.rowStretch(row) == 1:
+                      layout.setRowStretch(row, 0)
+    comment: "Τετράγωνοι αστερισμοί: κρατά ίση
+      κλίμακα I/Q σε κάθε μέγεθος παραθύρου
+      (και σε πλήρη οθόνη)"
+    priority: '0'
+    section: main_after_init
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1100, 1060]
+    rotation: 0
+    state: enabled
+- name: root_raised_cosine_filter_rx_raw
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: excess_bw
+    comment: "ΚΛΑΔΟΣ ΕΠΙΔΕΙΞΗΣ «πριν»: ίδιο matched
+      φίλτρο RRC, αλλά ΧΩΡΙΣ FLL μπροστά του
+      — καμία διόρθωση φέροντος"
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: 11*sps+1
+    samp_rate: sps
+    sym_rate: '1.0'
+    type: fir_filter_ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 1060]
+    rotation: 0
+    state: enabled
+- name: digital_symbol_sync_xx_raw
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "ΚΛΑΔΟΣ ΕΠΙΔΕΙΞΗΣ «πριν»: μόνο ανάκτηση
+      χρονισμού (Gardner), ώστε να βλέπουμε
+      1 δείγμα/σύμβολο χωρίς καμία
+      διόρθωση συχνότητας/φάσης"
+    constellation: QAM16_CONSTELLATION
+    damping: '1.0'
+    loop_bw: sync_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: '1'
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: sps
+    ted_gain: '1.0'
+    ted_type: digital.TED_GARDNER
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 1060]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_agc2_xx_0, '0', digital_fll_band_edge_cc_0, '0']
+- [analog_agc2_xx_0, '0', qtgui_freq_sink_x_0, '0']
+- [analog_agc2_xx_0, '0', root_raised_cosine_filter_rx_raw, '0']
+- [analog_random_source_x_0, '0', blocks_packed_to_unpacked_xx_0, '0']
+- [blocks_packed_to_unpacked_xx_0, '0', digital_chunks_to_symbols_xx_0, '0']
+- [blocks_throttle_0, '0', channels_channel_model_0, '0']
+- [channels_channel_model_0, '0', analog_agc2_xx_0, '0']
+- [digital_chunks_to_symbols_xx_0, '0', qtgui_const_sink_x_tx, '0']
+- [digital_chunks_to_symbols_xx_0, '0', root_raised_cosine_filter_tx, '0']
+- [digital_costas_loop_cc_0, '0', epy_block_1, '0']
+- [epy_block_1, '0', epy_block_0, '0']
+- [epy_block_1, '0', qtgui_const_sink_x_after, '0']
+- [digital_fll_band_edge_cc_0, '0', qtgui_freq_sink_x_0, '1']
+- [digital_fll_band_edge_cc_0, '0', root_raised_cosine_filter_rx, '0']
+- [digital_symbol_sync_xx_0, '0', digital_costas_loop_cc_0, '0']
+- [digital_symbol_sync_xx_raw, '0', qtgui_const_sink_x_before, '0']
+- [epy_block_0, '0', qtgui_number_sink_0, '0']
+- [root_raised_cosine_filter_rx, '0', digital_symbol_sync_xx_0, '0']
+- [root_raised_cosine_filter_rx_raw, '0', digital_symbol_sync_xx_raw, '0']
+- [root_raised_cosine_filter_tx, '0', blocks_throttle_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
