@@ -138,6 +138,30 @@ blocks:
     coordinate: [8, 12]
     rotation: 0
     state: enabled
+- name: lo_offset
+  id: variable
+  parameters:
+    comment: "OFFSET TUNING: \u03C4\u03BF RTL-SDR \u03C3\u03C5\u03BD\u03C4\u03BF\u03BD\
+      \u03AF\u03B6\u03B5\u03C4\u03B1\u03B9 lo_offset \u039A\u0391\u03A4\u03A9 \u03B1\
+      \u03C0\u03CC \u03C4\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \ \u03C4\u03BF\u03C5 \u03C3\u03AE\u03BC\u03B1\u03C4\u03BF\u03C2 \u03BA\u03B1\
+      \u03B9 \u03C4\u03BF Frequency Xlating \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF \u03C4\
+      \u03BF \u03C6\u03AD\u03C1\u03BD\u03B5\u03B9 \u03C8\u03B7\u03C6\u03B9\u03B1\u03BA\
+      \u03AC \u03C3\u03C4\u03BF 0 Hz. \u0388\u03C4\u03C3\u03B9 \u03C4\u03BF DC spike\
+      \ / \u03B4\u03B9\u03B1\u03C1\u03C1\u03BF\u03AE LO \u03C4\u03BF\u03C5 RTL (\u03C0\
+      \u03BF\u03C5 \u03B1\u03BB\u03BB\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\u03BF\
+      \ \u03BA\u03AD\u03C1\u03B4\u03BF\u03C2) \u03BC\u03AD\u03BD\u03B5\u03B9 \u0395\
+      \u039E\u03A9 \u03B1\u03C0\u03CC \u03C4\u03BF \u03BA\u03B1\u03BD\u03AC\u03BB\u03B9\
+      \ \u03B1\u03BD\u03C4\u03AF \u03BD\u03B1 \u03BA\u03AC\u03B8\u03B5\u03C4\u03B1\
+      \u03B9 \u03C0\u03AC\u03BD\u03C9 \u03C3\u03C4\u03BF \u03C3\u03AE\u03BC\u03B1."
+    value: 250e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1100, 12]
+    rotation: 0
+    state: enabled
 - name: quad_rate
   id: variable
   parameters:
@@ -165,7 +189,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '49'
-    value: '30'
+    value: '20'
     widget: counter_slider
   states:
     bus_sink: false
@@ -185,6 +209,22 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [136, 228]
+    rotation: 0
+    state: enabled
+- name: seat
+  id: variable_qtgui_entry
+  parameters:
+    comment: ''
+    entry_signal: editingFinished
+    gui_hint: 4,2,1,1
+    label: "\"\u0398\u03AD\u03C3\u03B7\""
+    type: string
+    value: '"?"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1240, 84]
     rotation: 0
     state: enabled
 - name: symbol_rate
@@ -255,6 +295,22 @@ blocks:
     coordinate: [968, 228]
     rotation: 0
     state: enabled
+- name: tx_gain_note
+  id: variable_qtgui_entry
+  parameters:
+    comment: ''
+    entry_signal: editingFinished
+    gui_hint: 4,3,1,1
+    label: '"TX gain (dB)"'
+    type: string
+    value: '"?"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1240, 160]
+    rotation: 0
+    state: enabled
 - name: analog_agc2_xx_0
   id: analog_agc2_xx
   parameters:
@@ -305,6 +361,27 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1200, 540]
+    rotation: 0
+    state: enabled
+- name: blocks_repeat_0
+  id: blocks_repeat
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "Eb/N0 \u03C5\u03C0\u03BF\u03BB\u03BF\u03B3\u03AF\u03B6\u03B5\u03C4\u03B1\
+      \u03B9 \u03B1\u03BD\u03AC \u03A3\u03A5\u039C\u0392\u039F\u039B\u039F\xB7 \u03BF\
+      \ logger \u03C4\u03C1\u03AD\u03C7\u03B5\u03B9 \u03B1\u03BD\u03AC BIT (QPSK:\
+      \ 2 bits/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF)"
+    interp: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1220, 880]
     rotation: 0
     state: enabled
 - name: blocks_unpack_k_bits_bb_0
@@ -523,250 +600,163 @@ blocks:
       PREAMBLE_LEN = len(PREAMBLE_PM1)\nRECHECK_INTERVAL = FRAME_LEN * 8  # \u03C0\
       \u03B5\u03C1\u03AF\u03C0\u03BF\u03C5 \u03BA\u03AC\u03B8\u03B5 8 \u03B5\u03C0\
       \u03B1\u03BD\u03B1\u03BB\u03AE\u03C8\u03B5\u03B9\u03C2 \u03C0\u03BB\u03B1\u03B9\
-      \u03C3\u03AF\u03BF\u03C5\n\n\nclass blk(gr.sync_block):\n    \"\"\"\u039C\u03B5\
-      \u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER: \u03B5\u03BD\u03C4\u03BF\u03C0\
-      \u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF \u03B3\u03BD\u03C9\u03C3\u03C4\u03CC preamble\
-      \ (64 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1,\n    fixed-seed=42 \u2014\
-      \ \u0399\u0394\u0399\u039F\u03A3 \u03C3\u03C0\u03CC\u03C1\u03BF\u03C2 \u03BC\
-      \u03B5 \u03C4\u03BF psk_tx.grc) \u03BC\u03AD\u03C3\u03C9 \u03C3\u03C5\u03C3\u03C7\
-      \u03AD\u03C4\u03B9\u03C3\u03B7\u03C2 (correlation)\n    \u03C0\u03AC\u03BD\u03C9\
-      \ \u03C3\u03C4\u03B7 \u03C1\u03BF\u03AE \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\
-      \u03BC\u03AD\u03BD\u03C9\u03BD bits, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\
-      \u03B5\u03B9 \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1\
-      \ \u03C3\u03C4\u03BF \u03B5\u03C0\u03B1\u03BD\u03B1\u03BB\u03B1\u03BC\u03B2\u03B1\
-      \u03BD\u03CC\u03BC\u03B5\u03BD\u03BF\n    \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\
-      \u03BF (preamble+\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1 \xABK510 PSK-QAM TEST\xBB\
-      , \u0399\u0394\u0399\u039F \u03BA\u03B5\u03AF\u03BC\u03B5\u03BD\u03BF \u03BC\
-      \u03B5 \u03C4\u03BF psk_tx.grc),\n    \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\u03AC\
-      \ \u03C3\u03C5\u03B3\u03BA\u03C1\u03AF\u03BD\u03B5\u03B9 \u039A\u0391\u0398\u0395\
-      \ \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF bit \u03BC\u03B5 \u03C4\u03BF \u03B1\
-      \u03BD\u03B1\u03BC\u03B5\u03BD\u03CC\u03BC\u03B5\u03BD\u03BF, \u03B4\u03B9\u03B1\
-      \u03C4\u03B7\u03C1\u03CE\u03BD\u03C4\u03B1\u03C2 \u03AD\u03BD\u03B1\n    \u03BA\
-      \u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\
-      \u03C5\u03C1\u03BF (sliding window) \u03C4\u03C9\u03BD \u03C4\u03B5\u03BB\u03B5\
-      \u03C5\u03C4\u03B1\u03AF\u03C9\u03BD 5000 bits \u2014 BER = \u03C0\u03BF\u03C3\
-      \u03BF\u03C3\u03C4\u03CC\n    \u03BB\u03B1\u03BD\u03B8\u03B1\u03C3\u03BC\u03AD\
-      \u03BD\u03C9\u03BD bits, SER = \u03C0\u03BF\u03C3\u03BF\u03C3\u03C4\u03CC \u03C3\
-      \u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\u03BD (\u03B6\u03B5\u03CD\u03B3\u03B7 2\
-      \ bits) \u03BC\u03B5 \u03C4\u03BF\u03C5\u03BB\u03AC\u03C7\u03B9\u03C3\u03C4\u03BF\
-      \u03BD \u03AD\u03BD\u03B1\n    \u03BB\u03AC\u03B8\u03BF\u03C2 bit. \u0388\u03BE\
-      \u03BF\u03B4\u03BF\u03B9: \u03B4\u03CD\u03BF \u03C3\u03C5\u03BD\u03B5\u03C7\u03AE\
-      \ \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03B1 float (BER, SER) \u2014 \u03B7\
-      \ \u03C4\u03C1\u03AD\u03C7\u03BF\u03C5\u03C3\u03B1 \u03C4\u03B9\u03BC\u03AE\
-      \ \u03C3\u03B5\n    \u03BA\u03AC\u03B8\u03B5 \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\
-      \ \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5, \u03B3\u03B9\u03B1 \u03B1\u03C0\
-      \u03B5\u03C5\u03B8\u03B5\u03AF\u03B1\u03C2 \u03C3\u03CD\u03BD\u03B4\u03B5\u03C3\
-      \u03B7 \u03C3\u03B5 QT GUI Number Sink.\n\n    \u03A4\u03C1\u03AD\u03C7\u03B5\
-      \u03B9 \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC BIT (\u03AD\u03C9\
-      \u03C2 ~100 kbps \u03B3\u03B9\u03B1 QPSK \u03C3\u03C4\u03B1 50 kbaud), \u03CC\
-      \u03C7\u03B9 \u03C3\u03C4\u03BF\u03BD\n    \u03C0\u03BB\u03AE\u03C1\u03B7 \u03C1\
-      \u03C5\u03B8\u03BC\u03CC \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\u03BB\
-      \u03B7\u03C8\u03AF\u03B1\u03C2 RF \u2014 \u03B3\u03B9' \u03B1\u03C5\u03C4\u03CC\
-      \ \u03AD\u03BD\u03B1 epy_block \u03B5\u03B4\u03CE \u03B4\u03B5\u03BD \u03BA\u03B9\
-      \u03BD\u03B4\u03C5\u03BD\u03B5\u03CD\u03B5\u03B9\n    \u03B1\u03C0\u03CC \u03C4\
-      \u03BF \u03C0\u03C1\u03CC\u03B2\u03BB\u03B7\u03BC\u03B1 \u03B1\u03BD\u03C4\u03B1\
-      \u03B3\u03C9\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD GIL/\u03C5\u03C0\u03BF\u03B4\
-      \u03BF\u03C7\u03AD\u03B1 \u03C5\u03BB\u03B9\u03BA\u03BF\u03CD (lab2 ook_tx.grc)\xB7\
-      \ \u03B7\n    \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\u03B9\u03BA\u03AE \u03BB\u03BF\
-      \u03B3\u03B9\u03BA\u03AE \u03B5\u03AF\u03BD\u03B1\u03B9 \u03B4\u03B9\u03B1\u03BD\
-      \u03C5\u03C3\u03BC\u03B1\u03C4\u03BF\u03C0\u03BF\u03B9\u03B7\u03BC\u03AD\u03BD\
-      \u03B7 (numpy, \u03CC\u03C7\u03B9 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2 Python\
-      \ \u03B1\u03BD\u03AC\n    bit) \u03CE\u03C3\u03C4\u03B5 \u03BD\u03B1 \u03AD\u03C7\
-      \u03B5\u03B9 \u03AC\u03BD\u03B5\u03C4\u03BF \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\
-      \u03C1\u03B9\u03BF \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03BF\
-      \u03CD \u03C7\u03C1\u03CC\u03BD\u03BF\u03C5 (~190x \u03B5\u03C0\u03B9\u03B2\u03B5\
-      \u03B2\u03B1\u03B9\u03CE\u03B8\u03B7\u03BA\u03B5).\n    \"\"\"\n\n    def __init__(self):\n\
-      \        gr.sync_block.__init__(\n            self,\n            name='\u039C\
-      \u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER',\n            in_sig=[np.uint8],\n\
-      \            out_sig=[np.float32, np.float32],\n        )\n        self._synced\
-      \ = False\n        self._history = np.zeros(0, dtype=np.int8)\n        self._frame_pos\
-      \ = 0\n        self._bits_since_check = 0\n        self.resync_count = 0\n \
-      \       self._bit_err_buf = np.zeros(WINDOW_BITS, dtype=np.uint8)\n        self._buf_ptr\
-      \ = 0\n        self._buf_filled = 0\n        self._bit_err_sum = 0\n       \
-      \ self._sym_err_buf = np.zeros(WINDOW_BITS // 2, dtype=np.uint8)\n        self._sym_ptr\
-      \ = 0\n        self._sym_filled = 0\n        self._sym_err_sum = 0\n       \
-      \ self._pending_bit = None\n        self.ber = 0.0\n        self.ser = 0.0\n\
-      \n    def _update_bit_window(self, err_batch):\n        n = len(err_batch)\n\
-      \        if n == 0:\n            return\n        buf = self._bit_err_buf\n \
-      \       L = len(buf)\n        if n >= L:\n            buf[:] = err_batch[-L:]\n\
-      \            self._bit_err_sum = int(buf.sum())\n            self._buf_ptr =\
-      \ 0\n            self._buf_filled = L\n            return\n        ptr = self._buf_ptr\n\
-      \        end = ptr + n\n        if end <= L:\n            old_sum = int(buf[ptr:end].sum())\n\
+      \u03C3\u03AF\u03BF\u03C5\n# \u03A0\u03AC\u03BD\u03C9 \u03B1\u03C0\u03CC \u03B1\
+      \u03C5\u03C4\u03CC \u03C4\u03BF BER (\u03BC\u03B5 \u03B3\u03B5\u03BC\u03AC\u03C4\
+      \u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF) \u03B8\u03B5\u03C9\u03C1\
+      \u03BF\u03CD\u03BC\u03B5 \u03CC\u03C4\u03B9 \u03BF \u03B4\u03AD\u03BA\u03C4\u03B7\
+      \u03C2 \u0395\u03A7\u0395\u0399 \u03A7\u0391\u03A3\u0395\u0399\n# \u03C4\u03BF\
+      \ \u03C3\u03AE\u03BC\u03B1 (\u03C4\u03C5\u03C7\u03B1\u03AF\u03B1 bits \u03B4\
+      \u03AF\u03BD\u03BF\u03C5\u03BD BER \u2248 0.5) \u03BA\u03B1\u03B9 \u03BE\u03B1\
+      \u03BD\u03B1\u03C8\u03AC\u03C7\u03BD\u03BF\u03C5\u03BC\u03B5 \u03C4\u03BF preamble\
+      \ \u03B1\u03C0\u03CC \u03C4\u03B7\u03BD \u03B1\u03C1\u03C7\u03AE.\nUNLOCK_BER\
+      \ = 0.25\n\n\nclass blk(gr.sync_block):\n    \"\"\"\u039C\u03B5\u03C4\u03C1\u03B7\
+      \u03C4\u03AE\u03C2 BER/SER: \u03B5\u03BD\u03C4\u03BF\u03C0\u03AF\u03B6\u03B5\
+      \u03B9 \u03C4\u03BF \u03B3\u03BD\u03C9\u03C3\u03C4\u03CC preamble (64 \u03C3\
+      \u03CD\u03BC\u03B2\u03BF\u03BB\u03B1,\n    fixed-seed=42 \u2014 \u0399\u0394\
+      \u0399\u039F\u03A3 \u03C3\u03C0\u03CC\u03C1\u03BF\u03C2 \u03BC\u03B5 \u03C4\u03BF\
+      \u03BD \u03C0\u03BF\u03BC\u03C0\u03CC) \u03BC\u03AD\u03C3\u03C9 \u03C3\u03C5\
+      \u03C3\u03C7\u03AD\u03C4\u03B9\u03C3\u03B7\u03C2 \u03C0\u03AC\u03BD\u03C9 \u03C3\
+      \u03C4\u03B7 \u03C1\u03BF\u03AE\n    \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\u03BC\
+      \u03AD\u03BD\u03C9\u03BD bits, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03B5\
+      \u03B9 \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1 \u03C3\
+      \u03C4\u03BF \u03B5\u03C0\u03B1\u03BD\u03B1\u03BB\u03B1\u03BC\u03B2\u03B1\u03BD\
+      \u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\u03BF\n\
+      \    (preamble + \u03BC\u03AE\u03BD\u03C5\u03BC\u03B1 \xABK510 PSK-QAM TEST\xBB\
+      ) \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\u03AC \u03C3\u03C5\u03B3\u03BA\u03C1\
+      \u03AF\u03BD\u03B5\u03B9 \u039A\u0391\u0398\u0395 \u03B5\u03C0\u03CC\u03BC\u03B5\
+      \u03BD\u03BF bit\n    \u03BC\u03B5 \u03C4\u03BF \u03B1\u03BD\u03B1\u03BC\u03B5\
+      \u03BD\u03CC\u03BC\u03B5\u03BD\u03BF, \u03C3\u03B5 \u03BA\u03C5\u03BB\u03B9\u03CC\
+      \u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF \u03C4\
+      \u03C9\u03BD \u03C4\u03B5\u03BB\u03B5\u03C5\u03C4\u03B1\u03AF\u03C9\u03BD 5000\
+      \ bits.\n    BER = \u03C0\u03BF\u03C3\u03BF\u03C3\u03C4\u03CC \u03BB\u03B1\u03BD\
+      \u03B8\u03B1\u03C3\u03BC\u03AD\u03BD\u03C9\u03BD bits, SER = \u03C0\u03BF\u03C3\
+      \u03BF\u03C3\u03C4\u03CC \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\u03BD (\u03B6\
+      \u03B5\u03CD\u03B3\u03B7 bits) \u03BC\u03B5\n    \u03C4\u03BF\u03C5\u03BB\u03AC\
+      \u03C7\u03B9\u03C3\u03C4\u03BF\u03BD \u03AD\u03BD\u03B1 \u03BB\u03AC\u03B8\u03BF\
+      \u03C2 bit.\n\n    \u0388\u03BE\u03BF\u03B4\u03BF\u03B9: BER, SER, \u03A3\u03A5\
+      \u0393\u03A7\u03A1\u039F\u039D\u0399\u03A3\u039C\u039F\u03A3 (1 = \u03BA\u03BB\
+      \u03B5\u03B9\u03B4\u03C9\u03BC\u03AD\u03BD\u03BF \u03C3\u03C4\u03BF \u03C0\u03BB\
+      \u03B1\u03AF\u03C3\u03B9\u03BF, 0 = \u03CC\u03C7\u03B9).\n    \u038C\u03C3\u03BF\
+      \ \u0394\u0395\u039D \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03C3\u03C5\
+      \u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03CC\u03C2, \u03C4\u03BF BER/SER\
+      \ \u03B4\u03B5\u03AF\u03C7\u03BD\u03B5\u03B9 0.5/0.75 (\u03B7 \u03C4\u03B9\u03BC\
+      \u03AE \u03C4\u03C9\u03BD\n    \u03C4\u03C5\u03C7\u03B1\u03AF\u03C9\u03BD bits)\
+      \ \u2014 \u03A0\u039F\u03A4\u0395 \u03C8\u03B5\u03CD\u03C4\u03B9\u03BA\u03BF\
+      \ 0. \u0391\u03BD \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF \u03BA\u03BB\u03B5\u03AF\
+      \u03B4\u03C9\u03BC\u03B1 \u03C4\u03BF BER \u03C4\u03BF\u03C5 \u03B3\u03B5\u03BC\
+      \u03AC\u03C4\u03BF\u03C5\n    \u03C0\u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\
+      \u03C5 \u03BE\u03B5\u03C0\u03B5\u03C1\u03AC\u03C3\u03B5\u03B9 \u03C4\u03BF 0.25,\
+      \ \u03BF \u03BC\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 \xAB\u03BE\u03B5\u03BA\
+      \u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03B5\u03B9\xBB, \u03BC\u03B7\u03B4\u03B5\
+      \u03BD\u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\
+      \u03C1\u03BF\n    \u03BA\u03B1\u03B9 \u03BE\u03B1\u03BD\u03B1\u03C8\u03AC\u03C7\
+      \u03BD\u03B5\u03B9 \u03C4\u03BF preamble (\u03C0.\u03C7. \u03CC\u03C4\u03B1\u03BD\
+      \ \u03C7\u03AC\u03B8\u03B7\u03BA\u03B5 \u03C4\u03BF \u03C3\u03AE\u03BC\u03B1\
+      \ \u03AE \u03B3\u03BB\u03AF\u03C3\u03C4\u03C1\u03B7\u03C3\u03B5 \u03BF \u03B4\
+      \u03AD\u03BA\u03C4\u03B7\u03C2).\n    \"\"\"\n\n    def __init__(self):\n  \
+      \      gr.sync_block.__init__(\n            self,\n            name='\u039C\u03B5\
+      \u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER',\n            in_sig=[np.uint8],\n\
+      \            out_sig=[np.float32, np.float32, np.float32],\n        )\n    \
+      \    self.resync_count = 0\n        self.unlock_count = 0\n        self._history\
+      \ = np.zeros(0, dtype=np.int8)\n        self._reset_lock()\n\n    # ------------------------------------------------------------------\n\
+      \    def _reset_lock(self):\n        self._synced = False\n        self._frame_pos\
+      \ = 0\n        self._bits_since_check = 0\n        self._bit_err_buf = np.zeros(WINDOW_BITS,\
+      \ dtype=np.uint8)\n        self._buf_ptr = 0\n        self._buf_filled = 0\n\
+      \        self._bit_err_sum = 0\n        self._sym_err_buf = np.zeros(WINDOW_BITS\
+      \ // 2, dtype=np.uint8)\n        self._sym_ptr = 0\n        self._sym_filled\
+      \ = 0\n        self._sym_err_sum = 0\n        self._pending_bit = None\n   \
+      \     self.ber = 0.5\n        self.ser = 0.75\n\n    @staticmethod\n    def\
+      \ _push(buf, ptr, filled, total, err_batch):\n        \"\"\"\u039A\u03C5\u03BB\
+      \u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\
+      \u03BF \u03C3\u03C6\u03B1\u03BB\u03BC\u03AC\u03C4\u03C9\u03BD (\u03BA\u03C5\u03BA\
+      \u03BB\u03B9\u03BA\u03CC\u03C2 buffer). \u0395\u03C0\u03B9\u03C3\u03C4\u03C1\
+      \u03AD\u03C6\u03B5\u03B9\n        (ptr, filled, sum) \u03BC\u03B5\u03C4\u03AC\
+      \ \u03C4\u03B7\u03BD \u03C0\u03C1\u03BF\u03C3\u03B8\u03AE\u03BA\u03B7 \u03C4\
+      \u03BF\u03C5 err_batch.\"\"\"\n        n = len(err_batch)\n        L = len(buf)\n\
+      \        if n == 0:\n            return ptr, filled, total\n        if n >=\
+      \ L:\n            buf[:] = err_batch[-L:]\n            return 0, L, int(buf.sum())\n\
+      \        end = ptr + n\n        if end <= L:\n            old = int(buf[ptr:end].sum())\n\
       \            buf[ptr:end] = err_batch\n        else:\n            first = L\
-      \ - ptr\n            old_sum = int(buf[ptr:].sum()) + int(buf[:end - L].sum())\n\
+      \ - ptr\n            old = int(buf[ptr:].sum()) + int(buf[:end - L].sum())\n\
       \            buf[ptr:] = err_batch[:first]\n            buf[:end - L] = err_batch[first:]\n\
-      \        self._bit_err_sum += int(err_batch.sum()) - old_sum\n        self._buf_ptr\
-      \ = end % L\n        self._buf_filled = min(self._buf_filled + n, L)\n\n   \
-      \ def _update_sym_window(self, err_batch):\n        n = len(err_batch)\n   \
-      \     if n == 0:\n            return\n        buf = self._sym_err_buf\n    \
-      \    L = len(buf)\n        if n >= L:\n            buf[:] = err_batch[-L:]\n\
-      \            self._sym_err_sum = int(buf.sum())\n            self._sym_ptr =\
-      \ 0\n            self._sym_filled = L\n            return\n        ptr = self._sym_ptr\n\
-      \        end = ptr + n\n        if end <= L:\n            old_sum = int(buf[ptr:end].sum())\n\
-      \            buf[ptr:end] = err_batch\n        else:\n            first = L\
-      \ - ptr\n            old_sum = int(buf[ptr:].sum()) + int(buf[:end - L].sum())\n\
-      \            buf[ptr:] = err_batch[:first]\n            buf[:end - L] = err_batch[first:]\n\
-      \        self._sym_err_sum += int(err_batch.sum()) - old_sum\n        self._sym_ptr\
-      \ = end % L\n        self._sym_filled = min(self._sym_filled + n, L)\n\n   \
-      \ def _record_bits(self, err_batch):\n        self._update_bit_window(err_batch)\n\
-      \        if self._pending_bit is not None:\n            err_batch = np.concatenate([[self._pending_bit],\
+      \        return end % L, min(filled + n, L), total + int(err_batch.sum()) -\
+      \ old\n\n    def _record_bits(self, err_batch):\n        self._buf_ptr, self._buf_filled,\
+      \ self._bit_err_sum = self._push(\n            self._bit_err_buf, self._buf_ptr,\
+      \ self._buf_filled,\n            self._bit_err_sum, err_batch)\n        if self._pending_bit\
+      \ is not None:\n            err_batch = np.concatenate([[self._pending_bit],\
       \ err_batch])\n            self._pending_bit = None\n        if len(err_batch)\
       \ % 2 == 1:\n            self._pending_bit = err_batch[-1]\n            err_batch\
       \ = err_batch[:-1]\n        if len(err_batch) > 0:\n            sym_err = err_batch.reshape(-1,\
-      \ 2).any(axis=1).astype(np.uint8)\n            self._update_sym_window(sym_err)\n\
-      \n    def _correlate_best(self, probe):\n        \"\"\"\u0395\u03C0\u03B9\u03C3\
-      \u03C4\u03C1\u03AD\u03C6\u03B5\u03B9 (idx, \u03C4\u03B9\u03BC\u03AE \u03C3\u03C5\
-      \u03C3\u03C7\u03AD\u03C4\u03B9\u03C3\u03B7\u03C2) \u03C4\u03B7\u03C2 \u03BA\u03B1\
-      \u03BB\u03CD\u03C4\u03B5\u03C1\u03B7\u03C2 \u03B8\u03AD\u03C3\u03B7\u03C2 preamble\n\
-      \        \u03BC\u03AD\u03C3\u03B1 \u03C3\u03C4\u03BF probe, \u03AE (None, None)\
-      \ \u03B1\u03BD \u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9\
-      \ \u03B1\u03C1\u03BA\u03B5\u03C4\u03AC \u03BA\u03B1\u03BB\u03CC \u03C4\u03B1\
-      \u03AF\u03C1\u03B9\u03B1\u03C3\u03BC\u03B1.\"\"\"\n        if len(probe) < PREAMBLE_LEN:\n\
-      \            return None, None\n        pm1 = probe.astype(np.float32) * 2 -\
-      \ 1\n        corr = np.correlate(pm1, PREAMBLE_PM1, mode='valid')\n        idx\
-      \ = int(np.argmax(corr))\n        # \u0391\u03C0\u03B1\u03B9\u03C4\u03BF\u03CD\
-      \u03BC\u03B5 \u03C3\u03C7\u03B5\u03B4\u03CC\u03BD \u03A4\u0395\u039B\u0395\u0399\
-      \u039F \u03C4\u03B1\u03AF\u03C1\u03B9\u03B1\u03C3\u03BC\u03B1 (\u03AD\u03C9\u03C2\
-      \ 2 \u03BB\u03AC\u03B8\u03B7 bit \u03C3\u03C4\u03B1 128) \u2014 \u039F\u03A7\
-      \u0399 \u03AD\u03BD\u03B1\n        # \u03C7\u03B1\u03BB\u03B1\u03C1\u03CC 90%\
-      \ \u03BA\u03B1\u03C4\u03CE\u03C6\u03BB\u03B9. \u0392\u03C1\u03AD\u03B8\u03B7\
-      \u03BA\u03B5 \u03B5\u03BC\u03C0\u03B5\u03B9\u03C1\u03B9\u03BA\u03AC (\u03BA\u03BB\
-      \u03B5\u03B9\u03C3\u03C4\u03CC\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2, \u03C0\
-      \u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC\n        # \u03C0\u03B1\
-      \u03C1\u03B1\u03B3\u03CC\u03BC\u03B5\u03BD\u03BF flowgraph): \u03BA\u03B1\u03C4\
-      \u03AC \u03C4\u03B7 \u03BC\u03B5\u03C4\u03B1\u03B2\u03B1\u03C4\u03B9\u03BA\u03AE\
-      \ \u03C3\u03CD\u03B3\u03BA\u03BB\u03B9\u03C3\u03B7 \u03C4\u03BF\u03C5 Symbol\
-      \ Sync/\n        # Costas Loop, \u03B7 \u03B1\u03C0\u03BF\u03BA\u03C9\u03B4\u03B9\
-      \u03BA\u03BF\u03C0\u03BF\u03B9\u03B7\u03BC\u03AD\u03BD\u03B7 \u03C1\u03BF\u03AE\
-      \ bits \u03B5\u03AF\u03BD\u03B1\u03B9 \u03BF\u03C5\u03C3\u03B9\u03B1\u03C3\u03C4\
-      \u03B9\u03BA\u03AC \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2 \u03B3\u03B9\u03B1\
-      \n        # \u03BC\u03B5\u03C1\u03B9\u03BA\u03AD\u03C2 \u03B5\u03BA\u03B1\u03C4\
-      \u03BF\u03BD\u03C4\u03AC\u03B4\u03B5\u03C2 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\
-      \u03B1\xB7 \u03B5\u03BB\u03AD\u03B3\u03C7\u03BF\u03BD\u03C4\u03B1\u03C2 \u03A7\
-      \u0399\u039B\u0399\u0391\u0394\u0395\u03A3 \u03C5\u03C0\u03BF\u03C8\u03AE\u03C6\
-      \u03B9\u03B1 \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03B1 \u03C3\u03B5\n\
-      \        # \u03B1\u03C5\u03C4\u03CC \u03C4\u03BF \u03B4\u03B9\u03AC\u03C3\u03C4\
-      \u03B7\u03BC\u03B1, \u03AD\u03BD\u03B1 \u03BA\u03B1\u03C4\u03CE\u03C6\u03BB\u03B9\
-      \ 90% \u03AD\u03B2\u03C1\u03B9\u03C3\u03BA\u03B5 \u03BA\u03B1\u03C4\u03AC \u03BA\
-      \u03B1\u03B9\u03C1\u03BF\u03CD\u03C2 \u03A8\u0395\u03A5\u0394\u0395\u0399\u03A3\
-      \n        # \u03C3\u03C5\u03C3\u03C7\u03B5\u03C4\u03AF\u03C3\u03B5\u03B9\u03C2\
-      \ \u03C4\u03C5\u03C7\u03B1\u03AF\u03B1, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\
-      \u03BD\u03BF\u03BD\u03C4\u03B1\u03C2 \u03BC\u03CC\u03BD\u03B9\u03BC\u03B1 \u03C3\
-      \u03B5 \u03BB\u03AC\u03B8\u03BF\u03C2 \u03B8\u03AD\u03C3\u03B7.\n        if\
-      \ corr[idx] >= PREAMBLE_LEN - 4:\n            return idx, int(corr[idx])\n \
-      \       return None, None\n\n    def _frame_pos_for_next_bit(self, idx):\n \
-      \       \"\"\"idx = \u03B8\u03AD\u03C3\u03B7 \u03CC\u03C0\u03BF\u03C5 \u03BE\
-      \u03B5\u03BA\u03B9\u03BD\u03AC \u03C4\u03BF preamble \u03BC\u03AD\u03C3\u03B1\
-      \ \u03C3\u03C4\u03BF \u03A4\u03A1\u0395\u03A7\u039F\u039D self._history\n  \
-      \      (\u03AE\u03B4\u03B7 \u03B5\u03BD\u03B7\u03BC\u03B5\u03C1\u03C9\u03BC\u03AD\
-      \u03BD\u03BF \u03CE\u03C3\u03C4\u03B5 \u03BD\u03B1 \u03C0\u03B5\u03C1\u03B9\u03BB\
-      \u03B1\u03BC\u03B2\u03AC\u03BD\u03B5\u03B9 \u03C4\u03BF \u03C4\u03C1\u03AD\u03C7\
-      \u03BF\u03BD batch). \u0395\u03C0\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\u03B9\
-      \ \u03C4\u03B7\n        \u03B8\u03AD\u03C3\u03B7-\u03BC\u03AD\u03C3\u03B1-\u03C3\
-      \u03C4\u03BF-\u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\u03BF \u03C4\u03BF\u03C5 bit\
-      \ \u03C0\u03BF\u03C5 \u03B8\u03B1 \u03C6\u03C4\u03AC\u03C3\u03B5\u03B9 \u03C3\
-      \u03C4\u03B7\u03BD \u0391\u03A1\u03A7\u0397 \u03C4\u03B7\u03C2 \u03B5\u03C0\u03CC\
-      \u03BC\u03B5\u03BD\u03B7\u03C2\n        \u03BA\u03BB\u03AE\u03C3\u03B7\u03C2\
-      \ work().\"\"\"\n        return int((len(self._history) - idx) % FRAME_LEN)\n\
-      \n    def work(self, input_items, output_items):\n        x = input_items[0].astype(np.int8)\n\
-      \        ber_out = output_items[0]\n        ser_out = output_items[1]\n    \
-      \    n = len(x)\n        # \u03A4\u039F\u03A5\u039B\u0391\u03A7\u0399\u03A3\u03A4\
-      \u039F\u039D \u03BC\u03AF\u03B1 \u03C0\u03BB\u03AE\u03C1\u03B7 \u03C0\u03B5\u03C1\
-      \u03AF\u03BF\u03B4\u03BF \u03C0\u03BB\u03B1\u03B9\u03C3\u03AF\u03BF\u03C5 +\
-      \ \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF \u2014 \u03B1\u03BB\
-      \u03BB\u03B9\u03CE\u03C2 \u03C4\u03BF\n        # \u03BA\u03C5\u03BB\u03B9\u03CC\
-      \u03BC\u03B5\u03BD\u03BF \u03B9\u03C3\u03C4\u03BF\u03C1\u03B9\u03BA\u03CC \u03B4\
-      \u03B5\u03BD \u03B5\u03B3\u03B3\u03C5\u03AC\u03C4\u03B1\u03B9 \u03BD\u03B1 \u03C0\
-      \u03B5\u03C1\u03B9\u03AD\u03C7\u03B5\u03B9 \u039A\u0391\u039D\u0395\u039D\u0391\
-      \ \u03C0\u03BB\u03AE\u03C1\u03B5\u03C2 preamble\n        # (verified bug: \u03BC\
-      \u03B5 \u03BC\u03B9\u03BA\u03C1\u03CC\u03C4\u03B5\u03C1\u03BF \u03B9\u03C3\u03C4\
-      \u03BF\u03C1\u03B9\u03BA\u03CC, chunk_size >= \u03BC\u03B5\u03C1\u03B9\u03BA\
-      \u03AD\u03C2 \u03C7\u03B9\u03BB\u03B9\u03AC\u03B4\u03B5\u03C2\n        # bits\
-      \ \u03AD\u03BA\u03B1\u03BD\u03B5 \u03C4\u03B7\u03BD \u03B1\u03BD\u03B1\u03B6\
-      \u03AE\u03C4\u03B7\u03C3\u03B7 \u03BD\u03B1 \u03B1\u03C0\u03BF\u03C4\u03C5\u03B3\
-      \u03C7\u03AC\u03BD\u03B5\u03B9 \u03B5\u03BD\u03C4\u03B5\u03BB\u03CE\u03C2 \u2014\
-      \ \u03BA\u03B1\u03B9 \u03BF \u03C0\u03B5\u03C1\u03B9\u03BF\u03B4\u03B9\u03BA\
-      \u03CC\u03C2\n        # \u03AD\u03BB\u03B5\u03B3\u03C7\u03BF\u03C2 \u03B5\u03C0\
-      \u03B1\u03BB\u03AE\u03B8\u03B5\u03C5\u03C3\u03B7\u03C2 \u03C7\u03C1\u03B5\u03B9\
-      \u03AC\u03B6\u03B5\u03C4\u03B1\u03B9 \u03A4\u0397\u039D \u0399\u0394\u0399\u0391\
-      \ \u03B5\u03B3\u03B3\u03CD\u03B7\u03C3\u03B7, \u03B1\u03BB\u03BB\u03B9\u03CE\
-      \u03C2 \xAB\u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9\xBB\n    \
-      \    # \u03BC\u03B5 \u03B2\u03AC\u03C3\u03B7 \u03C8\u03B5\u03C5\u03B4\u03B5\u03AF\
-      \u03C2 \u03C3\u03C5\u03C3\u03C7\u03B5\u03C4\u03AF\u03C3\u03B5\u03B9\u03C2 \u03C0\
-      \u03AC\u03BD\u03C9 \u03C3\u03B5 \u03AD\u03BD\u03B1 \u03B9\u03C3\u03C4\u03BF\u03C1\
-      \u03B9\u03BA\u03CC \u03C7\u03C9\u03C1\u03AF\u03C2 \u03C0\u03BB\u03AE\u03C1\u03B5\
-      \u03C2\n        # preamble \u03BC\u03AD\u03C3\u03B1 \u03C4\u03BF\u03C5).\n \
-      \       HIST_LEN = FRAME_LEN + 64\n\n        if not self._synced:\n        \
-      \    # \u0391\u03BD\u03B1\u03B6\u03AE\u03C4\u03B7\u03C3\u03B7 \u03C3\u03C4\u03BF\
-      \ \u03A0\u039B\u0397\u03A1\u0395\u03A3 (\u03BC\u03B7 \u03C0\u03B5\u03C1\u03B9\
-      \u03BA\u03BF\u03BC\u03BC\u03AD\u03BD\u03BF) probe \u2014 \u03B1\u03BD \u03C0\
-      \u03B5\u03C1\u03B9\u03BA\u03CC\u03C0\u03C4\u03B1\u03C4\u03B5\n            #\
-      \ \u03A0\u03A1\u0399\u039D \u03C4\u03B7\u03BD \u03B1\u03BD\u03B1\u03B6\u03AE\
-      \u03C4\u03B7\u03C3\u03B7, \u03AD\u03BD\u03B1 \u03BC\u03B5\u03B3\u03AC\u03BB\u03BF\
-      \ \u03C0\u03C1\u03CE\u03C4\u03BF batch \u03B8\u03B1 \u03BC\u03C0\u03BF\u03C1\
-      \u03BF\u03CD\u03C3\u03B5 \u03BD\u03B1\n            # \xAB\u03C3\u03C0\u03C1\u03CE\
-      \u03BE\u03B5\u03B9 \u03AD\u03BE\u03C9\xBB \u03C4\u03BF \u03AF\u03B4\u03B9\u03BF\
-      \ \u03C4\u03BF preamble \u03C0\u03C1\u03B9\u03BD \u03C0\u03C1\u03BF\u03BB\u03AC\
-      \u03B2\u03B5\u03B9 \u03BD\u03B1 \u03B2\u03C1\u03B5\u03B8\u03B5\u03AF\n     \
-      \       # (verified bug: \u03BC\u03B5\u03B3\u03AC\u03BB\u03B1 batch \u03BC\u03B5\
-      \u03B3\u03AD\u03B8\u03B7 \u03B1\u03C0\u03AD\u03C4\u03C5\u03C7\u03B1\u03BD \u03B5\
-      \u03BD\u03C4\u03B5\u03BB\u03CE\u03C2 \u03BD\u03B1\n            # \u03C3\u03C5\
-      \u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03C4\u03BF\u03CD\u03BD).\n     \
-      \       probe = np.concatenate([self._history, x])\n            idx, corr_val\
-      \ = self._correlate_best(probe)\n            if idx is not None:\n         \
-      \       self._synced = True\n                base = len(probe) - n  # \u03B8\
-      \u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1 \u03C3\u03C4\u03BF probe \u03CC\u03C0\
-      \u03BF\u03C5 \u03BE\u03B5\u03BA\u03B9\u03BD\u03AC \u03C4\u03BF x\n         \
-      \       positions = (np.arange(n, dtype=np.int64) + base - idx) % FRAME_LEN\n\
-      \                expected = EXPECTED_FRAME_BITS[positions]\n               \
-      \ err_batch = (x != expected).astype(np.uint8)\n                self._record_bits(err_batch)\n\
-      \                self._frame_pos = (len(probe) - idx) % FRAME_LEN\n        \
-      \        self._bits_since_check = 0\n            self._history = probe[-HIST_LEN:]\n\
-      \        else:\n            self._history = np.concatenate([self._history, x])[-HIST_LEN:]\n\
-      \            idxs = (self._frame_pos + np.arange(n)) % FRAME_LEN\n         \
-      \   expected = EXPECTED_FRAME_BITS[idxs]\n            err_batch = (x != expected).astype(np.uint8)\n\
+      \ 2).any(axis=1).astype(np.uint8)\n            self._sym_ptr, self._sym_filled,\
+      \ self._sym_err_sum = self._push(\n                self._sym_err_buf, self._sym_ptr,\
+      \ self._sym_filled,\n                self._sym_err_sum, sym_err)\n\n    def\
+      \ _correlate_best(self, probe):\n        \"\"\"(idx, \u03C4\u03B9\u03BC\u03AE\
+      ) \u03C4\u03B7\u03C2 \u03BA\u03B1\u03BB\u03CD\u03C4\u03B5\u03C1\u03B7\u03C2\
+      \ \u03B8\u03AD\u03C3\u03B7\u03C2 preamble \u03BC\u03AD\u03C3\u03B1 \u03C3\u03C4\
+      \u03BF probe, \u03AE\n        (None, None). \u0391\u03C0\u03B1\u03B9\u03C4\u03B5\
+      \u03AF\u03C4\u03B1\u03B9 \u03C3\u03C7\u03B5\u03B4\u03CC\u03BD \u03A4\u0395\u039B\
+      \u0395\u0399\u039F \u03C4\u03B1\u03AF\u03C1\u03B9\u03B1\u03C3\u03BC\u03B1 (\u2264\
+      2 \u03BB\u03AC\u03B8\u03B7 \u03C3\u03C4\u03B1 128\n        bits): \u03BC\u03B5\
+      \ \u03C7\u03B1\u03BB\u03B1\u03C1\u03CC \u03BA\u03B1\u03C4\u03CE\u03C6\u03BB\u03B9\
+      , \u03B7 \xAB\u03B8\u03BF\u03C1\u03C5\u03B2\u03CE\u03B4\u03B7\u03C2\xBB \u03C1\
+      \u03BF\u03AE bits \u03BA\u03B1\u03C4\u03AC \u03C4\u03B7 \u03C3\u03CD\u03B3\u03BA\
+      \u03BB\u03B9\u03C3\u03B7 \u03C4\u03C9\u03BD\n        \u03B2\u03C1\u03CC\u03C7\
+      \u03C9\u03BD \u03AD\u03B4\u03B9\u03BD\u03B5 \u03BA\u03B1\u03C4\u03AC \u03BA\u03B1\
+      \u03B9\u03C1\u03BF\u03CD\u03C2 \u03C8\u03B5\u03C5\u03B4\u03B5\u03AF\u03C2 \u03C3\
+      \u03C5\u03C3\u03C7\u03B5\u03C4\u03AF\u03C3\u03B5\u03B9\u03C2 \u03C3\u03B5 \u03BB\
+      \u03AC\u03B8\u03BF\u03C2 \u03B8\u03AD\u03C3\u03B7.\"\"\"\n        if len(probe)\
+      \ < PREAMBLE_LEN:\n            return None, None\n        pm1 = probe.astype(np.float32)\
+      \ * 2 - 1\n        corr = np.correlate(pm1, PREAMBLE_PM1, mode='valid')\n  \
+      \      idx = int(np.argmax(corr))\n        if corr[idx] >= PREAMBLE_LEN - 4:\n\
+      \            return idx, int(corr[idx])\n        return None, None\n\n    #\
+      \ ------------------------------------------------------------------\n    def\
+      \ work(self, input_items, output_items):\n        x = input_items[0].astype(np.int8)\n\
+      \        n = len(x)\n        # \u03A4\u03BF\u03C5\u03BB\u03AC\u03C7\u03B9\u03C3\
+      \u03C4\u03BF\u03BD \u03BC\u03AF\u03B1 \u03C0\u03BB\u03AE\u03C1\u03B7\u03C2 \u03C0\
+      \u03B5\u03C1\u03AF\u03BF\u03B4\u03BF\u03C2 \u03C0\u03BB\u03B1\u03B9\u03C3\u03AF\
+      \u03BF\u03C5 + \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF, \u03CE\
+      \u03C3\u03C4\u03B5 \u03C4\u03BF\n        # \u03B9\u03C3\u03C4\u03BF\u03C1\u03B9\
+      \u03BA\u03CC \u03BD\u03B1 \u03C0\u03B5\u03C1\u03B9\u03AD\u03C7\u03B5\u03B9 \u03C0\
+      \u03AC\u03BD\u03C4\u03B1 \u03AD\u03BD\u03B1 \u03BF\u03BB\u03CC\u03BA\u03BB\u03B7\
+      \u03C1\u03BF preamble.\n        HIST_LEN = FRAME_LEN + 64\n\n        if not\
+      \ self._synced:\n            probe = np.concatenate([self._history, x])\n  \
+      \          idx, _ = self._correlate_best(probe)\n            if idx is not None:\n\
+      \                self._synced = True\n                base = len(probe) - n\
+      \  # \u03B8\u03AD\u03C3\u03B7 \u03C4\u03BF\u03C5 x \u03BC\u03AD\u03C3\u03B1\
+      \ \u03C3\u03C4\u03BF probe\n                # \u03BC\u03CC\u03BD\u03BF \u03C4\
+      \u03B1 bits \u039C\u0395\u03A4\u0391 \u03C4\u03B7\u03BD \u03B1\u03C1\u03C7\u03AE\
+      \ \u03C4\u03BF\u03C5 preamble \u03BC\u03B5\u03C4\u03C1\u03BF\u03CD\u03BD\n \
+      \               start = max(0, idx - base)\n                positions = (np.arange(start,\
+      \ n, dtype=np.int64) + base - idx) % FRAME_LEN\n                err_batch =\
+      \ (x[start:] != EXPECTED_FRAME_BITS[positions]).astype(np.uint8)\n         \
+      \       self._record_bits(err_batch)\n                self._frame_pos = (len(probe)\
+      \ - idx) % FRAME_LEN\n                self._bits_since_check = 0\n         \
+      \   self._history = probe[-HIST_LEN:]\n        else:\n            self._history\
+      \ = np.concatenate([self._history, x])[-HIST_LEN:]\n            idxs = (self._frame_pos\
+      \ + np.arange(n)) % FRAME_LEN\n            err_batch = (x != EXPECTED_FRAME_BITS[idxs]).astype(np.uint8)\n\
       \            self._record_bits(err_batch)\n            self._frame_pos = (self._frame_pos\
       \ + n) % FRAME_LEN\n            self._bits_since_check += n\n\n            #\
       \ \u03A0\u03B5\u03C1\u03B9\u03BF\u03B4\u03B9\u03BA\u03AE \u03B5\u03C0\u03B1\u03BB\
-      \u03AE\u03B8\u03B5\u03C5\u03C3\u03B7/\u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\
-      \u03B7: \u03B1\u03BA\u03CC\u03BC\u03B7 \u03BA\u03B1\u03B9 \u03BC\u03B5 \u03BC\
-      \u03B7\u03B4\u03B5\u03BD\u03B9\u03BA\u03CC \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\
-      ,\n            # \u03B2\u03C1\u03AD\u03B8\u03B7\u03BA\u03B5 \u03B5\u03BC\u03C0\
-      \u03B5\u03B9\u03C1\u03B9\u03BA\u03AC \u03BC\u03B9\u03B1 \u03B1\u03C1\u03B3\u03AE\
-      , \u03B5\u03C0\u03AF\u03BC\u03BF\u03BD\u03B7 \u03BF\u03BB\u03AF\u03C3\u03B8\u03B7\
-      \u03C3\u03B7 \u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD \u03C3\u03C5\
-      \u03BC\u03B2\u03CC\u03BB\u03BF\u03C5\n            # (~1 \u03C3\u03CD\u03BC\u03B2\
-      \u03BF\u03BB\u03BF \u03B1\u03BD\u03AC ~1250 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\
-      \u03B1, \u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03B7 \u03B1\u03C0\
-      \u03CC \u03C4\u03BF loop bandwidth\n            # \u03C4\u03BF\u03C5 Symbol\
-      \ Sync \u2014 \u03C0\u03B9\u03B8\u03B1\u03BD\u03AE \u03BC\u03B5\u03C1\u03BF\u03BB\
-      \u03B7\u03C8\u03AF\u03B1 \u03C4\u03BF\u03C5 \u03AF\u03B4\u03B9\u03BF\u03C5 \u03C4\
-      \u03BF\u03C5 Mueller & Muller\n            # TED). \u03A3\u03B5 \u03C0\u03C1\
-      \u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03B1\u03C3\u03CD\u03C1\u03BC\
-      \u03B1\u03C4\u03BF \u03B6\u03B5\u03CD\u03B3\u03BF\u03C2 TX/RX \u03BC\u03B5 \u03B1\
-      \u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03BF\u03C5\u03C2\n       \
-      \     # \u03C4\u03B1\u03BB\u03B1\u03BD\u03C4\u03C9\u03C4\u03AD\u03C2 \u03B8\u03B1\
-      \ \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03BF\u03CD\u03C4\u03C9\u03C2\
-      \ \u03AE \u03AC\u03BB\u03BB\u03C9\u03C2 \u03BA\u03AC\u03C0\u03BF\u03B9\u03B1\
-      \ \u03B1\u03C0\u03CC\u03BA\u03BB\u03B9\u03C3\u03B7 \u03C1\u03BF\u03BB\u03BF\u03B3\
-      \u03B9\u03BF\u03CD \u2014\n            # \u03BF\u03C0\u03CC\u03C4\u03B5 \u03C4\
-      \u03BF \u03A3\u03A9\u03A3\u03A4\u039F, \u03B1\u03BD\u03B8\u03B5\u03BA\u03C4\u03B9\
-      \u03BA\u03CC \u03C3\u03C7\u03AD\u03B4\u03B9\u03BF \u03B5\u03AF\u03BD\u03B1\u03B9\
-      \ \u03BD\u03B1 \u03B5\u03C0\u03B1\u03BB\u03B7\u03B8\u03B5\u03CD\u03BF\u03C5\u03BC\
-      \u03B5 \u03A0\u0395\u03A1\u0399\u039F\u0394\u0399\u039A\u0391\n            #\
-      \ \u03C4\u03B7 \u03C3\u03C4\u03BF\u03AF\u03C7\u03B9\u03C3\u03B7 \u03B1\u03BD\
-      \u03C4\u03AF \u03BD\u03B1 \xAB\u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03BF\
-      \u03C5\u03BC\u03B5 \u03BC\u03AF\u03B1 \u03C6\u03BF\u03C1\u03AC \u03B3\u03B9\u03B1\
-      \ \u03C0\u03AC\u03BD\u03C4\u03B1\xBB.\n            if self._bits_since_check\
+      \u03AE\u03B8\u03B5\u03C5\u03C3\u03B7 \u03C3\u03C4\u03BF\u03AF\u03C7\u03B9\u03C3\
+      \u03B7\u03C2 (\u03BF\u03BB\u03AF\u03C3\u03B8\u03B7\u03C3\u03B7 \u03C1\u03BF\u03BB\
+      \u03BF\u03B3\u03B9\u03BF\u03CD TX/RX).\n            if self._bits_since_check\
       \ >= RECHECK_INTERVAL:\n                self._bits_since_check = 0\n       \
-      \         idx, corr_val = self._correlate_best(self._history)\n            \
-      \    if idx is not None:\n                    corrected = self._frame_pos_for_next_bit(idx)\n\
-      \                    if corrected != self._frame_pos:\n                    \
-      \    self.resync_count += 1\n                    self._frame_pos = corrected\n\
-      \n        if self._buf_filled > 0:\n            self.ber = self._bit_err_sum\
-      \ / float(self._buf_filled)\n        if self._sym_filled > 0:\n            self.ser\
-      \ = self._sym_err_sum / float(self._sym_filled)\n\n        ber_out[:] = self.ber\n\
-      \        ser_out[:] = self.ser\n        return n\n"
+      \         idx, _ = self._correlate_best(self._history)\n                if idx\
+      \ is not None:\n                    corrected = int((len(self._history) - idx)\
+      \ % FRAME_LEN)\n                    if corrected != self._frame_pos:\n     \
+      \                   self.resync_count += 1\n                    self._frame_pos\
+      \ = corrected\n\n            # \u03A7\u03B1\u03BC\u03AD\u03BD\u03BF \u03C3\u03AE\
+      \u03BC\u03B1 / \u03BB\u03AC\u03B8\u03BF\u03C2 \u03C3\u03C4\u03BF\u03AF\u03C7\
+      \u03B9\u03C3\u03B7: \u03BE\u03B5\u03BA\u03BB\u03B5\u03AF\u03B4\u03C9\u03BC\u03B1\
+      \ \u03BA\u03B1\u03B9 \u03BD\u03AD\u03B1 \u03B1\u03BD\u03B1\u03B6\u03AE\u03C4\
+      \u03B7\u03C3\u03B7.\n            if (self._buf_filled >= WINDOW_BITS and\n \
+      \                   self._bit_err_sum > UNLOCK_BER * WINDOW_BITS):\n       \
+      \         self.unlock_count += 1\n                self._reset_lock()\n\n   \
+      \     if self._synced:\n            if self._buf_filled > 0:\n             \
+      \   self.ber = self._bit_err_sum / float(self._buf_filled)\n            if self._sym_filled\
+      \ > 0:\n                self.ser = self._sym_err_sum / float(self._sym_filled)\n\
+      \n        output_items[0][:] = self.ber\n        output_items[1][:] = self.ser\n\
+      \        output_items[2][:] = 1.0 if self._synced else 0.0\n        return n\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -774,60 +764,52 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: "('\u039C\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER', 'blk',\
-      \ [], [('0', 'byte', 1)], [('0', 'float', 1), ('1', 'float', 1)], \"\u039C\u03B5\
-      \u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER: \u03B5\u03BD\u03C4\u03BF\u03C0\
-      \u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF \u03B3\u03BD\u03C9\u03C3\u03C4\u03CC preamble\
-      \ (64 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1,\\n    fixed-seed=42 \u2014\
-      \ \u0399\u0394\u0399\u039F\u03A3 \u03C3\u03C0\u03CC\u03C1\u03BF\u03C2 \u03BC\
-      \u03B5 \u03C4\u03BF psk_tx.grc) \u03BC\u03AD\u03C3\u03C9 \u03C3\u03C5\u03C3\u03C7\
-      \u03AD\u03C4\u03B9\u03C3\u03B7\u03C2 (correlation)\\n    \u03C0\u03AC\u03BD\u03C9\
-      \ \u03C3\u03C4\u03B7 \u03C1\u03BF\u03AE \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\
-      \u03BC\u03AD\u03BD\u03C9\u03BD bits, \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\
-      \u03B5\u03B9 \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7 \u03BC\u03AD\u03C3\u03B1\
-      \ \u03C3\u03C4\u03BF \u03B5\u03C0\u03B1\u03BD\u03B1\u03BB\u03B1\u03BC\u03B2\u03B1\
-      \u03BD\u03CC\u03BC\u03B5\u03BD\u03BF\\n    \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\
-      \u03BF (preamble+\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1 \xABK510 PSK-QAM TEST\xBB\
-      , \u0399\u0394\u0399\u039F \u03BA\u03B5\u03AF\u03BC\u03B5\u03BD\u03BF \u03BC\
-      \u03B5 \u03C4\u03BF psk_tx.grc),\\n    \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\
-      \u03AC \u03C3\u03C5\u03B3\u03BA\u03C1\u03AF\u03BD\u03B5\u03B9 \u039A\u0391\u0398\
-      \u0395 \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF bit \u03BC\u03B5 \u03C4\u03BF\
-      \ \u03B1\u03BD\u03B1\u03BC\u03B5\u03BD\u03CC\u03BC\u03B5\u03BD\u03BF, \u03B4\
-      \u03B9\u03B1\u03C4\u03B7\u03C1\u03CE\u03BD\u03C4\u03B1\u03C2 \u03AD\u03BD\u03B1\
-      \\n    \u03BA\u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\
-      \u03AC\u03B8\u03C5\u03C1\u03BF (sliding window) \u03C4\u03C9\u03BD \u03C4\u03B5\
-      \u03BB\u03B5\u03C5\u03C4\u03B1\u03AF\u03C9\u03BD 5000 bits \u2014 BER = \u03C0\
-      \u03BF\u03C3\u03BF\u03C3\u03C4\u03CC\\n    \u03BB\u03B1\u03BD\u03B8\u03B1\u03C3\
-      \u03BC\u03AD\u03BD\u03C9\u03BD bits, SER = \u03C0\u03BF\u03C3\u03BF\u03C3\u03C4\
-      \u03CC \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\u03BD (\u03B6\u03B5\u03CD\u03B3\
-      \u03B7 2 bits) \u03BC\u03B5 \u03C4\u03BF\u03C5\u03BB\u03AC\u03C7\u03B9\u03C3\
-      \u03C4\u03BF\u03BD \u03AD\u03BD\u03B1\\n    \u03BB\u03AC\u03B8\u03BF\u03C2 bit.\
-      \ \u0388\u03BE\u03BF\u03B4\u03BF\u03B9: \u03B4\u03CD\u03BF \u03C3\u03C5\u03BD\
-      \u03B5\u03C7\u03AE \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03B1 float (BER, SER)\
-      \ \u2014 \u03B7 \u03C4\u03C1\u03AD\u03C7\u03BF\u03C5\u03C3\u03B1 \u03C4\u03B9\
-      \u03BC\u03AE \u03C3\u03B5\\n    \u03BA\u03AC\u03B8\u03B5 \u03B4\u03B5\u03AF\u03B3\
-      \u03BC\u03B1 \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5, \u03B3\u03B9\u03B1\
-      \ \u03B1\u03C0\u03B5\u03C5\u03B8\u03B5\u03AF\u03B1\u03C2 \u03C3\u03CD\u03BD\u03B4\
-      \u03B5\u03C3\u03B7 \u03C3\u03B5 QT GUI Number Sink.\\n\\n    \u03A4\u03C1\u03AD\
-      \u03C7\u03B5\u03B9 \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC BIT\
-      \ (\u03AD\u03C9\u03C2 ~100 kbps \u03B3\u03B9\u03B1 QPSK \u03C3\u03C4\u03B1 50\
-      \ kbaud), \u03CC\u03C7\u03B9 \u03C3\u03C4\u03BF\u03BD\\n    \u03C0\u03BB\u03AE\
-      \u03C1\u03B7 \u03C1\u03C5\u03B8\u03BC\u03CC \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\
-      \u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\u03B1\u03C2 RF \u2014 \u03B3\u03B9' \u03B1\
-      \u03C5\u03C4\u03CC \u03AD\u03BD\u03B1 epy_block \u03B5\u03B4\u03CE \u03B4\u03B5\
-      \u03BD \u03BA\u03B9\u03BD\u03B4\u03C5\u03BD\u03B5\u03CD\u03B5\u03B9\\n    \u03B1\
-      \u03C0\u03CC \u03C4\u03BF \u03C0\u03C1\u03CC\u03B2\u03BB\u03B7\u03BC\u03B1 \u03B1\
-      \u03BD\u03C4\u03B1\u03B3\u03C9\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD GIL/\u03C5\
-      \u03C0\u03BF\u03B4\u03BF\u03C7\u03AD\u03B1 \u03C5\u03BB\u03B9\u03BA\u03BF\u03CD\
-      \ (lab2 ook_tx.grc)\xB7 \u03B7\\n    \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\u03B9\
-      \u03BA\u03AE \u03BB\u03BF\u03B3\u03B9\u03BA\u03AE \u03B5\u03AF\u03BD\u03B1\u03B9\
-      \ \u03B4\u03B9\u03B1\u03BD\u03C5\u03C3\u03BC\u03B1\u03C4\u03BF\u03C0\u03BF\u03B9\
-      \u03B7\u03BC\u03AD\u03BD\u03B7 (numpy, \u03CC\u03C7\u03B9 \u03B2\u03C1\u03CC\
-      \u03C7\u03BF\u03C2 Python \u03B1\u03BD\u03AC\\n    bit) \u03CE\u03C3\u03C4\u03B5\
-      \ \u03BD\u03B1 \u03AD\u03C7\u03B5\u03B9 \u03AC\u03BD\u03B5\u03C4\u03BF \u03C0\
-      \u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF \u03C0\u03C1\u03B1\u03B3\u03BC\
-      \u03B1\u03C4\u03B9\u03BA\u03BF\u03CD \u03C7\u03C1\u03CC\u03BD\u03BF\u03C5 (~190x\
-      \ \u03B5\u03C0\u03B9\u03B2\u03B5\u03B2\u03B1\u03B9\u03CE\u03B8\u03B7\u03BA\u03B5\
-      ).\\n    \", [])"
+      \ [], [('0', 'byte', 1)], [('0', 'float', 1), ('1', 'float', 1), ('2', 'float',\
+      \ 1)], '\u039C\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 BER/SER: \u03B5\u03BD\
+      \u03C4\u03BF\u03C0\u03AF\u03B6\u03B5\u03B9 \u03C4\u03BF \u03B3\u03BD\u03C9\u03C3\
+      \u03C4\u03CC preamble (64 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1,\\n   \
+      \ fixed-seed=42 \u2014 \u0399\u0394\u0399\u039F\u03A3 \u03C3\u03C0\u03CC\u03C1\
+      \u03BF\u03C2 \u03BC\u03B5 \u03C4\u03BF\u03BD \u03C0\u03BF\u03BC\u03C0\u03CC\
+      ) \u03BC\u03AD\u03C3\u03C9 \u03C3\u03C5\u03C3\u03C7\u03AD\u03C4\u03B9\u03C3\u03B7\
+      \u03C2 \u03C0\u03AC\u03BD\u03C9 \u03C3\u03C4\u03B7 \u03C1\u03BF\u03AE\\n   \
+      \ \u03B1\u03BD\u03B1\u03BA\u03C4\u03B7\u03BC\u03AD\u03BD\u03C9\u03BD bits, \u03BA\
+      \u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03B5\u03B9 \u03C4\u03B7 \u03B8\u03AD\u03C3\
+      \u03B7 \u03BC\u03AD\u03C3\u03B1 \u03C3\u03C4\u03BF \u03B5\u03C0\u03B1\u03BD\u03B1\
+      \u03BB\u03B1\u03BC\u03B2\u03B1\u03BD\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03BB\
+      \u03B1\u03AF\u03C3\u03B9\u03BF\\n    (preamble + \u03BC\u03AE\u03BD\u03C5\u03BC\
+      \u03B1 \xABK510 PSK-QAM TEST\xBB) \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\u03AC\
+      \ \u03C3\u03C5\u03B3\u03BA\u03C1\u03AF\u03BD\u03B5\u03B9 \u039A\u0391\u0398\u0395\
+      \ \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF bit\\n    \u03BC\u03B5 \u03C4\u03BF\
+      \ \u03B1\u03BD\u03B1\u03BC\u03B5\u03BD\u03CC\u03BC\u03B5\u03BD\u03BF, \u03C3\
+      \u03B5 \u03BA\u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\
+      \u03AC\u03B8\u03C5\u03C1\u03BF \u03C4\u03C9\u03BD \u03C4\u03B5\u03BB\u03B5\u03C5\
+      \u03C4\u03B1\u03AF\u03C9\u03BD 5000 bits.\\n    BER = \u03C0\u03BF\u03C3\u03BF\
+      \u03C3\u03C4\u03CC \u03BB\u03B1\u03BD\u03B8\u03B1\u03C3\u03BC\u03AD\u03BD\u03C9\
+      \u03BD bits, SER = \u03C0\u03BF\u03C3\u03BF\u03C3\u03C4\u03CC \u03C3\u03C5\u03BC\
+      \u03B2\u03CC\u03BB\u03C9\u03BD (\u03B6\u03B5\u03CD\u03B3\u03B7 bits) \u03BC\u03B5\
+      \\n    \u03C4\u03BF\u03C5\u03BB\u03AC\u03C7\u03B9\u03C3\u03C4\u03BF\u03BD \u03AD\
+      \u03BD\u03B1 \u03BB\u03AC\u03B8\u03BF\u03C2 bit.\\n\\n    \u0388\u03BE\u03BF\
+      \u03B4\u03BF\u03B9: BER, SER, \u03A3\u03A5\u0393\u03A7\u03A1\u039F\u039D\u0399\
+      \u03A3\u039C\u039F\u03A3 (1 = \u03BA\u03BB\u03B5\u03B9\u03B4\u03C9\u03BC\u03AD\
+      \u03BD\u03BF \u03C3\u03C4\u03BF \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\u03BF,\
+      \ 0 = \u03CC\u03C7\u03B9).\\n    \u038C\u03C3\u03BF \u0394\u0395\u039D \u03C5\
+      \u03C0\u03AC\u03C1\u03C7\u03B5\u03B9 \u03C3\u03C5\u03B3\u03C7\u03C1\u03BF\u03BD\
+      \u03B9\u03C3\u03BC\u03CC\u03C2, \u03C4\u03BF BER/SER \u03B4\u03B5\u03AF\u03C7\
+      \u03BD\u03B5\u03B9 0.5/0.75 (\u03B7 \u03C4\u03B9\u03BC\u03AE \u03C4\u03C9\u03BD\
+      \\n    \u03C4\u03C5\u03C7\u03B1\u03AF\u03C9\u03BD bits) \u2014 \u03A0\u039F\u03A4\
+      \u0395 \u03C8\u03B5\u03CD\u03C4\u03B9\u03BA\u03BF 0. \u0391\u03BD \u03BC\u03B5\
+      \u03C4\u03AC \u03C4\u03BF \u03BA\u03BB\u03B5\u03AF\u03B4\u03C9\u03BC\u03B1 \u03C4\
+      \u03BF BER \u03C4\u03BF\u03C5 \u03B3\u03B5\u03BC\u03AC\u03C4\u03BF\u03C5\\n\
+      \    \u03C0\u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\u03C5 \u03BE\u03B5\u03C0\
+      \u03B5\u03C1\u03AC\u03C3\u03B5\u03B9 \u03C4\u03BF 0.25, \u03BF \u03BC\u03B5\u03C4\
+      \u03C1\u03B7\u03C4\u03AE\u03C2 \xAB\u03BE\u03B5\u03BA\u03BB\u03B5\u03B9\u03B4\
+      \u03CE\u03BD\u03B5\u03B9\xBB, \u03BC\u03B7\u03B4\u03B5\u03BD\u03AF\u03B6\u03B5\
+      \u03B9 \u03C4\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF\\n    \u03BA\
+      \u03B1\u03B9 \u03BE\u03B1\u03BD\u03B1\u03C8\u03AC\u03C7\u03BD\u03B5\u03B9 \u03C4\
+      \u03BF preamble (\u03C0.\u03C7. \u03CC\u03C4\u03B1\u03BD \u03C7\u03AC\u03B8\u03B7\
+      \u03BA\u03B5 \u03C4\u03BF \u03C3\u03AE\u03BC\u03B1 \u03AE \u03B3\u03BB\u03AF\
+      \u03C3\u03C4\u03C1\u03B7\u03C3\u03B5 \u03BF \u03B4\u03AD\u03BA\u03C4\u03B7\u03C2\
+      ).\\n    ', [])"
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -838,120 +820,293 @@ blocks:
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
-      \ os\nimport csv\nimport datetime\n\n\nclass blk(gr.sync_block):\n    \"\"\"\
-      \u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\u03B7\u03BC\u03B5\
-      \u03AF\u03BF\u03C5 BER/SER \u03C3\u03B5 CSV, \u03BC\u03B5 \u03C4\u03BF \u03C0\
-      \u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5 QT GUI Message\n    Push Button\
+      \ os\nimport csv\nimport datetime\n\nHEADER = ['timestamp', 'seat', 'tx_gain_db',\
+      \ 'rf_gain_db', 'freq_mhz', 'scheme',\n          'symbol_rate', 'synced', 'ebn0_db',\
+      \ 'ber', 'ser', 'bits']\n\n\nclass blk(gr.sync_block):\n    \"\"\"\u039A\u03B1\
+      \u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03B5\u03BD\u03CC\u03C2 \u03C3\u03B7\
+      \u03BC\u03B5\u03AF\u03BF\u03C5 \u03BC\u03AD\u03C4\u03C1\u03B7\u03C3\u03B7\u03C2\
+      \ \u03C3\u03B5 CSV \u03BC\u03B5 \u03C4\u03BF \u03BA\u03BF\u03C5\u03BC\u03C0\u03AF\
       \ \xAB\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\u03B7\u03BC\
-      \u03B5\u03AF\u03BF\u03C5\xBB. \u0394\u03B9\u03B1\u03B2\u03AC\u03B6\u03B5\u03B9\
-      \ \u03C4\u03B9\u03C2 \u03A4\u0395\u039B\u0395\u03A5\u03A4\u0391\u0399\u0395\u03A3\
-      \ \u03C4\u03B9\u03BC\u03AD\u03C2 BER/SER \u03B1\u03C0\u03CC\n    \u03C4\u03B1\
-      \ \u03B4\u03CD\u03BF \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03B1 \u03B5\u03B9\
-      \u03C3\u03CC\u03B4\u03BF\u03C5 (\u03C4\u03B1 \u03AF\u03B4\u03B9\u03B1 \u03C0\
-      \u03BF\u03C5 \u03C4\u03C1\u03BF\u03C6\u03BF\u03B4\u03BF\u03C4\u03BF\u03CD\u03BD\
-      \ \u03C4\u03B1 QT GUI Number Sinks) \u03BA\u03B1\u03B9\n    \u03C0\u03C1\u03BF\
-      \u03C3\u03B8\u03AD\u03C4\u03B5\u03B9 \u03BC\u03B9\u03B1 \u03B3\u03C1\u03B1\u03BC\
-      \u03BC\u03AE \u03C3\u03C4\u03BF student/results/psk_measurements.csv (\u03C3\
-      \u03C7\u03B5\u03C4\u03B9\u03BA\u03AC \u03BC\u03B5\n    \u03C4\u03B7 \u03B8\u03AD\
-      \u03C3\u03B7 \u03B1\u03C5\u03C4\u03BF\u03CD \u03C4\u03BF\u03C5 \u03B1\u03C1\u03C7\
-      \u03B5\u03AF\u03BF\u03C5, \u03B4\u03B7\u03BB. student/grc/../results/...). \u0394\
-      \u03B7\u03BC\u03B9\u03BF\u03C5\u03C1\u03B3\u03B5\u03AF \u03C4\u03BF\n    \u03B1\
-      \u03C1\u03C7\u03B5\u03AF\u03BF (\u03BC\u03B5 \u03B3\u03C1\u03B1\u03BC\u03BC\u03AE\
-      \ \u03B5\u03C0\u03B9\u03BA\u03B5\u03C6\u03B1\u03BB\u03AF\u03B4\u03B1\u03C2)\
-      \ \u03B1\u03BD \u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9\
-      \ \u03AE\u03B4\u03B7. \u0397 \u03B5\u03B3\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\
-      \u03C4\u03BF \u03B4\u03AF\u03C3\u03BA\u03BF\n    \u03B3\u03AF\u03BD\u03B5\u03C4\
-      \u03B1\u03B9 \u03BC\u03CC\u03BD\u03BF \u03BA\u03B1\u03C4\u03AC \u03C4\u03BF\
-      \ \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5 \u03BA\u03BF\u03C5\
-      \u03BC\u03C0\u03B9\u03BF\u03CD (\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1), \u03CC\
-      \u03C7\u03B9 \u03B1\u03BD\u03AC \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1 \u2014\
-      \ \u03BA\u03B1\u03BC\u03AF\u03B1\n    \u03B5\u03C0\u03AF\u03C0\u03C4\u03C9\u03C3\
-      \u03B7 \u03C3\u03C4\u03BF\u03BD \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\
-      \u03BA\u03CC \u03C7\u03C1\u03CC\u03BD\u03BF \u03C4\u03B7\u03C2 \u03C1\u03BF\u03AE\
-      \u03C2.\"\"\"\n\n    def __init__(self, symbol_rate=20000.0):\n        gr.sync_block.__init__(\n\
-      \            self,\n            name='\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\
-      \u03C6\u03AE CSV',\n            in_sig=[np.float32, np.float32],\n         \
-      \   out_sig=[],\n        )\n        self.symbol_rate = symbol_rate\n       \
-      \ self._last_ber = 0.0\n        self._last_ser = 0.0\n        self.message_port_register_in(pmt.intern('trigger'))\n\
-      \        self.set_msg_handler(pmt.intern('trigger'), self._on_trigger)\n   \
-      \     # \u03A3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03B4\u03C1\
-      \u03BF\u03BC\u03AE \u03C9\u03C2 \u03C0\u03C1\u03BF\u03C2 \u03C4\u03BF \u03A4\
-      \u03A1\u0395\u03A7\u039F\u039D WORKING DIRECTORY \u03BA\u03B1\u03C4\u03AC \u03C4\
-      \u03B7\u03BD \u03B5\u03BA\u03C4\u03AD\u03BB\u03B5\u03C3\u03B7\n        # (\u039F\
-      \u03A7\u0399 __file__ \u2014 \u03C4\u03BF GRC \u03B5\u03BA\u03C4\u03B5\u03BB\
-      \u03B5\u03AF exec() \u03C3\u03B5 \u03B1\u03C5\u03C4\u03CC\u03BD \u03C4\u03BF\
-      \u03BD \u03BA\u03CE\u03B4\u03B9\u03BA\u03B1 \u03A7\u03A9\u03A1\u0399\u03A3 __file__\n\
-      \        # \u03AE\u03B4\u03B7 \u03BA\u03B1\u03C4\u03AC \u03C4\u03B7 \u03C6\u03CC\
-      \u03C1\u03C4\u03C9\u03C3\u03B7/\u03AD\u03BB\u03B5\u03B3\u03C7\u03BF \u03C4\u03BF\
-      \u03C5 .grc, \u03C0\u03C1\u03B9\u03BD \u03BA\u03B1\u03BD \u03C4\u03C1\u03AD\u03BE\
-      \u03B5\u03B9 \u03C4\u03BF flowgraph, \u03BF\u03C0\u03CC\u03C4\u03B5\n      \
-      \  # \u03BC\u03B9\u03B1 \u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C3\u03B7 \u03B1\
-      \u03C0\u03CC __file__ \u03B5\u03B4\u03CE \u03B8\u03B1 \u03AD\u03C3\u03C0\u03B1\
-      \u03B3\u03B5 \u03C4\u03BF \u03AF\u03B4\u03B9\u03BF \u03C4\u03BF \u03AC\u03BD\
-      \u03BF\u03B9\u03B3\u03BC\u03B1 \u03C4\u03BF\u03C5 \u03B1\u03C1\u03C7\u03B5\u03AF\
-      \u03BF\u03C5).\n        # \u03A4\u03C1\u03AD\u03BE\u03C4\u03B5 \u03C4\u03BF\
-      \ flowgraph \u03B1\u03C0\u03CC \u03C4\u03BF\u03BD \u03C6\u03AC\u03BA\u03B5\u03BB\
-      \u03BF student/grc/, \u03CC\u03C0\u03C9\u03C2 \u03BA\u03B1\u03B9 \u03C4\u03B1\
-      \ \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03B1\n        # \u03B5\u03C1\u03B3\
-      \u03B1\u03C3\u03C4\u03AE\u03C1\u03B9\u03B1, \u03CE\u03C3\u03C4\u03B5 \u03B7\
-      \ \u03C3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03B4\u03C1\u03BF\
-      \u03BC\u03AE \u03BD\u03B1 \u03B5\u03C0\u03B9\u03BB\u03CD\u03B5\u03C4\u03B1\u03B9\
-      \ \u03C3\u03C9\u03C3\u03C4\u03AC.\n        self._csv_path = os.path.join('..',\
-      \ 'results', 'psk_measurements.csv')\n\n    def _on_trigger(self, msg):\n  \
-      \      new_file = not os.path.exists(self._csv_path)\n        os.makedirs(os.path.dirname(self._csv_path),\
-      \ exist_ok=True)\n        with open(self._csv_path, 'a', newline='') as f:\n\
-      \            writer = csv.writer(f)\n            if new_file:\n            \
-      \    writer.writerow(['timestamp', 'scheme', 'symbol_rate', 'ber', 'ser'])\n\
-      \            writer.writerow([\n                datetime.datetime.now().isoformat(timespec='seconds'),\n\
-      \                'QPSK',\n                f'{self.symbol_rate:.0f}',\n     \
-      \           f'{self._last_ber:.6f}',\n                f'{self._last_ser:.6f}',\n\
-      \            ])\n\n    def work(self, input_items, output_items):\n        ber\
-      \ = input_items[0]\n        ser = input_items[1]\n        if len(ber):\n   \
-      \         self._last_ber = float(ber[-1])\n        if len(ser):\n          \
-      \  self._last_ser = float(ser[-1])\n        return len(ber)\n"
+      \u03B5\u03AF\u03BF\u03C5\xBB.\n\n    \u039C\u03B5 \u03C4\u03BF \u03C0\u03AC\u03C4\
+      \u03B7\u03BC\u03B1 \u0394\u0395\u039D \u03B3\u03C1\u03AC\u03C6\u03B5\u03C4\u03B1\
+      \u03B9 \u03B7 \u03C3\u03C4\u03B9\u03B3\u03BC\u03B9\u03B1\u03AF\u03B1 \u03C4\u03B9\
+      \u03BC\u03AE: \u03BF logger \u03C0\u03B1\u03AF\u03C1\u03BD\u03B5\u03B9 \u03C4\
+      \u03BF\u03BD \u039C\u0395\u03A3\u039F \u039F\u03A1\u039F\n    \u03C4\u03C9\u03BD\
+      \ BER/SER/Eb/N0 \u03B3\u03B9\u03B1 \u03C4\u03B1 \u03B5\u03C0\u03CC\u03BC\u03B5\
+      \u03BD\u03B1 `avg_seconds` \u03B4\u03B5\u03C5\u03C4\u03B5\u03C1\u03CC\u03BB\u03B5\
+      \u03C0\u03C4\u03B1 (\u03C0.\u03C7. 2 s =\n    80 000 bits \u03C3\u03C4\u03B1\
+      \ 20 kbaud \u2192 \u03B4\u03B9\u03B1\u03BA\u03C1\u03B9\u03C4\u03B9\u03BA\u03AE\
+      \ \u03B9\u03BA\u03B1\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1 BER ~1e-5) \u03BA\u03B1\
+      \u03B9 \u03BC\u03B5\u03C4\u03AC\n    \u03C0\u03C1\u03BF\u03C3\u03B8\u03AD\u03C4\
+      \u03B5\u03B9 \u03BC\u03AF\u03B1 \u03B3\u03C1\u03B1\u03BC\u03BC\u03AE \u03C3\u03C4\
+      \u03BF ../results/psk_measurements.csv \u03BC\u03B1\u03B6\u03AF \u03BC\u03B5\
+      \ \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7\n    (seat), \u03C4\u03BF TX gain \u03C0\
+      \u03BF\u03C5 \u03B1\u03BD\u03B1\u03BA\u03BF\u03AF\u03BD\u03C9\u03C3\u03B5 \u03BF\
+      \ \u03B4\u03B9\u03B4\u03AC\u03C3\u03BA\u03C9\u03BD, \u03C4\u03BF RF gain \u03BA\
+      \u03B1\u03B9 \u03C4\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      .\n    synced = 1 \u03BC\u03CC\u03BD\u03BF \u03B1\u03BD \u03BF \u03BC\u03B5\u03C4\
+      \u03C1\u03B7\u03C4\u03AE\u03C2 \u03AE\u03C4\u03B1\u03BD \u03BA\u03BB\u03B5\u03B9\
+      \u03B4\u03C9\u03BC\u03AD\u03BD\u03BF\u03C2 \u03C3\u03B5 \u039F\u039B\u039F \u03C4\
+      \u03BF \u03B4\u03B9\u03AC\u03C3\u03C4\u03B7\u03BC\u03B1\xB7 \u03B1\u03BB\u03BB\
+      \u03B9\u03CE\u03C2\n    \u03C4\u03B1 BER/SER \u03BC\u03AD\u03BD\u03BF\u03C5\u03BD\
+      \ \u03BA\u03B5\u03BD\u03AC (\u03B7 \u03BC\u03AD\u03C4\u03C1\u03B7\u03C3\u03B7\
+      \ \u03B4\u03B5\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 \u03AD\u03B3\u03BA\u03C5\
+      \u03C1\u03B7).\n    \u039F\u03B9 \u03B5\u03AF\u03C3\u03BF\u03B4\u03BF\u03B9\
+      \ \u03C4\u03C1\u03AD\u03C7\u03BF\u03C5\u03BD \u03C3\u03C4\u03BF\u03BD \u03C1\
+      \u03C5\u03B8\u03BC\u03CC bit (2 \xD7 symbol_rate \u03B3\u03B9\u03B1 QPSK).\n\
+      \    \u03A4\u03C1\u03AD\u03BE\u03C4\u03B5 \u03C4\u03BF flowgraph \u03B1\u03C0\
+      \u03CC \u03C4\u03BF\u03BD \u03C6\u03AC\u03BA\u03B5\u03BB\u03BF student/grc/\
+      \ (\u03C3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03B4\u03C1\
+      \u03BF\u03BC\u03AE).\n    \"\"\"\n\n    def __init__(self, symbol_rate=20000.0,\
+      \ rf_gain=0.0, freq=434.02,\n                 seat='?', tx_gain='?', avg_seconds=2.0):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name='\u039A\
+      \u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE CSV',\n            in_sig=[np.float32,\
+      \ np.float32, np.float32, np.float32],\n            out_sig=[],\n        )\n\
+      \        self.symbol_rate = symbol_rate\n        self.rf_gain = rf_gain\n  \
+      \      self.freq = freq\n        self.seat = seat\n        self.tx_gain = tx_gain\n\
+      \        self.avg_seconds = avg_seconds\n        self._request = False\n   \
+      \     self._active = False\n        self._csv_path = os.path.join('..', 'results',\
+      \ 'psk_measurements.csv')\n        self.message_port_register_in(pmt.intern('trigger'))\n\
+      \        self.set_msg_handler(pmt.intern('trigger'), self._on_trigger)\n\n \
+      \   def _on_trigger(self, msg):\n        self._request = True  # \u03B7 \u03BC\
+      \u03AD\u03C4\u03C1\u03B7\u03C3\u03B7 \u03BE\u03B5\u03BA\u03B9\u03BD\u03AC \u03C3\
+      \u03C4\u03BF \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF work()\n\n    def _start(self):\n\
+      \        self._active = True\n        self._target = int(self.avg_seconds *\
+      \ 2 * self.symbol_rate)\n        self._count = 0\n        self._sum_ber = 0.0\n\
+      \        self._sum_ser = 0.0\n        self._sum_snr = 0.0\n        self._all_synced\
+      \ = True\n        print('[\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE\
+      ] \u03BC\u03AD\u03C4\u03C1\u03B7\u03C3\u03B7 %.1f s ...' % self.avg_seconds,\
+      \ flush=True)\n\n    def _open_csv(self):\n        os.makedirs(os.path.dirname(self._csv_path),\
+      \ exist_ok=True)\n        if os.path.exists(self._csv_path):\n            with\
+      \ open(self._csv_path, newline='') as f:\n                first = f.readline().strip()\n\
+      \            if first != ','.join(HEADER):\n                # \u03A0\u03B1\u03BB\
+      \u03B9\u03CC \u03B1\u03C1\u03C7\u03B5\u03AF\u03BF \u03BC\u03B5 \u03AC\u03BB\u03BB\
+      \u03B7 \u03BC\u03BF\u03C1\u03C6\u03AE \u03C3\u03C4\u03B7\u03BB\u03CE\u03BD:\
+      \ \u03BA\u03C1\u03B1\u03C4\u03B9\u03AD\u03C4\u03B1\u03B9 \u03C9\u03C2 \u03B1\
+      \u03BD\u03C4\u03AF\u03B3\u03C1\u03B1\u03C6\u03BF.\n                stamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')\n\
+      \                os.rename(self._csv_path,\n                          self._csv_path.replace('.csv',\
+      \ '_old_%s.csv' % stamp))\n        new_file = not os.path.exists(self._csv_path)\n\
+      \        f = open(self._csv_path, 'a', newline='')\n        w = csv.writer(f)\n\
+      \        if new_file:\n            w.writerow(HEADER)\n        return f, w\n\
+      \n    def _finish(self):\n        self._active = False\n        n = max(self._count,\
+      \ 1)\n        ber = self._sum_ber / n\n        ser = self._sum_ser / n\n   \
+      \     snr = self._sum_snr / n\n        ok = self._all_synced\n        f, w =\
+      \ self._open_csv()\n        with f:\n            w.writerow([\n            \
+      \    datetime.datetime.now().isoformat(timespec='seconds'),\n              \
+      \  str(self.seat), str(self.tx_gain),\n                '%g' % float(self.rf_gain),\
+      \ '%.3f' % float(self.freq), 'QPSK',\n                '%.0f' % float(self.symbol_rate),\
+      \ int(ok), '%.2f' % snr,\n                ('%.6f' % ber) if ok else '', ('%.6f'\
+      \ % ser) if ok else '',\n                self._count,\n            ])\n    \
+      \    if ok:\n            print('[\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\
+      \u03AE] seat=%s TX=%s RF=%g  Eb/N0=%.1f dB  BER=%.2e  SER=%.2e'\n          \
+      \        % (self.seat, self.tx_gain, float(self.rf_gain), snr, ber, ser),\n\
+      \                  flush=True)\n        else:\n            print('[\u039A\u03B1\
+      \u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE] \u03A7\u03A9\u03A1\u0399\u03A3 \u03A3\
+      \u03A5\u0393\u03A7\u03A1\u039F\u039D\u0399\u03A3\u039C\u039F \u2014 \u03B7 \u03B3\
+      \u03C1\u03B1\u03BC\u03BC\u03AE \u03B3\u03C1\u03AC\u03C6\u03C4\u03B7\u03BA\u03B5\
+      \ \u03BC\u03B5 \u03BA\u03B5\u03BD\u03CC BER '\n                  '(Eb/N0=%.1f\
+      \ dB)' % snr, flush=True)\n\n    def work(self, input_items, output_items):\n\
+      \        ber, ser, sync, snr = input_items\n        n = len(ber)\n        if\
+      \ self._request and not self._active:\n            self._request = False\n \
+      \           self._start()\n        if self._active and n:\n            k = min(n,\
+      \ self._target - self._count)\n            self._sum_ber += float(ber[:k].sum())\n\
+      \            self._sum_ser += float(ser[:k].sum())\n            self._sum_snr\
+      \ += float(snr[:k].sum())\n            if np.any(sync[:k] < 0.5):\n        \
+      \        self._all_synced = False\n            self._count += k\n          \
+      \  if self._count >= self._target:\n                self._finish()\n       \
+      \ return n\n"
     affinity: ''
     alias: ''
+    avg_seconds: '2.0'
     comment: ''
+    freq: freq
     maxoutbuf: '0'
     minoutbuf: '0'
+    rf_gain: rf_gain
+    seat: seat
     symbol_rate: symbol_rate
+    tx_gain: tx_gain_note
   states:
     _io_cache: "('\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE CSV', 'blk',\
-      \ [('symbol_rate', '20000.0')], [('0', 'float', 1), ('1', 'float', 1), ('trigger',\
-      \ 'message', 1)], [], '\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE\
-      \ \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\u03C5 BER/SER \u03C3\u03B5 CSV, \u03BC\
-      \u03B5 \u03C4\u03BF \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5\
-      \ QT GUI Message\\n    Push Button \xAB\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\
-      \u03C6\u03AE \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\u03C5\xBB. \u0394\u03B9\u03B1\
-      \u03B2\u03AC\u03B6\u03B5\u03B9 \u03C4\u03B9\u03C2 \u03A4\u0395\u039B\u0395\u03A5\
-      \u03A4\u0391\u0399\u0395\u03A3 \u03C4\u03B9\u03BC\u03AD\u03C2 BER/SER \u03B1\
-      \u03C0\u03CC\\n    \u03C4\u03B1 \u03B4\u03CD\u03BF \u03C1\u03B5\u03CD\u03BC\u03B1\
-      \u03C4\u03B1 \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5 (\u03C4\u03B1 \u03AF\
-      \u03B4\u03B9\u03B1 \u03C0\u03BF\u03C5 \u03C4\u03C1\u03BF\u03C6\u03BF\u03B4\u03BF\
-      \u03C4\u03BF\u03CD\u03BD \u03C4\u03B1 QT GUI Number Sinks) \u03BA\u03B1\u03B9\
-      \\n    \u03C0\u03C1\u03BF\u03C3\u03B8\u03AD\u03C4\u03B5\u03B9 \u03BC\u03B9\u03B1\
-      \ \u03B3\u03C1\u03B1\u03BC\u03BC\u03AE \u03C3\u03C4\u03BF student/results/psk_measurements.csv\
-      \ (\u03C3\u03C7\u03B5\u03C4\u03B9\u03BA\u03AC \u03BC\u03B5\\n    \u03C4\u03B7\
-      \ \u03B8\u03AD\u03C3\u03B7 \u03B1\u03C5\u03C4\u03BF\u03CD \u03C4\u03BF\u03C5\
-      \ \u03B1\u03C1\u03C7\u03B5\u03AF\u03BF\u03C5, \u03B4\u03B7\u03BB. student/grc/../results/...).\
-      \ \u0394\u03B7\u03BC\u03B9\u03BF\u03C5\u03C1\u03B3\u03B5\u03AF \u03C4\u03BF\\\
-      n    \u03B1\u03C1\u03C7\u03B5\u03AF\u03BF (\u03BC\u03B5 \u03B3\u03C1\u03B1\u03BC\
-      \u03BC\u03AE \u03B5\u03C0\u03B9\u03BA\u03B5\u03C6\u03B1\u03BB\u03AF\u03B4\u03B1\
-      \u03C2) \u03B1\u03BD \u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\
-      \u03B9 \u03AE\u03B4\u03B7. \u0397 \u03B5\u03B3\u03B3\u03C1\u03B1\u03C6\u03AE\
-      \ \u03C3\u03C4\u03BF \u03B4\u03AF\u03C3\u03BA\u03BF\\n    \u03B3\u03AF\u03BD\
-      \u03B5\u03C4\u03B1\u03B9 \u03BC\u03CC\u03BD\u03BF \u03BA\u03B1\u03C4\u03AC \u03C4\
-      \u03BF \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u03C4\u03BF\u03C5 \u03BA\u03BF\u03C5\
-      \u03BC\u03C0\u03B9\u03BF\u03CD (\u03BC\u03AE\u03BD\u03C5\u03BC\u03B1), \u03CC\
-      \u03C7\u03B9 \u03B1\u03BD\u03AC \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1 \u2014\
-      \ \u03BA\u03B1\u03BC\u03AF\u03B1\\n    \u03B5\u03C0\u03AF\u03C0\u03C4\u03C9\u03C3\
-      \u03B7 \u03C3\u03C4\u03BF\u03BD \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\
-      \u03BA\u03CC \u03C7\u03C1\u03CC\u03BD\u03BF \u03C4\u03B7\u03C2 \u03C1\u03BF\u03AE\
-      \u03C2.', ['symbol_rate'])"
+      \ [('symbol_rate', '20000.0'), ('rf_gain', '0.0'), ('freq', '434.02'), ('seat',\
+      \ \"'?'\"), ('tx_gain', \"'?'\"), ('avg_seconds', '2.0')], [('0', 'float', 1),\
+      \ ('1', 'float', 1), ('2', 'float', 1), ('3', 'float', 1), ('trigger', 'message',\
+      \ 1)], [], '\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03B5\u03BD\
+      \u03CC\u03C2 \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\u03C5 \u03BC\u03AD\u03C4\u03C1\
+      \u03B7\u03C3\u03B7\u03C2 \u03C3\u03B5 CSV \u03BC\u03B5 \u03C4\u03BF \u03BA\u03BF\
+      \u03C5\u03BC\u03C0\u03AF \xAB\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\
+      \u03AE \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\u03C5\xBB.\\n\\n    \u039C\u03B5\
+      \ \u03C4\u03BF \u03C0\u03AC\u03C4\u03B7\u03BC\u03B1 \u0394\u0395\u039D \u03B3\
+      \u03C1\u03AC\u03C6\u03B5\u03C4\u03B1\u03B9 \u03B7 \u03C3\u03C4\u03B9\u03B3\u03BC\
+      \u03B9\u03B1\u03AF\u03B1 \u03C4\u03B9\u03BC\u03AE: \u03BF logger \u03C0\u03B1\
+      \u03AF\u03C1\u03BD\u03B5\u03B9 \u03C4\u03BF\u03BD \u039C\u0395\u03A3\u039F \u039F\
+      \u03A1\u039F\\n    \u03C4\u03C9\u03BD BER/SER/Eb/N0 \u03B3\u03B9\u03B1 \u03C4\
+      \u03B1 \u03B5\u03C0\u03CC\u03BC\u03B5\u03BD\u03B1 `avg_seconds` \u03B4\u03B5\
+      \u03C5\u03C4\u03B5\u03C1\u03CC\u03BB\u03B5\u03C0\u03C4\u03B1 (\u03C0.\u03C7\
+      . 2 s =\\n    80 000 bits \u03C3\u03C4\u03B1 20 kbaud \u2192 \u03B4\u03B9\u03B1\
+      \u03BA\u03C1\u03B9\u03C4\u03B9\u03BA\u03AE \u03B9\u03BA\u03B1\u03BD\u03CC\u03C4\
+      \u03B7\u03C4\u03B1 BER ~1e-5) \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\u03AC\\\
+      n    \u03C0\u03C1\u03BF\u03C3\u03B8\u03AD\u03C4\u03B5\u03B9 \u03BC\u03AF\u03B1\
+      \ \u03B3\u03C1\u03B1\u03BC\u03BC\u03AE \u03C3\u03C4\u03BF ../results/psk_measurements.csv\
+      \ \u03BC\u03B1\u03B6\u03AF \u03BC\u03B5 \u03C4\u03B7 \u03B8\u03AD\u03C3\u03B7\
+      \\n    (seat), \u03C4\u03BF TX gain \u03C0\u03BF\u03C5 \u03B1\u03BD\u03B1\u03BA\
+      \u03BF\u03AF\u03BD\u03C9\u03C3\u03B5 \u03BF \u03B4\u03B9\u03B4\u03AC\u03C3\u03BA\
+      \u03C9\u03BD, \u03C4\u03BF RF gain \u03BA\u03B1\u03B9 \u03C4\u03B7 \u03C3\u03C5\
+      \u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1.\\n    synced = 1 \u03BC\u03CC\u03BD\
+      \u03BF \u03B1\u03BD \u03BF \u03BC\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2\
+      \ \u03AE\u03C4\u03B1\u03BD \u03BA\u03BB\u03B5\u03B9\u03B4\u03C9\u03BC\u03AD\u03BD\
+      \u03BF\u03C2 \u03C3\u03B5 \u039F\u039B\u039F \u03C4\u03BF \u03B4\u03B9\u03AC\
+      \u03C3\u03C4\u03B7\u03BC\u03B1\xB7 \u03B1\u03BB\u03BB\u03B9\u03CE\u03C2\\n \
+      \   \u03C4\u03B1 BER/SER \u03BC\u03AD\u03BD\u03BF\u03C5\u03BD \u03BA\u03B5\u03BD\
+      \u03AC (\u03B7 \u03BC\u03AD\u03C4\u03C1\u03B7\u03C3\u03B7 \u03B4\u03B5\u03BD\
+      \ \u03B5\u03AF\u03BD\u03B1\u03B9 \u03AD\u03B3\u03BA\u03C5\u03C1\u03B7).\\n \
+      \   \u039F\u03B9 \u03B5\u03AF\u03C3\u03BF\u03B4\u03BF\u03B9 \u03C4\u03C1\u03AD\
+      \u03C7\u03BF\u03C5\u03BD \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC\
+      \ bit (2 \xD7 symbol_rate \u03B3\u03B9\u03B1 QPSK).\\n    \u03A4\u03C1\u03AD\
+      \u03BE\u03C4\u03B5 \u03C4\u03BF flowgraph \u03B1\u03C0\u03CC \u03C4\u03BF\u03BD\
+      \ \u03C6\u03AC\u03BA\u03B5\u03BB\u03BF student/grc/ (\u03C3\u03C7\u03B5\u03C4\
+      \u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03B4\u03C1\u03BF\u03BC\u03AE).\\n   \
+      \ ', ['avg_seconds', 'freq', 'rf_gain', 'seat', 'symbol_rate', 'tx_gain'])"
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1500, 780]
+    rotation: 0
+    state: enabled
+- name: epy_block_2
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\n\nclass blk(gr.sync_block):\n\
+      \    \"\"\"\u0395\u03BA\u03C4\u03B9\u03BC\u03B7\u03C4\u03AE\u03C2 SNR (\u03BC\
+      \u03AD\u03B8\u03BF\u03B4\u03BF\u03C2 M2M4) \u03C0\u03AC\u03BD\u03C9 \u03C3\u03C4\
+      \u03B1 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1 \u03BC\u03B5\u03C4\u03AC \u03C4\
+      \u03BF\u03BD Symbol Sync.\n\n    \u0393\u03B9\u03B1 \u03C3\u03AE\u03BC\u03B1\
+      \ \u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03BF\u03CD \u03C0\u03BB\u03AC\u03C4\u03BF\
+      \u03C5\u03C2 (PSK) \u03C3\u03B5 \u03BB\u03B5\u03C5\u03BA\u03CC Gaussian \u03B8\
+      \u03CC\u03C1\u03C5\u03B2\u03BF:\n        M2 = E|y|^2 ,  M4 = E|y|^4\n      \
+      \  S  = sqrt(2*M2^2 - M4)      (\u03B9\u03C3\u03C7\u03CD\u03C2 \u03C3\u03AE\u03BC\
+      \u03B1\u03C4\u03BF\u03C2)\n        N  = M2 - S                 (\u03B9\u03C3\
+      \u03C7\u03CD\u03C2 \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\u03C5)\n        Es/N0\
+      \ \u2248 S/N  (\u03C3\u03C4\u03B7\u03BD \u03AD\u03BE\u03BF\u03B4\u03BF \u03C4\
+      \u03BF\u03C5 matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF\u03C5, 1 \u03B4\u03B5\
+      \u03AF\u03B3\u03BC\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF)\n     \
+      \   Eb/N0 = Es/N0 / log2(M)     (QPSK: \u22123.01 dB)\n    \u0394\u03B5\u03BD\
+      \ \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03B5\u03C4\u03B1\u03B9 \u03B3\u03BD\u03CE\
+      \u03C3\u03B7 \u03C4\u03C9\u03BD \u03B4\u03B5\u03B4\u03BF\u03BC\u03AD\u03BD\u03C9\
+      \u03BD \u039F\u03A5\u03A4\u0395 \u03BA\u03BB\u03B5\u03AF\u03B4\u03C9\u03BC\u03B1\
+      \ \u03C6\u03AC\u03C3\u03B7\u03C2 (\u03C7\u03C1\u03B7\u03C3\u03B9\u03BC\u03BF\
+      \u03C0\u03BF\u03B9\u03B5\u03AF \u03BC\u03CC\u03BD\u03BF\n    |y|), \u03BF\u03C0\
+      \u03CC\u03C4\u03B5 \u03B4\u03BF\u03C5\u03BB\u03B5\u03CD\u03B5\u03B9 \u03BA\u03B1\
+      \u03B9 \u03C0\u03C1\u03B9\u03BD \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03C3\u03B5\
+      \u03B9 \u03BF Costas. \u038C,\u03C4\u03B9 \u03B4\u03B5\u03BD \u03B5\u03AF\u03BD\
+      \u03B1\u03B9 \xAB\u03BA\u03B1\u03B8\u03B1\u03C1\u03CC\xBB\n    \u03C3\u03CD\u03BC\
+      \u03B2\u03BF\u03BB\u03BF (\u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2, \u03C0\
+      \u03B1\u03C1\u03B5\u03BC\u03B2\u03BF\u03BB\u03AD\u03C2, \u03C5\u03C0\u03CC\u03BB\
+      \u03BF\u03B9\u03C0\u03B7 ISI/jitter) \u03BC\u03B5\u03C4\u03C1\u03AC \u03C9\u03C2\
+      \ \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2.\n    \u0397 \u03B5\u03BA\u03C4\
+      \u03AF\u03BC\u03B7\u03C3\u03B7 \u03B1\u03BD\u03B1\u03BD\u03B5\u03CE\u03BD\u03B5\
+      \u03C4\u03B1\u03B9 \u03BA\u03AC\u03B8\u03B5 `avg_symbols` \u03C3\u03CD\u03BC\
+      \u03B2\u03BF\u03BB\u03B1 (\u03BC\u03AD\u03C3\u03BF\u03C2 \u03CC\u03C1\u03BF\u03C2\
+      \ \u03C3\u03B5 \u03BC\u03C0\u03BB\u03BF\u03BA).\n    \u0388\u03BE\u03BF\u03B4\
+      \u03BF\u03C2: Eb/N0 \u03C3\u03B5 dB (float, \u03BC\u03AF\u03B1 \u03C4\u03B9\u03BC\
+      \u03AE \u03B1\u03BD\u03AC \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF \u03B5\u03B9\
+      \u03C3\u03CC\u03B4\u03BF\u03C5).\n    \"\"\"\n\n    def __init__(self, bits_per_symbol=2,\
+      \ avg_symbols=10000):\n        gr.sync_block.__init__(\n            self,\n\
+      \            name='\u0395\u03BA\u03C4\u03B9\u03BC\u03B7\u03C4\u03AE\u03C2 Eb/N0\
+      \ (M2M4)',\n            in_sig=[np.complex64],\n            out_sig=[np.float32],\n\
+      \        )\n        self.bits_per_symbol = bits_per_symbol\n        self.avg_symbols\
+      \ = avg_symbols\n        self._n = 0\n        self._m2 = 0.0\n        self._m4\
+      \ = 0.0\n        self.ebn0_db = 0.0\n\n    def work(self, input_items, output_items):\n\
+      \        y = input_items[0]\n        p = (y.real.astype(np.float64) ** 2 + y.imag.astype(np.float64)\
+      \ ** 2)\n        self._m2 += float(p.sum())\n        self._m4 += float((p *\
+      \ p).sum())\n        self._n += len(y)\n        if self._n >= self.avg_symbols:\n\
+      \            m2 = self._m2 / self._n\n            m4 = self._m4 / self._n\n\
+      \            s = np.sqrt(max(2.0 * m2 * m2 - m4, 0.0))\n            noise =\
+      \ max(m2 - s, 1e-12 * m2 + 1e-30)\n            esn0 = s / noise\n          \
+      \  self.ebn0_db = float(10.0 * np.log10(max(esn0, 1e-3) / self.bits_per_symbol))\n\
+      \            self._n = 0\n            self._m2 = 0.0\n            self._m4 =\
+      \ 0.0\n        output_items[0][:] = self.ebn0_db\n        return len(y)\n"
+    affinity: ''
+    alias: ''
+    avg_symbols: '10000'
+    bits_per_symbol: '2'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: "('\u0395\u03BA\u03C4\u03B9\u03BC\u03B7\u03C4\u03AE\u03C2 Eb/N0 (M2M4)',\
+      \ 'blk', [('bits_per_symbol', '2'), ('avg_symbols', '10000')], [('0', 'complex',\
+      \ 1)], [('0', 'float', 1)], '\u0395\u03BA\u03C4\u03B9\u03BC\u03B7\u03C4\u03AE\
+      \u03C2 SNR (\u03BC\u03AD\u03B8\u03BF\u03B4\u03BF\u03C2 M2M4) \u03C0\u03AC\u03BD\
+      \u03C9 \u03C3\u03C4\u03B1 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1 \u03BC\u03B5\
+      \u03C4\u03AC \u03C4\u03BF\u03BD Symbol Sync.\\n\\n    \u0393\u03B9\u03B1 \u03C3\
+      \u03AE\u03BC\u03B1 \u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03BF\u03CD \u03C0\u03BB\
+      \u03AC\u03C4\u03BF\u03C5\u03C2 (PSK) \u03C3\u03B5 \u03BB\u03B5\u03C5\u03BA\u03CC\
+      \ Gaussian \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF:\\n        M2 = E|y|^2 ,  M4\
+      \ = E|y|^4\\n        S  = sqrt(2*M2^2 - M4)      (\u03B9\u03C3\u03C7\u03CD\u03C2\
+      \ \u03C3\u03AE\u03BC\u03B1\u03C4\u03BF\u03C2)\\n        N  = M2 - S        \
+      \         (\u03B9\u03C3\u03C7\u03CD\u03C2 \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\
+      \u03C5)\\n        Es/N0 \u2248 S/N  (\u03C3\u03C4\u03B7\u03BD \u03AD\u03BE\u03BF\
+      \u03B4\u03BF \u03C4\u03BF\u03C5 matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF\
+      \u03C5, 1 \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\
+      \u03BB\u03BF)\\n        Eb/N0 = Es/N0 / log2(M)     (QPSK: \u22123.01 dB)\\\
+      n    \u0394\u03B5\u03BD \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03B5\u03C4\u03B1\
+      \u03B9 \u03B3\u03BD\u03CE\u03C3\u03B7 \u03C4\u03C9\u03BD \u03B4\u03B5\u03B4\u03BF\
+      \u03BC\u03AD\u03BD\u03C9\u03BD \u039F\u03A5\u03A4\u0395 \u03BA\u03BB\u03B5\u03AF\
+      \u03B4\u03C9\u03BC\u03B1 \u03C6\u03AC\u03C3\u03B7\u03C2 (\u03C7\u03C1\u03B7\u03C3\
+      \u03B9\u03BC\u03BF\u03C0\u03BF\u03B9\u03B5\u03AF \u03BC\u03CC\u03BD\u03BF\\\
+      n    |y|), \u03BF\u03C0\u03CC\u03C4\u03B5 \u03B4\u03BF\u03C5\u03BB\u03B5\u03CD\
+      \u03B5\u03B9 \u03BA\u03B1\u03B9 \u03C0\u03C1\u03B9\u03BD \u03BA\u03BB\u03B5\u03B9\
+      \u03B4\u03CE\u03C3\u03B5\u03B9 \u03BF Costas. \u038C,\u03C4\u03B9 \u03B4\u03B5\
+      \u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 \xAB\u03BA\u03B1\u03B8\u03B1\u03C1\u03CC\
+      \xBB\\n    \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF (\u03B8\u03CC\u03C1\u03C5\
+      \u03B2\u03BF\u03C2, \u03C0\u03B1\u03C1\u03B5\u03BC\u03B2\u03BF\u03BB\u03AD\u03C2\
+      , \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03B7 ISI/jitter) \u03BC\u03B5\u03C4\
+      \u03C1\u03AC \u03C9\u03C2 \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2.\\n   \
+      \ \u0397 \u03B5\u03BA\u03C4\u03AF\u03BC\u03B7\u03C3\u03B7 \u03B1\u03BD\u03B1\
+      \u03BD\u03B5\u03CE\u03BD\u03B5\u03C4\u03B1\u03B9 \u03BA\u03AC\u03B8\u03B5 `avg_symbols`\
+      \ \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1 (\u03BC\u03AD\u03C3\u03BF\u03C2\
+      \ \u03CC\u03C1\u03BF\u03C2 \u03C3\u03B5 \u03BC\u03C0\u03BB\u03BF\u03BA).\\n\
+      \    \u0388\u03BE\u03BF\u03B4\u03BF\u03C2: Eb/N0 \u03C3\u03B5 dB (float, \u03BC\
+      \u03AF\u03B1 \u03C4\u03B9\u03BC\u03AE \u03B1\u03BD\u03AC \u03C3\u03CD\u03BC\u03B2\
+      \u03BF\u03BB\u03BF \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5).\\n    ', ['avg_symbols',\
+      \ 'bits_per_symbol'])"
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [900, 860]
+    rotation: 0
+    state: enabled
+- name: freq_xlating_fir_filter_0
+  id: freq_xlating_fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    center_freq: lo_offset
+    comment: "\u039C\u03B5\u03C4\u03B1\u03C4\u03CC\u03C0\u03B9\u03C3\u03B7 \u03BA\u03B1\
+      \u03C4\u03AC lo_offset (offset tuning) + \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF\
+      \ \u03B5\u03C0\u03B9\u03BB\u03BF\u03B3\u03AE\u03C2 \u03BA\u03B1\u03BD\u03B1\u03BB\
+      \u03B9\u03BF\u03CD + \u03B4\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2\
+      \ \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC quad_rate. Cutoff\
+      \ = \u03BC\u03B9\u03C3\u03CC \u03B5\u03CD\u03C1\u03BF\u03C2 \u03C3\u03AE\u03BC\
+      \u03B1\u03C4\u03BF\u03C2 + 15 kHz \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\
+      \u03B9\u03BF \u03B3\u03B9\u03B1 \u03C4\u03BF \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1\
+      \ \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C4\u03C9\u03BD\
+      \ \u03BA\u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD (\u03C4\u03BF\
+      \ \u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9 \u03BC\u03B5\u03C4\u03AC\
+      \ \u03C4\u03BF FLL)."
+    decim: channel_decim
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: rtl_samp_rate
+    taps: firdes.low_pass(1.0, rtl_samp_rate, symbol_rate*(1+excess_bw)/2 + 15e3,
+      5000, window.WIN_HAMMING)
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 384.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -1028,7 +1183,7 @@ blocks:
   id: variable_qtgui_msg_push_button
   parameters:
     comment: ''
-    gui_hint: 3,0,1,2
+    gui_hint: 4,0,1,2
     label: "\u039A\u03B1\u03C4\u03B1\u03B3\u03C1\u03B1\u03C6\u03AE \u03C3\u03B7\u03BC\
       \u03B5\u03AF\u03BF\u03C5"
     msgName: pressed
@@ -1041,45 +1196,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1500, 660]
-    rotation: 0
-    state: enabled
-- name: low_pass_filter_0
-  id: low_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: "\u03A6\u03AF\u03BB\u03C4\u03C1\u03BF \u03B5\u03C0\u03B9\u03BB\u03BF\u03B3\
-      \u03AE\u03C2 \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD + \u03B4\u03B5\
-      \u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C3\u03C4\u03BF\u03BD \u03C1\
-      \u03C5\u03B8\u03BC\u03CC quad_rate. \u03A4\u03BF cutoff \u03AD\u03C7\u03B5\u03B9\
-      \ +10 kHz \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03BF \u03CE\u03C3\
-      \u03C4\u03B5 \u03C4\u03BF \u03C3\u03AE\u03BC\u03B1 \u03BD\u03B1 \u03C0\u03B5\
-      \u03C1\u03BD\u03AC \u039A\u0391\u0399 \u03BC\u03B5 \u03C3\u03C6\u03AC\u03BB\u03BC\
-      \u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03BA\u03C1\
-      \u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD \xB110 kHz (\u03C4\u03BF \u03B4\
-      \u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9 \u03BC\u03B5\u03C4\u03AC \u03C4\
-      \u03BF FLL Band-Edge). width \u03A3\u03A4\u0391\u0398\u0395\u03A1\u039F (\u03CC\
-      \u03C7\u03B9 \u03B4\u03B5\u03BC\u03AD\u03BD\u03BF \u03BC\u03B5 symbol_rate)\
-      \ \u03B3\u03B9\u03B1 \u03C4\u03BF\u03BD \u03AF\u03B4\u03B9\u03BF \u03BB\u03CC\
-      \u03B3\u03BF \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03BF\u03CD\
-      \ \u03C7\u03C1\u03CC\u03BD\u03BF\u03C5 \u03BC\u03B5 \u03C4\u03B1 \u03C6\u03AF\
-      \u03BB\u03C4\u03C1\u03B1 \u03C4\u03BF\u03C5 Lab 2."
-    cutoff_freq: symbol_rate*(1+excess_bw)/2 + 10e3
-    decim: channel_decim
-    gain: '1'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: rtl_samp_rate
-    type: fir_filter_ccf
-    width: '5000'
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [264, 384.0]
     rotation: 0
     state: enabled
 - name: note_0
@@ -1650,12 +1766,139 @@ blocks:
     coordinate: [960, 740]
     rotation: 0
     state: enabled
+- name: qtgui_number_sink_snr
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: 3,0,1,2
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '25'
+    min: '0'
+    name: "\"Eb/N0 (dB, \u03B5\u03BA\u03C4\u03AF\u03BC\u03B7\u03C3\u03B7)\""
+    nconnections: '1'
+    type: float
+    unit1: '""'
+    unit10: '""'
+    unit2: '""'
+    unit3: '""'
+    unit4: '""'
+    unit5: '""'
+    unit6: '""'
+    unit7: '""'
+    unit8: '""'
+    unit9: '""'
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 920]
+    rotation: 0
+    state: enabled
+- name: qtgui_number_sink_sync
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: 3,2,1,2
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '0'
+    name: "\"\u03A3\u03C5\u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03CC\u03C2\
+      \ \u03C0\u03BB\u03B1\u03B9\u03C3\u03AF\u03BF\u03C5 (1=\u03BD\u03B1\u03B9)\""
+    nconnections: '1'
+    type: float
+    unit1: '""'
+    unit10: '""'
+    unit2: '""'
+    unit3: '""'
+    unit4: '""'
+    unit5: '""'
+    unit6: '""'
+    unit7: '""'
+    unit8: '""'
+    unit9: '""'
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1500, 780]
+    rotation: 0
+    state: enabled
 - name: qtgui_tab_widget_0
   id: qtgui_tab_widget
   parameters:
     alias: ''
     comment: ''
-    gui_hint: 4,0,1,4
+    gui_hint: 5,0,1,4
     label0: "\u03A6\u03AC\u03C3\u03BC\u03B1 RF"
     label1: "\u03A0\u03C1\u03B9\u03BD \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7\
       \ (Costas)"
@@ -1714,6 +1957,91 @@ blocks:
     coordinate: [744, 360.0]
     rotation: 0
     state: enabled
+- name: snippet_square_const
+  id: snippet
+  parameters:
+    alias: ''
+    code: "# \u039A\u03C1\u03B1\u03C4\u03AC \u03C4\u03BF\u03C5\u03C2 \u03B1\u03C3\u03C4\
+      \u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03CD\u03C2 \u03A4\u0395\u03A4\u03A1\u0391\
+      \u0393\u03A9\u039D\u039F\u03A5\u03A3 (\u03AF\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\
+      \u03B1\u03BA\u03B1 \u03C3\u03C4\u03BF\u03C5\u03C2 \u03AC\u03BE\u03BF\u03BD\u03B5\
+      \u03C2 I \u03BA\u03B1\u03B9 Q),\n# \u03CC\u03C0\u03BF\u03B9\u03BF \u03BC\u03AD\
+      \u03B3\u03B5\u03B8\u03BF\u03C2 \u03BA\u03B9 \u03B1\u03BD \u03AD\u03C7\u03B5\u03B9\
+      \ \u03C4\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF (\u03C0.\u03C7\
+      . \u03C3\u03B5 \u03C0\u03BB\u03AE\u03C1\u03B7 \u03BF\u03B8\u03CC\u03BD\u03B7\
+      ).\n# \u03A4\u03BF QT GUI Constellation Sink \u03B4\u03B5\u03BD \u03AD\u03C7\
+      \u03B5\u03B9 \u03C4\u03AD\u03C4\u03BF\u03B9\u03B1 \u03B5\u03C0\u03B9\u03BB\u03BF\
+      \u03B3\u03AE, \u03BF\u03C0\u03CC\u03C4\u03B5 \u03BA\u03AC\u03B8\u03B5\n# \u03B1\
+      \u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C4\u03C5\u03BB\u03AF\
+      \u03B3\u03B5\u03C4\u03B1\u03B9 \u03C3\u03B5 \u03AD\u03BD\u03B1 \u03C0\u03BB\u03B1\
+      \u03AF\u03C3\u03B9\u03BF \u03C0\u03BF\u03C5 \u03C4\u03BF\u03BD \u03BA\u03B5\u03BD\
+      \u03C4\u03C1\u03AC\u03C1\u03B5\u03B9 \u03BA\u03B1\u03B9 \u03BA\u03C1\u03B1\u03C4\
+      \u03AC\n# \u03C4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03B7 \u03C4\u03B7\
+      \u03BD \u03C0\u03B5\u03C1\u03B9\u03BF\u03C7\u03AE \u03C3\u03C7\u03B5\u03B4\u03AF\
+      \u03B1\u03C3\u03B7\u03C2 (canvas) \u03C4\u03BF\u03C5 \u03B3\u03C1\u03B1\u03C6\
+      \u03AE\u03BC\u03B1\u03C4\u03BF\u03C2.\nfrom PyQt5 import Qt, QtCore\n\nclass\
+      \ SquarePlot(Qt.QWidget):\n    def __init__(self, inner):\n        Qt.QWidget.__init__(self)\n\
+      \        self.inner = inner\n        self.setMinimumSize(260, 260)\n       \
+      \ self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)\n\n\
+      \    def sizeHint(self):\n        return QtCore.QSize(480, 480)\n\n    def canvas(self):\n\
+      \        for w in self.inner.findChildren(Qt.QWidget):\n            if w.metaObject().className()\
+      \ == 'QwtPlotCanvas':\n                return w\n        return None\n\n   \
+      \ def fit(self):\n        # \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\
+      \u03B1 = \u03C4\u03AF\u03C4\u03BB\u03BF\u03C2, \u03AC\u03BE\u03BF\u03BD\u03B5\
+      \u03C2, \u03C5\u03C0\u03CC\u03BC\u03BD\u03B7\u03BC\u03B1 (\u03CC,\u03C4\u03B9\
+      \ \u03B4\u03B5\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 canvas)\n        mw = mh\
+      \ = 0\n        c = self.canvas()\n        if c is not None and c.width() > 1\
+      \ and c.height() > 1:\n            mw = self.inner.width() - c.width()\n   \
+      \         mh = self.inner.height() - c.height()\n        side = max(50, min(self.width()\
+      \ - mw, self.height() - mh))\n        w, h = side + mw, side + mh\n        self.inner.setGeometry((self.width()\
+      \ - w) // 2,\n                               (self.height() - h) // 2, w, h)\n\
+      \n    def resizeEvent(self, event):\n        self.fit()\n        # \u03B4\u03B5\
+      \u03CD\u03C4\u03B5\u03C1\u03BF \u03C0\u03AD\u03C1\u03B1\u03C3\u03BC\u03B1, \u03B1\
+      \u03C6\u03BF\u03CD \u03C4\u03BF \u03B3\u03C1\u03AC\u03C6\u03B7\u03BC\u03B1 \u03BE\
+      \u03B1\u03BD\u03B1\u03CB\u03C0\u03BF\u03BB\u03BF\u03B3\u03AF\u03C3\u03B5\u03B9\
+      \ \u03C4\u03B1 \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03AC \u03C4\
+      \u03BF\u03C5\n        QtCore.QTimer.singleShot(0, self.fit)\n        QtCore.QTimer.singleShot(100,\
+      \ self.fit)\n\ndef find_layout(layout, widget):\n    for i in range(layout.count()):\n\
+      \        item = layout.itemAt(i)\n        if item.widget() is widget:\n    \
+      \        return layout\n        if item.layout() is not None:\n            found\
+      \ = find_layout(item.layout(), widget)\n            if found is not None:\n\
+      \                return found\n    return None\n\nself._square_plots = []\n\
+      for name in sorted(vars(self)):\n    if not (name.startswith('_qtgui_const_sink_x')\
+      \ and name.endswith('_win')):\n        continue\n    win = getattr(self, name)\n\
+      \    parent = win.parentWidget()\n    layout = find_layout(parent.layout(),\
+      \ win) if parent is not None else None\n    if layout is None:\n        continue\n\
+      \    box = SquarePlot(win)\n    layout.replaceWidget(win, box)\n    win.setParent(box)\n\
+      \    win.show()\n    self._square_plots.append(box)\n    # \u03A3\u03C4\u03BF\
+      \ \u03C0\u03BB\u03AD\u03B3\u03BC\u03B1: \u03B7 \u03B3\u03C1\u03B1\u03BC\u03BC\
+      \u03AE \u03C4\u03C9\u03BD \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CE\
+      \u03BD \u03C0\u03B1\u03AF\u03C1\u03BD\u03B5\u03B9 \u03C4\u03BF \u03C0\u03B5\u03C1\
+      \u03B9\u03C3\u03C3\u03CC\u03C4\u03B5\u03C1\u03BF \u03CD\u03C8\u03BF\u03C2,\n\
+      \    # \u03BF\u03B9 \u03B3\u03C1\u03B1\u03BC\u03BC\u03AD\u03C2 \u03BC\u03B5\
+      \ \u03BF\u03BB\u03B9\u03C3\u03B8\u03B7\u03C4\u03AE\u03C1\u03B5\u03C2 \u03BC\u03CC\
+      \u03BD\u03BF \u03CC\u03C3\u03BF \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03BF\u03BD\
+      \u03C4\u03B1\u03B9.\n    if isinstance(layout, Qt.QGridLayout):\n        plots\
+      \ = [getattr(self, n) for n in vars(self)\n                 if n.startswith('_qtgui_')\
+      \ and n.endswith('_win')\n                 and 'number_sink' not in n and 'const_sink'\
+      \ not in n]\n        for i in range(layout.count()):\n            row = layout.getItemPosition(i)[0]\n\
+      \            w = layout.itemAt(i).widget()\n            if isinstance(w, SquarePlot):\n\
+      \                layout.setRowStretch(row, 3)\n            elif any(w is p for\
+      \ p in plots):\n                layout.setRowStretch(row, 2)\n            elif\
+      \ layout.rowStretch(row) == 1:\n                layout.setRowStretch(row, 0)"
+    comment: "\u03A4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF\u03B9 \u03B1\u03C3\
+      \u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03AF: \u03BA\u03C1\u03B1\u03C4\u03AC\
+      \ \u03AF\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\u03B1\u03BA\u03B1 I/Q \u03C3\u03B5\
+      \ \u03BA\u03AC\u03B8\u03B5 \u03BC\u03AD\u03B3\u03B5\u03B8\u03BF\u03C2 \u03C0\
+      \u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\u03C5 (\u03BA\u03B1\u03B9 \u03C3\u03B5\
+      \ \u03C0\u03BB\u03AE\u03C1\u03B7 \u03BF\u03B8\u03CC\u03BD\u03B7)"
+    priority: '0'
+    section: main_after_init
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 700]
+    rotation: 0
+    state: enabled
 - name: soapy_rtlsdr_source_0
   id: soapy_rtlsdr_source
   parameters:
@@ -1722,7 +2050,7 @@ blocks:
     alias: ''
     bias: 'False'
     bufflen: '16384'
-    center_freq: freq*1e6
+    center_freq: freq*1e6 - lo_offset
     comment: "RTL-SDR dongle (\u03BC\u03CC\u03BD\u03BF \u03BB\u03AE\u03C8\u03B7, RX\
       \ only)"
     dev_args: ''
@@ -1739,104 +2067,6 @@ blocks:
     coordinate: [40, 420]
     rotation: 0
     state: enabled
-- name: snippet_square_const
-  id: snippet
-  parameters:
-    alias: ''
-    code: |-
-      # Κρατά τους αστερισμούς ΤΕΤΡΑΓΩΝΟΥΣ (ίση κλίμακα στους άξονες I και Q),
-      # όποιο μέγεθος κι αν έχει το παράθυρο (π.χ. σε πλήρη οθόνη).
-      # Το QT GUI Constellation Sink δεν έχει τέτοια επιλογή, οπότε κάθε
-      # αστερισμός τυλίγεται σε ένα πλαίσιο που τον κεντράρει και κρατά
-      # τετράγωνη την περιοχή σχεδίασης (canvas) του γραφήματος.
-      from PyQt5 import Qt, QtCore
-
-      class SquarePlot(Qt.QWidget):
-          def __init__(self, inner):
-              Qt.QWidget.__init__(self)
-              self.inner = inner
-              self.setMinimumSize(260, 260)
-              self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)
-
-          def sizeHint(self):
-              return QtCore.QSize(480, 480)
-
-          def canvas(self):
-              for w in self.inner.findChildren(Qt.QWidget):
-                  if w.metaObject().className() == 'QwtPlotCanvas':
-                      return w
-              return None
-
-          def fit(self):
-              # περιθώρια = τίτλος, άξονες, υπόμνημα (ό,τι δεν είναι canvas)
-              mw = mh = 0
-              c = self.canvas()
-              if c is not None and c.width() > 1 and c.height() > 1:
-                  mw = self.inner.width() - c.width()
-                  mh = self.inner.height() - c.height()
-              side = max(50, min(self.width() - mw, self.height() - mh))
-              w, h = side + mw, side + mh
-              self.inner.setGeometry((self.width() - w) // 2,
-                                     (self.height() - h) // 2, w, h)
-
-          def resizeEvent(self, event):
-              self.fit()
-              # δεύτερο πέρασμα, αφού το γράφημα ξαναϋπολογίσει τα περιθώριά του
-              QtCore.QTimer.singleShot(0, self.fit)
-              QtCore.QTimer.singleShot(100, self.fit)
-
-      def find_layout(layout, widget):
-          for i in range(layout.count()):
-              item = layout.itemAt(i)
-              if item.widget() is widget:
-                  return layout
-              if item.layout() is not None:
-                  found = find_layout(item.layout(), widget)
-                  if found is not None:
-                      return found
-          return None
-
-      self._square_plots = []
-      for name in sorted(vars(self)):
-          if not (name.startswith('_qtgui_const_sink_x') and name.endswith('_win')):
-              continue
-          win = getattr(self, name)
-          parent = win.parentWidget()
-          layout = find_layout(parent.layout(), win) if parent is not None else None
-          if layout is None:
-              continue
-          box = SquarePlot(win)
-          layout.replaceWidget(win, box)
-          win.setParent(box)
-          win.show()
-          self._square_plots.append(box)
-          # Στο πλέγμα: η γραμμή των αστερισμών παίρνει το περισσότερο ύψος,
-          # οι γραμμές με ολισθητήρες μόνο όσο χρειάζονται.
-          if isinstance(layout, Qt.QGridLayout):
-              plots = [getattr(self, n) for n in vars(self)
-                       if n.startswith('_qtgui_') and n.endswith('_win')
-                       and 'number_sink' not in n and 'const_sink' not in n]
-              for i in range(layout.count()):
-                  row = layout.getItemPosition(i)[0]
-                  w = layout.itemAt(i).widget()
-                  if isinstance(w, SquarePlot):
-                      layout.setRowStretch(row, 3)
-                  elif any(w is p for p in plots):
-                      layout.setRowStretch(row, 2)
-                  elif layout.rowStretch(row) == 1:
-                      layout.setRowStretch(row, 0)
-    comment: "Τετράγωνοι αστερισμοί: κρατά ίση
-      κλίμακα I/Q σε κάθε μέγεθος παραθύρου
-      (και σε πλήρη οθόνη)"
-    priority: '0'
-    section: main_after_init
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 700]
-    rotation: 0
-    state: enabled
 
 connections:
 - [analog_agc2_xx_0, '0', digital_fll_band_edge_cc_0, '0']
@@ -1844,6 +2074,7 @@ connections:
 - [blocks_multiply_const_vxx_0, '0', digital_constellation_decoder_cb_0, '0']
 - [blocks_multiply_const_vxx_0, '0', qtgui_const_sink_x_after, '0']
 - [blocks_multiply_const_vxx_0, '0', qtgui_const_sink_x_live, '0']
+- [blocks_repeat_0, '0', epy_block_1, '3']
 - [blocks_unpack_k_bits_bb_0, '0', epy_block_0, '0']
 - [digital_constellation_decoder_cb_0, '0', digital_diff_decoder_bb_0, '0']
 - [digital_costas_loop_cc_0, '0', blocks_multiply_const_vxx_0, '0']
@@ -1852,15 +2083,20 @@ connections:
 - [digital_fll_band_edge_cc_0, '0', root_raised_cosine_filter_0, '0']
 - [digital_map_bb_0, '0', blocks_unpack_k_bits_bb_0, '0']
 - [digital_symbol_sync_xx_0, '0', digital_costas_loop_cc_0, '0']
+- [digital_symbol_sync_xx_0, '0', epy_block_2, '0']
 - [digital_symbol_sync_xx_0, '0', qtgui_const_sink_x_before, '0']
 - [epy_block_0, '0', epy_block_1, '0']
 - [epy_block_0, '0', qtgui_number_sink_0, '0']
 - [epy_block_0, '1', epy_block_1, '1']
 - [epy_block_0, '1', qtgui_number_sink_1, '0']
+- [epy_block_0, '2', epy_block_1, '2']
+- [epy_block_0, '2', qtgui_number_sink_sync, '0']
+- [epy_block_2, '0', blocks_repeat_0, '0']
+- [epy_block_2, '0', qtgui_number_sink_snr, '0']
+- [freq_xlating_fir_filter_0, '0', analog_agc2_xx_0, '0']
 - [log_point_button, pressed, epy_block_1, trigger]
-- [low_pass_filter_0, '0', analog_agc2_xx_0, '0']
 - [root_raised_cosine_filter_0, '0', digital_symbol_sync_xx_0, '0']
-- [soapy_rtlsdr_source_0, '0', low_pass_filter_0, '0']
+- [soapy_rtlsdr_source_0, '0', freq_xlating_fir_filter_0, '0']
 
 metadata:
   file_format: 1

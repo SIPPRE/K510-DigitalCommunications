@@ -6,8 +6,9 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: "16-QAM RX (RTL-SDR): FLL + matched RRC + Symbol Sync (Gardner) +
-      Costas + μετρητής EVM. student (lab3-psk-qam, Μέρος Β)."
+    description: "16-QAM RX (RTL-SDR): FLL + matched RRC + Symbol Sync (Gardner) +\
+      \ Costas + \u03BC\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 EVM. student (lab3-psk-qam,\
+      \ \u039C\u03AD\u03C1\u03BF\u03C2 \u0392)."
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
@@ -37,8 +38,10 @@ blocks:
 - name: actual_sps
   id: variable
   parameters:
-    comment: "Πραγματικά δείγματα/σύμβολο
-      (όχι απαραίτητα ακέραιο)"
+    comment: "\u03A0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03AC \u03B4\u03B5\
+      \u03AF\u03B3\u03BC\u03B1\u03C4\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF\
+      \ (\u03CC\u03C7\u03B9 \u03B1\u03C0\u03B1\u03C1\u03B1\u03AF\u03C4\u03B7\u03C4\
+      \u03B1 \u03B1\u03BA\u03AD\u03C1\u03B1\u03B9\u03BF)"
     value: quad_rate/symbol_rate
   states:
     bus_sink: false
@@ -50,9 +53,11 @@ blocks:
 - name: channel_decim
   id: variable
   parameters:
-    comment: "Δεκατισμός φίλτρου καναλιού
-      (κατασκευαστική παράμετρος — αλλάζει
-      μόνο με Kill+Run)"
+    comment: "\u0394\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C6\u03AF\
+      \u03BB\u03C4\u03C1\u03BF\u03C5 \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD\
+      \ (\u03BA\u03B1\u03C4\u03B1\u03C3\u03BA\u03B5\u03C5\u03B1\u03C3\u03C4\u03B9\u03BA\
+      \u03AE \u03C0\u03B1\u03C1\u03AC\u03BC\u03B5\u03C4\u03C1\u03BF\u03C2 \u2014 \u03B1\
+      \u03BB\u03BB\u03AC\u03B6\u03B5\u03B9 \u03BC\u03CC\u03BD\u03BF \u03BC\u03B5 Kill+Run)"
     value: max(1, int(round(rtl_samp_rate/(symbol_rate*4))))
   states:
     bus_sink: false
@@ -64,8 +69,9 @@ blocks:
 - name: costas_bw
   id: variable
   parameters:
-    comment: "Εύρος βρόχου Costas = 2π/N,
-      με το N από τον ολισθητήρα"
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ Costas = 2\u03C0/N, \u03BC\u03B5 \u03C4\u03BF N \u03B1\u03C0\u03CC \u03C4\u03BF\
+      \u03BD \u03BF\u03BB\u03B9\u03C3\u03B8\u03B7\u03C4\u03AE\u03C1\u03B1"
     value: 2*np.pi/costas_bw_div
   states:
     bus_sink: false
@@ -77,24 +83,41 @@ blocks:
 - name: costas_bw_div
   id: variable_qtgui_range
   parameters:
-    comment: "ΖΩΝΤΑΝΗ ρύθμιση του εύρους
-      βρόχου Costas (= 2π/N). Το 16-QAM έχει
-      αντικρουόμενες απαιτήσεις: (α) ΣΤΕΝΟΣ
-      βρόχος (μεγάλο N) φιλτράρει τον θόρυβο
-      σχηματισμού των 12 μη-γωνιακών σημείων
-      (μόνο τα 4 γωνιακά «μοιάζουν» με QPSK
-      στον ανιχνευτή 4ης τάξης)· (β) ΦΑΡΔΥΣ
-      βρόχος (μικρό N) παρακολουθεί τον
-      θόρυβο φάσης των πραγματικών
-      ταλαντωτών HackRF/RTL-SDR. Πολύ μεγάλο
-      N -> τα σημεία «σέρνονται» σε τόξα
-      (ο αστερισμός λικνίζεται)· πολύ μικρό
-      N -> θολά, φουσκωμένα σημεία. Βρείτε
-      το βέλτιστο ΖΩΝΤΑΝΑ παρατηρώντας
-      το EVM — εξαρτάται από τα πραγματικά
-      radios, δεν προσομοιώνεται!"
+    comment: "\u0396\u03A9\u039D\u03A4\u0391\u039D\u0397 \u03C1\u03CD\u03B8\u03BC\u03B9\
+      \u03C3\u03B7 \u03C4\u03BF\u03C5 \u03B5\u03CD\u03C1\u03BF\u03C5\u03C2 \u03B2\u03C1\
+      \u03CC\u03C7\u03BF\u03C5 Costas (= 2\u03C0/N). \u03A4\u03BF 16-QAM \u03AD\u03C7\
+      \u03B5\u03B9 \u03B1\u03BD\u03C4\u03B9\u03BA\u03C1\u03BF\u03C5\u03CC\u03BC\u03B5\
+      \u03BD\u03B5\u03C2 \u03B1\u03C0\u03B1\u03B9\u03C4\u03AE\u03C3\u03B5\u03B9\u03C2\
+      : (\u03B1) \u03A3\u03A4\u0395\u039D\u039F\u03A3 \u03B2\u03C1\u03CC\u03C7\u03BF\
+      \u03C2 (\u03BC\u03B5\u03B3\u03AC\u03BB\u03BF N) \u03C6\u03B9\u03BB\u03C4\u03C1\
+      \u03AC\u03C1\u03B5\u03B9 \u03C4\u03BF\u03BD \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\
+      \ \u03C3\u03C7\u03B7\u03BC\u03B1\u03C4\u03B9\u03C3\u03BC\u03BF\u03CD \u03C4\u03C9\
+      \u03BD 12 \u03BC\u03B7-\u03B3\u03C9\u03BD\u03B9\u03B1\u03BA\u03CE\u03BD \u03C3\
+      \u03B7\u03BC\u03B5\u03AF\u03C9\u03BD (\u03BC\u03CC\u03BD\u03BF \u03C4\u03B1\
+      \ 4 \u03B3\u03C9\u03BD\u03B9\u03B1\u03BA\u03AC \xAB\u03BC\u03BF\u03B9\u03AC\u03B6\
+      \u03BF\u03C5\u03BD\xBB \u03BC\u03B5 QPSK \u03C3\u03C4\u03BF\u03BD \u03B1\u03BD\
+      \u03B9\u03C7\u03BD\u03B5\u03C5\u03C4\u03AE 4\u03B7\u03C2 \u03C4\u03AC\u03BE\u03B7\
+      \u03C2)\xB7 (\u03B2) \u03A6\u0391\u03A1\u0394\u03A5\u03A3 \u03B2\u03C1\u03CC\
+      \u03C7\u03BF\u03C2 (\u03BC\u03B9\u03BA\u03C1\u03CC N) \u03C0\u03B1\u03C1\u03B1\
+      \u03BA\u03BF\u03BB\u03BF\u03C5\u03B8\u03B5\u03AF \u03C4\u03BF\u03BD \u03B8\u03CC\
+      \u03C1\u03C5\u03B2\u03BF \u03C6\u03AC\u03C3\u03B7\u03C2 \u03C4\u03C9\u03BD \u03C0\
+      \u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CE\u03BD \u03C4\u03B1\u03BB\
+      \u03B1\u03BD\u03C4\u03C9\u03C4\u03CE\u03BD HackRF/RTL-SDR. \u03A0\u03BF\u03BB\
+      \u03CD \u03BC\u03B5\u03B3\u03AC\u03BB\u03BF N -> \u03C4\u03B1 \u03C3\u03B7\u03BC\
+      \u03B5\u03AF\u03B1 \xAB\u03C3\u03AD\u03C1\u03BD\u03BF\u03BD\u03C4\u03B1\u03B9\
+      \xBB \u03C3\u03B5 \u03C4\u03CC\u03BE\u03B1 (\u03BF \u03B1\u03C3\u03C4\u03B5\u03C1\
+      \u03B9\u03C3\u03BC\u03CC\u03C2 \u03BB\u03B9\u03BA\u03BD\u03AF\u03B6\u03B5\u03C4\
+      \u03B1\u03B9)\xB7 \u03C0\u03BF\u03BB\u03CD \u03BC\u03B9\u03BA\u03C1\u03CC N\
+      \ -> \u03B8\u03BF\u03BB\u03AC, \u03C6\u03BF\u03C5\u03C3\u03BA\u03C9\u03BC\u03AD\
+      \u03BD\u03B1 \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1. \u0392\u03C1\u03B5\u03AF\u03C4\
+      \u03B5 \u03C4\u03BF \u03B2\u03AD\u03BB\u03C4\u03B9\u03C3\u03C4\u03BF \u0396\u03A9\
+      \u039D\u03A4\u0391\u039D\u0391 \u03C0\u03B1\u03C1\u03B1\u03C4\u03B7\u03C1\u03CE\
+      \u03BD\u03C4\u03B1\u03C2 \u03C4\u03BF EVM \u2014 \u03B5\u03BE\u03B1\u03C1\u03C4\
+      \u03AC\u03C4\u03B1\u03B9 \u03B1\u03C0\u03CC \u03C4\u03B1 \u03C0\u03C1\u03B1\u03B3\
+      \u03BC\u03B1\u03C4\u03B9\u03BA\u03AC radios, \u03B4\u03B5\u03BD \u03C0\u03C1\
+      \u03BF\u03C3\u03BF\u03BC\u03BF\u03B9\u03CE\u03BD\u03B5\u03C4\u03B1\u03B9!"
     gui_hint: 2,2,1,2
-    label: "Costas N (εύρος = 2π/N)"
+    label: "Costas N (\u03B5\u03CD\u03C1\u03BF\u03C2 = 2\u03C0/N)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
@@ -110,11 +133,41 @@ blocks:
     coordinate: [840, 300]
     rotation: 0
     state: enabled
+- name: dd_mu
+  id: variable_qtgui_range
+  parameters:
+    comment: "\u0392\u03AE\u03BC\u03B1 \u03C0\u03C1\u03BF\u03C3\u03B1\u03C1\u03BC\u03BF\
+      \u03B3\u03AE\u03C2 \u03BC \u03C4\u03BF\u03C5 DD-LMS \u03B4\u03B9\u03BF\u03C1\
+      \u03B8\u03C9\u03C4\u03AE. \u039C\u03B5\u03B3\u03B1\u03BB\u03CD\u03C4\u03B5\u03C1\
+      \u03BF \u03BC = \u03C4\u03B1\u03C7\u03CD\u03C4\u03B5\u03C1\u03B7 \u03C0\u03B1\
+      \u03C1\u03B1\u03BA\u03BF\u03BB\u03BF\u03CD\u03B8\u03B7\u03C3\u03B7 \u03C6\u03AC\
+      \u03C3\u03B7\u03C2/\u03BA\u03AD\u03C1\u03B4\u03BF\u03C5\u03C2 \u03B1\u03BB\u03BB\
+      \u03AC \u03C0\u03B5\u03C1\u03B9\u03C3\u03C3\u03CC\u03C4\u03B5\u03C1\u03BF\u03C2\
+      \ \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2 \u03B1\u03C0\u03BF\u03C6\u03AC\u03C3\
+      \u03B5\u03C9\u03BD. \u03A4\u03C5\u03C0\u03B9\u03BA\u03AC 0.03-0.10."
+    gui_hint: 3,0,1,4
+    label: "DD-LMS \u03BC"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.001'
+    step: '0.001'
+    stop: '0.2'
+    value: '0.05'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 300]
+    rotation: 0
+    state: enabled
 - name: excess_bw
   id: variable
   parameters:
-    comment: "Roll-off RRC — πρέπει να
-      ταιριάζει με το qam_tx.grc"
+    comment: "Roll-off RRC \u2014 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1\
+      \ \u03C4\u03B1\u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\
+      \u03BF qam_tx.grc"
     value: '0.35'
   states:
     bus_sink: false
@@ -126,9 +179,11 @@ blocks:
 - name: fll_bw
   id: variable
   parameters:
-    comment: "Εύρος βρόχου FLL Band-Edge —
-      χονδρική διόρθωση συχνότητας
-      φέροντος, ίδιο με psk_rx.grc"
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ FLL Band-Edge \u2014 \u03C7\u03BF\u03BD\u03B4\u03C1\u03B9\u03BA\u03AE \u03B4\
+      \u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\
+      \u03B7\u03C4\u03B1\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2, \u03AF\
+      \u03B4\u03B9\u03BF \u03BC\u03B5 psk_rx.grc"
     value: 2*np.pi/250.0
   states:
     bus_sink: false
@@ -140,11 +195,12 @@ blocks:
 - name: freq
   id: variable_qtgui_range
   parameters:
-    comment: "Κεντρική συχνότητα RTL-SDR —
-      προεπιλογή 434.07 MHz (qam_tx.grc:
-      433.92 + 150 kHz)"
+    comment: "\u039A\u03B5\u03BD\u03C4\u03C1\u03B9\u03BA\u03AE \u03C3\u03C5\u03C7\u03BD\
+      \u03CC\u03C4\u03B7\u03C4\u03B1 RTL-SDR \u2014 \u03C0\u03C1\u03BF\u03B5\u03C0\
+      \u03B9\u03BB\u03BF\u03B3\u03AE 434.07 MHz (qam_tx.grc: 433.92 + 150 kHz)"
     gui_hint: 0,0,1,2
-    label: "Συχνότητα συντονισμού (MHz)"
+    label: "\u03A3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1 \u03C3\u03C5\u03BD\
+      \u03C4\u03BF\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD (MHz)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
@@ -160,11 +216,37 @@ blocks:
     coordinate: [8, 12]
     rotation: 0
     state: enabled
+- name: lo_offset
+  id: variable
+  parameters:
+    comment: "OFFSET TUNING: \u03C4\u03BF RTL-SDR \u03C3\u03C5\u03BD\u03C4\u03BF\u03BD\
+      \u03AF\u03B6\u03B5\u03C4\u03B1\u03B9 lo_offset \u039A\u0391\u03A4\u03A9 \u03B1\
+      \u03C0\u03CC \u03C4\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \ \u03C4\u03BF\u03C5 \u03C3\u03AE\u03BC\u03B1\u03C4\u03BF\u03C2 \u03BA\u03B1\
+      \u03B9 \u03C4\u03BF Frequency Xlating \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF \u03C4\
+      \u03BF \u03C6\u03AD\u03C1\u03BD\u03B5\u03B9 \u03C8\u03B7\u03C6\u03B9\u03B1\u03BA\
+      \u03AC \u03C3\u03C4\u03BF 0 Hz. \u0388\u03C4\u03C3\u03B9 \u03C4\u03BF DC spike\
+      \ / \u03B4\u03B9\u03B1\u03C1\u03C1\u03BF\u03AE LO \u03C4\u03BF\u03C5 RTL (\u03C0\
+      \u03BF\u03C5 \u03B1\u03BB\u03BB\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\u03BF\
+      \ \u03BA\u03AD\u03C1\u03B4\u03BF\u03C2) \u03BC\u03AD\u03BD\u03B5\u03B9 \u0395\
+      \u039E\u03A9 \u03B1\u03C0\u03CC \u03C4\u03BF \u03BA\u03B1\u03BD\u03AC\u03BB\u03B9\
+      \ \u03B1\u03BD\u03C4\u03AF \u03BD\u03B1 \u03BA\u03AC\u03B8\u03B5\u03C4\u03B1\
+      \u03B9 \u03C0\u03AC\u03BD\u03C9 \u03C3\u03C4\u03BF \u03C3\u03AE\u03BC\u03B1."
+    value: 250e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1100, 12]
+    rotation: 0
+    state: enabled
 - name: quad_rate
   id: variable
   parameters:
-    comment: "Πραγματικός ρυθμός
-      δειγματοληψίας μετά τον δεκατισμό"
+    comment: "\u03A0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC\u03C2 \u03C1\
+      \u03C5\u03B8\u03BC\u03CC\u03C2 \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\
+      \u03BB\u03B7\u03C8\u03AF\u03B1\u03C2 \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF\u03BD\
+      \ \u03B4\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC"
     value: rtl_samp_rate/channel_decim
   states:
     bus_sink: false
@@ -176,20 +258,25 @@ blocks:
 - name: rf_gain
   id: variable_qtgui_range
   parameters:
-    comment: "Κέρδος RF του RTL-SDR.
-      ΠΡΟΣΟΧΗ στο 16-QAM: πολύ υψηλό
-      κέρδος -> μη-γραμμικότητα/ψαλίδισμα
-      στον δέκτη -> τα εξωτερικά σημεία
-      παραμορφώνονται (ανεβαίνει το EVM)"
+    comment: "\u039A\u03AD\u03C1\u03B4\u03BF\u03C2 RF \u03C4\u03BF\u03C5 RTL-SDR.\
+      \ \u03A0\u03A1\u039F\u03A3\u039F\u03A7\u0397 \u03C3\u03C4\u03BF 16-QAM: \u03C0\
+      \u03BF\u03BB\u03CD \u03C5\u03C8\u03B7\u03BB\u03CC \u03BA\u03AD\u03C1\u03B4\u03BF\
+      \u03C2 -> \u03BC\u03B7-\u03B3\u03C1\u03B1\u03BC\u03BC\u03B9\u03BA\u03CC\u03C4\
+      \u03B7\u03C4\u03B1/\u03C8\u03B1\u03BB\u03AF\u03B4\u03B9\u03C3\u03BC\u03B1 \u03C3\
+      \u03C4\u03BF\u03BD \u03B4\u03AD\u03BA\u03C4\u03B7 -> \u03C4\u03B1 \u03B5\u03BE\
+      \u03C9\u03C4\u03B5\u03C1\u03B9\u03BA\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1\
+      \ \u03C0\u03B1\u03C1\u03B1\u03BC\u03BF\u03C1\u03C6\u03CE\u03BD\u03BF\u03BD\u03C4\
+      \u03B1\u03B9 (\u03B1\u03BD\u03B5\u03B2\u03B1\u03AF\u03BD\u03B5\u03B9 \u03C4\u03BF\
+      \ EVM)"
     gui_hint: 0,2,1,2
-    label: "Κέρδος RF (dB)"
+    label: "\u039A\u03AD\u03C1\u03B4\u03BF\u03C2 RF (dB)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '1'
     stop: '49'
-    value: '30'
+    value: '20'
     widget: counter_slider
   states:
     bus_sink: false
@@ -201,7 +288,8 @@ blocks:
 - name: rtl_samp_rate
   id: variable
   parameters:
-    comment: "Δειγματοληψία RTL-SDR (σταθερή)"
+    comment: "\u0394\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\
+      \u03B1 RTL-SDR (\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03AE)"
     value: '2048000'
   states:
     bus_sink: false
@@ -213,10 +301,13 @@ blocks:
 - name: symbol_rate
   id: variable_qtgui_range
   parameters:
-    comment: "Ρυθμός συμβόλου (baud) — πρέπει
-      να ταιριάζει με το qam_tx.grc"
+    comment: "\u03A1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03BF\u03C5 (baud) \u2014 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1\
+      \ \u03C4\u03B1\u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\
+      \u03BF qam_tx.grc"
     gui_hint: 1,0,1,2
-    label: "Ρυθμός συμβόλου (baud)"
+    label: "\u03A1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03BF\u03C5 (baud)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
@@ -236,8 +327,9 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: "\"⚠ πρέπει να ταιριάζει
-      με τον πομπό (qam_tx.grc)\""
+    value: "\"\u26A0 \u03C0\u03C1\u03AD\u03C0\u03B5\u03B9 \u03BD\u03B1 \u03C4\u03B1\
+      \u03B9\u03C1\u03B9\u03AC\u03B6\u03B5\u03B9 \u03BC\u03B5 \u03C4\u03BF\u03BD \u03C0\
+      \u03BF\u03BC\u03C0\u03CC (qam_tx.grc)\""
   states:
     bus_sink: false
     bus_source: false
@@ -264,10 +356,13 @@ blocks:
 - name: sync_bw
   id: variable
   parameters:
-    comment: "Εύρος βρόχου Symbol Sync —
-      στενότερο από τον δέκτη QPSK (0.045):
-      ο Gardner TED έχει αυτοθόρυβο σε
-      σήμα μεταβλητού μέτρου (16-QAM)"
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ Symbol Sync \u2014 \u03C3\u03C4\u03B5\u03BD\u03CC\u03C4\u03B5\u03C1\u03BF\
+      \ \u03B1\u03C0\u03CC \u03C4\u03BF\u03BD \u03B4\u03AD\u03BA\u03C4\u03B7 QPSK\
+      \ (0.045): \u03BF Gardner TED \u03AD\u03C7\u03B5\u03B9 \u03B1\u03C5\u03C4\u03BF\
+      \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF \u03C3\u03B5 \u03C3\u03AE\u03BC\u03B1 \u03BC\
+      \u03B5\u03C4\u03B1\u03B2\u03BB\u03B7\u03C4\u03BF\u03CD \u03BC\u03AD\u03C4\u03C1\
+      \u03BF\u03C5 (16-QAM)"
     value: '0.01'
   states:
     bus_sink: false
@@ -282,13 +377,20 @@ blocks:
     affinity: ''
     alias: ''
     attack_rate: 1e-3
-    comment: "ΑΡΓΟ AGC — κρίσιμο για QAM!
-      Ένα γρήγορο AGC (όπως στο psk_rx.grc,
-      attack 0.1) «ισοπεδώνει» τις 3 στάθμες
-      πλάτους του 16-QAM, καταστρέφοντας
-      την ίδια την πληροφορία. Εδώ το AGC
-      σταθεροποιεί μόνο τη ΜΕΣΗ ισχύ,
-      πολύ πιο αργά από τον ρυθμό συμβόλου."
+    comment: "\u0391\u03A1\u0393\u039F AGC \u2014 \u03BA\u03C1\u03AF\u03C3\u03B9\u03BC\
+      \u03BF \u03B3\u03B9\u03B1 QAM! \u0388\u03BD\u03B1 \u03B3\u03C1\u03AE\u03B3\u03BF\
+      \u03C1\u03BF AGC (\u03CC\u03C0\u03C9\u03C2 \u03C3\u03C4\u03BF psk_rx.grc, attack\
+      \ 0.1) \xAB\u03B9\u03C3\u03BF\u03C0\u03B5\u03B4\u03CE\u03BD\u03B5\u03B9\xBB\
+      \ \u03C4\u03B9\u03C2 3 \u03C3\u03C4\u03AC\u03B8\u03BC\u03B5\u03C2 \u03C0\u03BB\
+      \u03AC\u03C4\u03BF\u03C5\u03C2 \u03C4\u03BF\u03C5 16-QAM, \u03BA\u03B1\u03C4\
+      \u03B1\u03C3\u03C4\u03C1\u03AD\u03C6\u03BF\u03BD\u03C4\u03B1\u03C2 \u03C4\u03B7\
+      \u03BD \u03AF\u03B4\u03B9\u03B1 \u03C4\u03B7\u03BD \u03C0\u03BB\u03B7\u03C1\u03BF\
+      \u03C6\u03BF\u03C1\u03AF\u03B1. \u0395\u03B4\u03CE \u03C4\u03BF AGC \u03C3\u03C4\
+      \u03B1\u03B8\u03B5\u03C1\u03BF\u03C0\u03BF\u03B9\u03B5\u03AF \u03BC\u03CC\u03BD\
+      \u03BF \u03C4\u03B7 \u039C\u0395\u03A3\u0397 \u03B9\u03C3\u03C7\u03CD, \u03C0\
+      \u03BF\u03BB\u03CD \u03C0\u03B9\u03BF \u03B1\u03C1\u03B3\u03AC \u03B1\u03C0\u03CC\
+      \ \u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC \u03C3\u03C5\u03BC\u03B2\
+      \u03CC\u03BB\u03BF\u03C5."
     decay_rate: 1e-4
     gain: '1.0'
     max_gain: '1000'
@@ -308,16 +410,27 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "ΛΕΠΤΗ διόρθωση φάσης φέροντος
-      (4ης τάξης). Σε αντίθεση με το QPSK,
-      στο τετράγωνο 16-QAM ο βρόχος
-      κλειδώνει ΕΥΘΥΓΡΑΜΜΙΣΜΕΝΑ με τους
-      άξονες — ΔΕΝ χρειάζεται περιστροφή
-      +45° μετά (επιβεβαιωμένο εμπειρικά).
-      Το εύρος βρόχου ρυθμίζεται ΖΩΝΤΑΝΑ
-      από τον ολισθητήρα «Costas N» — δείτε
-      το σχόλιο εκεί για το trade-off
-      θορύβου σχηματισμού / θορύβου φάσης."
+    comment: "\u039B\u0395\u03A0\u03A4\u0397 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\
+      \u03B7 \u03C6\u03AC\u03C3\u03B7\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\
+      \u03C2 (4\u03B7\u03C2 \u03C4\u03AC\u03BE\u03B7\u03C2). \u03A3\u03B5 \u03B1\u03BD\
+      \u03C4\u03AF\u03B8\u03B5\u03C3\u03B7 \u03BC\u03B5 \u03C4\u03BF QPSK, \u03C3\u03C4\
+      \u03BF \u03C4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF 16-QAM \u03BF\
+      \ \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2 \u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\
+      \u03B5\u03B9 \u0395\u03A5\u0398\u03A5\u0393\u03A1\u0391\u039C\u039C\u0399\u03A3\
+      \u039C\u0395\u039D\u0391 \u03BC\u03B5 \u03C4\u03BF\u03C5\u03C2 \u03AC\u03BE\u03BF\
+      \u03BD\u03B5\u03C2 \u2014 \u0394\u0395\u039D \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\
+      \u03B5\u03C4\u03B1\u03B9 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03BF\u03C6\
+      \u03AE +45\xB0 \u03BC\u03B5\u03C4\u03AC (\u03B5\u03C0\u03B9\u03B2\u03B5\u03B2\
+      \u03B1\u03B9\u03C9\u03BC\u03AD\u03BD\u03BF \u03B5\u03BC\u03C0\u03B5\u03B9\u03C1\
+      \u03B9\u03BA\u03AC). \u03A4\u03BF \u03B5\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\
+      \u03CC\u03C7\u03BF\u03C5 \u03C1\u03C5\u03B8\u03BC\u03AF\u03B6\u03B5\u03C4\u03B1\
+      \u03B9 \u0396\u03A9\u039D\u03A4\u0391\u039D\u0391 \u03B1\u03C0\u03CC \u03C4\u03BF\
+      \u03BD \u03BF\u03BB\u03B9\u03C3\u03B8\u03B7\u03C4\u03AE\u03C1\u03B1 \xABCostas\
+      \ N\xBB \u2014 \u03B4\u03B5\u03AF\u03C4\u03B5 \u03C4\u03BF \u03C3\u03C7\u03CC\
+      \u03BB\u03B9\u03BF \u03B5\u03BA\u03B5\u03AF \u03B3\u03B9\u03B1 \u03C4\u03BF\
+      \ trade-off \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\u03C5 \u03C3\u03C7\u03B7\u03BC\
+      \u03B1\u03C4\u03B9\u03C3\u03BC\u03BF\u03CD / \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\
+      \u03C5 \u03C6\u03AC\u03C3\u03B7\u03C2."
     maxoutbuf: '0'
     minoutbuf: '0'
     order: '4'
@@ -335,14 +448,22 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "ΧΟΝΔΡΙΚΗ διόρθωση συχνότητας
-      φέροντος (FLL Band-Edge) — απαραίτητη
-      για τη διαφορά κρυστάλλων
-      HackRF/RTL-SDR (±5-15 kHz στα 434 MHz),
-      όπως στο psk_rx.grc. Το FLL δουλεύει
-      στο ΦΑΣΜΑ του σήματος, οπότε δεν το
-      ενοχλεί το μεταβλητό μέτρο του 16-QAM."
+    comment: "\u03A7\u039F\u039D\u0394\u03A1\u0399\u039A\u0397 \u03B4\u03B9\u03CC\u03C1\
+      \u03B8\u03C9\u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (FLL Band-Edge) \u2014\
+      \ \u03B1\u03C0\u03B1\u03C1\u03B1\u03AF\u03C4\u03B7\u03C4\u03B7 \u03B3\u03B9\u03B1\
+      \ \u03C4\u03B7 \u03B4\u03B9\u03B1\u03C6\u03BF\u03C1\u03AC \u03BA\u03C1\u03C5\
+      \u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD HackRF/RTL-SDR (\xB15-15 kHz \u03C3\
+      \u03C4\u03B1 434 MHz), \u03CC\u03C0\u03C9\u03C2 \u03C3\u03C4\u03BF psk_rx.grc.\
+      \ \u03A4\u03BF FLL \u03B4\u03BF\u03C5\u03BB\u03B5\u03CD\u03B5\u03B9 \u03C3\u03C4\
+      \u03BF \u03A6\u0391\u03A3\u039C\u0391 \u03C4\u03BF\u03C5 \u03C3\u03AE\u03BC\u03B1\
+      \u03C4\u03BF\u03C2, \u03BF\u03C0\u03CC\u03C4\u03B5 \u03B4\u03B5\u03BD \u03C4\
+      \u03BF \u03B5\u03BD\u03BF\u03C7\u03BB\u03B5\u03AF \u03C4\u03BF \u03BC\u03B5\u03C4\
+      \u03B1\u03B2\u03BB\u03B7\u03C4\u03CC \u03BC\u03AD\u03C4\u03C1\u03BF \u03C4\u03BF\
+      \u03C5 16-QAM."
     filter_size: int(11*actual_sps)+1
+    maxoutbuf: '0'
+    minoutbuf: '0'
     rolloff: excess_bw
     samps_per_sym: actual_sps
     type: cc
@@ -359,10 +480,14 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Ανάκτηση χρονισμού συμβόλου
-      (Symbol Sync, TED = GARDNER, όπως στο
-      psk_rx.grc — ανεξάρτητος από περιστροφή
-      αστερισμού) — παράγει 1 δείγμα/σύμβολο"
+    comment: "\u0391\u03BD\u03AC\u03BA\u03C4\u03B7\u03C3\u03B7 \u03C7\u03C1\u03BF\u03BD\
+      \u03B9\u03C3\u03BC\u03BF\u03CD \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5\
+      \ (Symbol Sync, TED = GARDNER, \u03CC\u03C0\u03C9\u03C2 \u03C3\u03C4\u03BF psk_rx.grc\
+      \ \u2014 \u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03BF\u03C2\
+      \ \u03B1\u03C0\u03CC \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03BF\u03C6\u03AE\
+      \ \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03CD) \u2014 \u03C0\
+      \u03B1\u03C1\u03AC\u03B3\u03B5\u03B9 1 \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\
+      /\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF"
     constellation: QAM16_CONSTELLATION
     damping: '1.0'
     loop_bw: sync_bw
@@ -384,227 +509,292 @@ blocks:
     coordinate: [960, 420]
     rotation: 0
     state: enabled
-- name: dd_mu
-  id: variable_qtgui_range
-  parameters:
-    comment: "Βήμα προσαρμογής μ του DD-LMS
-      διορθωτή. Μεγαλύτερο μ = ταχύτερη
-      παρακολούθηση φάσης/κέρδους αλλά
-      περισσότερος θόρυβος αποφάσεων.
-      Τυπικά 0.03-0.10."
-    gui_hint: 3,0,1,4
-    label: "DD-LMS μ"
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: '0.001'
-    step: '0.001'
-    stop: '0.2'
-    value: '0.05'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1096, 300]
-    rotation: 0
-    state: enabled
-- name: epy_block_1
-  id: epy_block
-  parameters:
-    _source_code: |
-      import numpy as np
-      from gnuradio import gr
-
-      _S = 2.0 / np.sqrt(10.0)  # απόσταση σταθμών 16-QAM (μέση ισχύς 1)
-
-
-      class blk(gr.sync_block):
-          """Διορθωτής DD-LMS ενός συντελεστή (decision-directed, 1 complex tap).
-
-          Γιατί χρειάζεται (βρέθηκε στην πράξη, στον αέρα): μετά το Costas Loop
-          απομένουν σφάλματα που ΚΑΝΕΝΑ εύρος βρόχου Costas δεν διορθώνει:
-          (1) στατικό σφάλμα ΚΛΙΜΑΚΑΣ — το AGC σταθεροποιεί το μέσο ΠΛΑΤΟΣ στο 1,
-          αλλά στο 16-QAM μέσο πλάτος ≠ RMS ισχύς (στο QPSK ταυτίζονται, γι' αυτό
-          εκεί δεν φαινόταν), οπότε όλος ο αστερισμός κάθεται ~5% εκτός κλίμακας·
-          (2) αργή αναπνοή κέρδους του AGC· (3) υπόλοιπο λίκνισμα φάσης των
-          ταλαντωτών. Ο βρόχος: y = w·x, απόφαση d = πλησιέστερο σημείο
-          (διαχωρίσιμη ανά άξονα στο τετράγωνο πλέγμα), w += μ·(d−y)·conj(x).
-          Ο μιγαδικός συντελεστής w διορθώνει ΜΑΖΙ κέρδος ΚΑΙ φάση, με βάση τις
-          ίδιες τις αποφάσεις — πολύ πιο «καθαρός» ανιχνευτής από τον 4ης τάξης
-          του Costas (χρησιμοποιεί και τα 16 σημεία, όχι μόνο τα 4 γωνιακά).
-          Επαληθευμένο: EVM 11.5% -> 6.7% στην πλήρη αλυσίδα με offset 8 kHz.
-          Τρέχει στον ρυθμό συμβόλου (20 kS/s) — βρόχος Python OK (όπως ο
-          διαμορφωτής Δέλτα του Lab 1 στα 48 kS/s)."""
-
-          def __init__(self, mu=0.05):
-              gr.sync_block.__init__(
-                  self,
-                  name='DD-LMS διορθωτής (1 tap)',
-                  in_sig=[np.complex64],
-                  out_sig=[np.complex64],
-              )
-              self.mu = float(mu)
-              self._w = 1.0 + 0.0j
-
-          def work(self, input_items, output_items):
-              x = input_items[0]
-              out = output_items[0]
-              w = self._w
-              mu = float(self.mu)
-              for k in range(len(x)):
-                  xi = complex(x[k])
-                  y = w * xi
-                  ii = y.real / _S + 1.5
-                  qq = y.imag / _S + 1.5
-                  ii = 0 if ii < 0 else (3 if ii > 3 else int(ii + 0.5))
-                  qq = 0 if qq < 0 else (3 if qq > 3 else int(qq + 0.5))
-                  d = complex((ii - 1.5) * _S, (qq - 1.5) * _S)
-                  w += mu * (d - y) * xi.conjugate()
-                  # Στενό όριο |w|: το AGC εγγυάται μέσο πλάτος ~1, άρα το σωστό
-                  # |w| είναι πάντα ~0.9-1.1. Χωρίς αυτό, ένα απότομο μεταβατικό
-                  # μπορεί να «καταρρεύσει» το w σε ψευδο-ισορροπία |w|~0.37 όπου
-                  # ΟΛΑ τα σύμβολα αποφασίζονται στα 4 εσωτερικά σημεία
-                  # (scale-collapse false lock, αναπαράχθηκε στην πράξη).
-                  if not (0.5 < abs(w) < 2.0):
-                      w = 1.0 + 0.0j
-                  out[k] = y
-              self._w = w
-              return len(x)
-    affinity: ''
-    alias: ''
-    comment: "Διόρθωση κλίμακας/κέρδους/
-      υπόλοιπης φάσης με αποφάσεις —
-      βλ. docstring"
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    mu: dd_mu
-  states:
-    _io_cache: ''
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1240, 560]
-    rotation: 0
-    state: enabled
 - name: epy_block_0
   id: epy_block
   parameters:
-    _source_code: |
-      import numpy as np
-      from gnuradio import gr
-
-      WINDOW = 4096
-
-
-      class blk(gr.sync_block):
-          """Μετρητής EVM (%): για κάθε ληφθέν σύμβολο βρίσκει το πλησιέστερο από
-          τα 16 ιδανικά σημεία 16-QAM και μετρά το διανυσματικό σφάλμα. EVM =
-          RMS(σφάλμα) / RMS(ιδανική ισχύς = 1) x 100%, σε κυλιόμενο παράθυρο 4096
-          συμβόλων. Το EVM είναι ανεξάρτητο από την 4-πλή ασάφεια φάσης του
-          Costas (το τετράγωνο 16-QAM είναι συμμετρικό στις στροφές 90°), οπότε
-          δεν χρειάζεται διαφορική κωδικοποίηση ή συγχρονισμός πλαισίου —
-          κατάλληλο και απλό μέτρο ποιότητας για σύγκριση QPSK/16-QAM.
-          Τρέχει στον ρυθμό συμβόλου (20 kS/s) — ασφαλές για epy_block."""
-
-          def __init__(self):
-              gr.sync_block.__init__(
-                  self,
-                  name='Μετρητής EVM',
-                  in_sig=[np.complex64],
-                  out_sig=[np.float32],
-              )
-              lv = np.array([-3.0, -1.0, 1.0, 3.0], dtype=np.float32) / np.float32(np.sqrt(10.0))
-              self._ideal = (lv[:, None] + 1j * lv[None, :]).flatten().astype(np.complex64)
-              self._buf = np.zeros(WINDOW, dtype=np.float32)
-              self._ptr = 0
-              self._filled = 0
-              self.evm = 0.0
-
-          def work(self, input_items, output_items):
-              x = input_items[0]
-              d = np.abs(x[:, None] - self._ideal[None, :]).min(axis=1)
-              e2 = (d * d).astype(np.float32)
-              n = len(e2)
-              L = WINDOW
-              if n >= L:
-                  self._buf[:] = e2[-L:]
-                  self._ptr = 0
-                  self._filled = L
-              else:
-                  end = self._ptr + n
-                  if end <= L:
-                      self._buf[self._ptr:end] = e2
-                  else:
-                      k = L - self._ptr
-                      self._buf[self._ptr:] = e2[:k]
-                      self._buf[:end - L] = e2[k:]
-                  self._ptr = end % L
-                  self._filled = min(self._filled + n, L)
-              if self._filled:
-                  self.evm = float(np.sqrt(self._buf[:self._filled].mean()) * 100.0)
-              output_items[0][:] = self.evm
-              return n
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\nWINDOW = 4096\n\n\
+      \nclass blk(gr.sync_block):\n    \"\"\"\u039C\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\
+      \u03C2 EVM (%): \u03B3\u03B9\u03B1 \u03BA\u03AC\u03B8\u03B5 \u03BB\u03B7\u03C6\
+      \u03B8\u03AD\u03BD \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF \u03B2\u03C1\u03AF\
+      \u03C3\u03BA\u03B5\u03B9 \u03C4\u03BF \u03C0\u03BB\u03B7\u03C3\u03B9\u03AD\u03C3\
+      \u03C4\u03B5\u03C1\u03BF \u03B1\u03C0\u03CC\n    \u03C4\u03B1 16 \u03B9\u03B4\
+      \u03B1\u03BD\u03B9\u03BA\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1 16-QAM \u03BA\
+      \u03B1\u03B9 \u03BC\u03B5\u03C4\u03C1\u03AC \u03C4\u03BF \u03B4\u03B9\u03B1\u03BD\
+      \u03C5\u03C3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03C3\u03C6\u03AC\u03BB\u03BC\
+      \u03B1. EVM =\n    RMS(\u03C3\u03C6\u03AC\u03BB\u03BC\u03B1) / RMS(\u03B9\u03B4\
+      \u03B1\u03BD\u03B9\u03BA\u03AE \u03B9\u03C3\u03C7\u03CD\u03C2 = 1) x 100%, \u03C3\
+      \u03B5 \u03BA\u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\u03BF \u03C0\u03B1\u03C1\
+      \u03AC\u03B8\u03C5\u03C1\u03BF 4096\n    \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03C9\u03BD. \u03A4\u03BF EVM \u03B5\u03AF\u03BD\u03B1\u03B9 \u03B1\u03BD\u03B5\
+      \u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03BF \u03B1\u03C0\u03CC \u03C4\u03B7\u03BD\
+      \ 4-\u03C0\u03BB\u03AE \u03B1\u03C3\u03AC\u03C6\u03B5\u03B9\u03B1 \u03C6\u03AC\
+      \u03C3\u03B7\u03C2 \u03C4\u03BF\u03C5\n    Costas (\u03C4\u03BF \u03C4\u03B5\
+      \u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF 16-QAM \u03B5\u03AF\u03BD\u03B1\u03B9\
+      \ \u03C3\u03C5\u03BC\u03BC\u03B5\u03C4\u03C1\u03B9\u03BA\u03CC \u03C3\u03C4\u03B9\
+      \u03C2 \u03C3\u03C4\u03C1\u03BF\u03C6\u03AD\u03C2 90\xB0), \u03BF\u03C0\u03CC\
+      \u03C4\u03B5\n    \u03B4\u03B5\u03BD \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03B5\
+      \u03C4\u03B1\u03B9 \u03B4\u03B9\u03B1\u03C6\u03BF\u03C1\u03B9\u03BA\u03AE \u03BA\
+      \u03C9\u03B4\u03B9\u03BA\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\u03B7 \u03AE \u03C3\
+      \u03C5\u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C0\u03BB\
+      \u03B1\u03B9\u03C3\u03AF\u03BF\u03C5 \u2014\n    \u03BA\u03B1\u03C4\u03AC\u03BB\
+      \u03BB\u03B7\u03BB\u03BF \u03BA\u03B1\u03B9 \u03B1\u03C0\u03BB\u03CC \u03BC\u03AD\
+      \u03C4\u03C1\u03BF \u03C0\u03BF\u03B9\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03B3\
+      \u03B9\u03B1 \u03C3\u03CD\u03B3\u03BA\u03C1\u03B9\u03C3\u03B7 QPSK/16-QAM.\n\
+      \    \u03A4\u03C1\u03AD\u03C7\u03B5\u03B9 \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\
+      \u03B8\u03BC\u03CC \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5 (20 kS/s)\
+      \ \u2014 \u03B1\u03C3\u03C6\u03B1\u03BB\u03AD\u03C2 \u03B3\u03B9\u03B1 epy_block.\"\
+      \"\"\n\n    def __init__(self):\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='\u039C\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2\
+      \ EVM',\n            in_sig=[np.complex64],\n            out_sig=[np.float32],\n\
+      \        )\n        lv = np.array([-3.0, -1.0, 1.0, 3.0], dtype=np.float32)\
+      \ / np.float32(np.sqrt(10.0))\n        self._ideal = (lv[:, None] + 1j * lv[None,\
+      \ :]).flatten().astype(np.complex64)\n        self._buf = np.zeros(WINDOW, dtype=np.float32)\n\
+      \        self._ptr = 0\n        self._filled = 0\n        self.evm = 0.0\n\n\
+      \    def work(self, input_items, output_items):\n        x = input_items[0]\n\
+      \        d = np.abs(x[:, None] - self._ideal[None, :]).min(axis=1)\n       \
+      \ e2 = (d * d).astype(np.float32)\n        n = len(e2)\n        L = WINDOW\n\
+      \        if n >= L:\n            self._buf[:] = e2[-L:]\n            self._ptr\
+      \ = 0\n            self._filled = L\n        else:\n            end = self._ptr\
+      \ + n\n            if end <= L:\n                self._buf[self._ptr:end] =\
+      \ e2\n            else:\n                k = L - self._ptr\n               \
+      \ self._buf[self._ptr:] = e2[:k]\n                self._buf[:end - L] = e2[k:]\n\
+      \            self._ptr = end % L\n            self._filled = min(self._filled\
+      \ + n, L)\n        if self._filled:\n            self.evm = float(np.sqrt(self._buf[:self._filled].mean())\
+      \ * 100.0)\n        output_items[0][:] = self.evm\n        return n\n"
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ''
+    _io_cache: "('\u039C\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\u03C2 EVM', 'blk', [],\
+      \ [('0', 'complex', 1)], [('0', 'float', 1)], '\u039C\u03B5\u03C4\u03C1\u03B7\
+      \u03C4\u03AE\u03C2 EVM (%): \u03B3\u03B9\u03B1 \u03BA\u03AC\u03B8\u03B5 \u03BB\
+      \u03B7\u03C6\u03B8\u03AD\u03BD \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF \u03B2\
+      \u03C1\u03AF\u03C3\u03BA\u03B5\u03B9 \u03C4\u03BF \u03C0\u03BB\u03B7\u03C3\u03B9\
+      \u03AD\u03C3\u03C4\u03B5\u03C1\u03BF \u03B1\u03C0\u03CC\\n    \u03C4\u03B1 16\
+      \ \u03B9\u03B4\u03B1\u03BD\u03B9\u03BA\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1\
+      \ 16-QAM \u03BA\u03B1\u03B9 \u03BC\u03B5\u03C4\u03C1\u03AC \u03C4\u03BF \u03B4\
+      \u03B9\u03B1\u03BD\u03C5\u03C3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03C3\u03C6\
+      \u03AC\u03BB\u03BC\u03B1. EVM =\\n    RMS(\u03C3\u03C6\u03AC\u03BB\u03BC\u03B1\
+      ) / RMS(\u03B9\u03B4\u03B1\u03BD\u03B9\u03BA\u03AE \u03B9\u03C3\u03C7\u03CD\u03C2\
+      \ = 1) x 100%, \u03C3\u03B5 \u03BA\u03C5\u03BB\u03B9\u03CC\u03BC\u03B5\u03BD\
+      \u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF 4096\\n    \u03C3\u03C5\
+      \u03BC\u03B2\u03CC\u03BB\u03C9\u03BD. \u03A4\u03BF EVM \u03B5\u03AF\u03BD\u03B1\
+      \u03B9 \u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\u03BF \u03B1\u03C0\
+      \u03CC \u03C4\u03B7\u03BD 4-\u03C0\u03BB\u03AE \u03B1\u03C3\u03AC\u03C6\u03B5\
+      \u03B9\u03B1 \u03C6\u03AC\u03C3\u03B7\u03C2 \u03C4\u03BF\u03C5\\n    Costas\
+      \ (\u03C4\u03BF \u03C4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF 16-QAM\
+      \ \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C3\u03C5\u03BC\u03BC\u03B5\u03C4\u03C1\u03B9\
+      \u03BA\u03CC \u03C3\u03C4\u03B9\u03C2 \u03C3\u03C4\u03C1\u03BF\u03C6\u03AD\u03C2\
+      \ 90\xB0), \u03BF\u03C0\u03CC\u03C4\u03B5\\n    \u03B4\u03B5\u03BD \u03C7\u03C1\
+      \u03B5\u03B9\u03AC\u03B6\u03B5\u03C4\u03B1\u03B9 \u03B4\u03B9\u03B1\u03C6\u03BF\
+      \u03C1\u03B9\u03BA\u03AE \u03BA\u03C9\u03B4\u03B9\u03BA\u03BF\u03C0\u03BF\u03AF\
+      \u03B7\u03C3\u03B7 \u03AE \u03C3\u03C5\u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\
+      \u03BC\u03CC\u03C2 \u03C0\u03BB\u03B1\u03B9\u03C3\u03AF\u03BF\u03C5 \u2014\\\
+      n    \u03BA\u03B1\u03C4\u03AC\u03BB\u03BB\u03B7\u03BB\u03BF \u03BA\u03B1\u03B9\
+      \ \u03B1\u03C0\u03BB\u03CC \u03BC\u03AD\u03C4\u03C1\u03BF \u03C0\u03BF\u03B9\
+      \u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03B3\u03B9\u03B1 \u03C3\u03CD\u03B3\u03BA\
+      \u03C1\u03B9\u03C3\u03B7 QPSK/16-QAM.\\n    \u03A4\u03C1\u03AD\u03C7\u03B5\u03B9\
+      \ \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC \u03C3\u03C5\u03BC\
+      \u03B2\u03CC\u03BB\u03BF\u03C5 (20 kS/s) \u2014 \u03B1\u03C3\u03C6\u03B1\u03BB\
+      \u03AD\u03C2 \u03B3\u03B9\u03B1 epy_block.', [])"
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1400, 540]
     rotation: 0
     state: enabled
-- name: import_0
-  id: import
+- name: epy_block_1
+  id: epy_block
   parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\n_S = 2.0 / np.sqrt(10.0)\
+      \  # \u03B1\u03C0\u03CC\u03C3\u03C4\u03B1\u03C3\u03B7 \u03C3\u03C4\u03B1\u03B8\
+      \u03BC\u03CE\u03BD 16-QAM (\u03BC\u03AD\u03C3\u03B7 \u03B9\u03C3\u03C7\u03CD\
+      \u03C2 1)\n\n\nclass blk(gr.sync_block):\n    \"\"\"\u0394\u03B9\u03BF\u03C1\
+      \u03B8\u03C9\u03C4\u03AE\u03C2 DD-LMS \u03B5\u03BD\u03CC\u03C2 \u03C3\u03C5\u03BD\
+      \u03C4\u03B5\u03BB\u03B5\u03C3\u03C4\u03AE (decision-directed, 1 complex tap).\n\
+      \n    \u0393\u03B9\u03B1\u03C4\u03AF \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03B5\
+      \u03C4\u03B1\u03B9 (\u03B2\u03C1\u03AD\u03B8\u03B7\u03BA\u03B5 \u03C3\u03C4\u03B7\
+      \u03BD \u03C0\u03C1\u03AC\u03BE\u03B7, \u03C3\u03C4\u03BF\u03BD \u03B1\u03AD\
+      \u03C1\u03B1): \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF Costas Loop\n    \u03B1\
+      \u03C0\u03BF\u03BC\u03AD\u03BD\u03BF\u03C5\u03BD \u03C3\u03C6\u03AC\u03BB\u03BC\
+      \u03B1\u03C4\u03B1 \u03C0\u03BF\u03C5 \u039A\u0391\u039D\u0395\u039D\u0391 \u03B5\
+      \u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5 Costas \u03B4\u03B5\
+      \u03BD \u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9:\n    (1) \u03C3\
+      \u03C4\u03B1\u03C4\u03B9\u03BA\u03CC \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1 \u039A\
+      \u039B\u0399\u039C\u0391\u039A\u0391\u03A3 \u2014 \u03C4\u03BF AGC \u03C3\u03C4\
+      \u03B1\u03B8\u03B5\u03C1\u03BF\u03C0\u03BF\u03B9\u03B5\u03AF \u03C4\u03BF \u03BC\
+      \u03AD\u03C3\u03BF \u03A0\u039B\u0391\u03A4\u039F\u03A3 \u03C3\u03C4\u03BF 1,\n\
+      \    \u03B1\u03BB\u03BB\u03AC \u03C3\u03C4\u03BF 16-QAM \u03BC\u03AD\u03C3\u03BF\
+      \ \u03C0\u03BB\u03AC\u03C4\u03BF\u03C2 \u2260 RMS \u03B9\u03C3\u03C7\u03CD\u03C2\
+      \ (\u03C3\u03C4\u03BF QPSK \u03C4\u03B1\u03C5\u03C4\u03AF\u03B6\u03BF\u03BD\u03C4\
+      \u03B1\u03B9, \u03B3\u03B9' \u03B1\u03C5\u03C4\u03CC\n    \u03B5\u03BA\u03B5\
+      \u03AF \u03B4\u03B5\u03BD \u03C6\u03B1\u03B9\u03BD\u03CC\u03C4\u03B1\u03BD),\
+      \ \u03BF\u03C0\u03CC\u03C4\u03B5 \u03CC\u03BB\u03BF\u03C2 \u03BF \u03B1\u03C3\
+      \u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03BA\u03AC\u03B8\u03B5\u03C4\
+      \u03B1\u03B9 ~5% \u03B5\u03BA\u03C4\u03CC\u03C2 \u03BA\u03BB\u03AF\u03BC\u03B1\
+      \u03BA\u03B1\u03C2\xB7\n    (2) \u03B1\u03C1\u03B3\u03AE \u03B1\u03BD\u03B1\u03C0\
+      \u03BD\u03BF\u03AE \u03BA\u03AD\u03C1\u03B4\u03BF\u03C5\u03C2 \u03C4\u03BF\u03C5\
+      \ AGC\xB7 (3) \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03BF \u03BB\u03AF\u03BA\
+      \u03BD\u03B9\u03C3\u03BC\u03B1 \u03C6\u03AC\u03C3\u03B7\u03C2 \u03C4\u03C9\u03BD\
+      \n    \u03C4\u03B1\u03BB\u03B1\u03BD\u03C4\u03C9\u03C4\u03CE\u03BD. \u039F \u03B2\
+      \u03C1\u03CC\u03C7\u03BF\u03C2: y = w\xB7x, \u03B1\u03C0\u03CC\u03C6\u03B1\u03C3\
+      \u03B7 d = \u03C0\u03BB\u03B7\u03C3\u03B9\u03AD\u03C3\u03C4\u03B5\u03C1\u03BF\
+      \ \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\n    (\u03B4\u03B9\u03B1\u03C7\u03C9\u03C1\
+      \u03AF\u03C3\u03B9\u03BC\u03B7 \u03B1\u03BD\u03AC \u03AC\u03BE\u03BF\u03BD\u03B1\
+      \ \u03C3\u03C4\u03BF \u03C4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF\
+      \ \u03C0\u03BB\u03AD\u03B3\u03BC\u03B1), w += \u03BC\xB7(d\u2212y)\xB7conj(x).\n\
+      \    \u039F \u03BC\u03B9\u03B3\u03B1\u03B4\u03B9\u03BA\u03CC\u03C2 \u03C3\u03C5\
+      \u03BD\u03C4\u03B5\u03BB\u03B5\u03C3\u03C4\u03AE\u03C2 w \u03B4\u03B9\u03BF\u03C1\
+      \u03B8\u03CE\u03BD\u03B5\u03B9 \u039C\u0391\u0396\u0399 \u03BA\u03AD\u03C1\u03B4\
+      \u03BF\u03C2 \u039A\u0391\u0399 \u03C6\u03AC\u03C3\u03B7, \u03BC\u03B5 \u03B2\
+      \u03AC\u03C3\u03B7 \u03C4\u03B9\u03C2\n    \u03AF\u03B4\u03B9\u03B5\u03C2 \u03C4\
+      \u03B9\u03C2 \u03B1\u03C0\u03BF\u03C6\u03AC\u03C3\u03B5\u03B9\u03C2 \u2014 \u03C0\
+      \u03BF\u03BB\u03CD \u03C0\u03B9\u03BF \xAB\u03BA\u03B1\u03B8\u03B1\u03C1\u03CC\
+      \u03C2\xBB \u03B1\u03BD\u03B9\u03C7\u03BD\u03B5\u03C5\u03C4\u03AE\u03C2 \u03B1\
+      \u03C0\u03CC \u03C4\u03BF\u03BD 4\u03B7\u03C2 \u03C4\u03AC\u03BE\u03B7\u03C2\
+      \n    \u03C4\u03BF\u03C5 Costas (\u03C7\u03C1\u03B7\u03C3\u03B9\u03BC\u03BF\u03C0\
+      \u03BF\u03B9\u03B5\u03AF \u03BA\u03B1\u03B9 \u03C4\u03B1 16 \u03C3\u03B7\u03BC\
+      \u03B5\u03AF\u03B1, \u03CC\u03C7\u03B9 \u03BC\u03CC\u03BD\u03BF \u03C4\u03B1\
+      \ 4 \u03B3\u03C9\u03BD\u03B9\u03B1\u03BA\u03AC).\n    \u0395\u03C0\u03B1\u03BB\
+      \u03B7\u03B8\u03B5\u03C5\u03BC\u03AD\u03BD\u03BF: EVM 11.5% -> 6.7% \u03C3\u03C4\
+      \u03B7\u03BD \u03C0\u03BB\u03AE\u03C1\u03B7 \u03B1\u03BB\u03C5\u03C3\u03AF\u03B4\
+      \u03B1 \u03BC\u03B5 offset 8 kHz.\n    \u03A4\u03C1\u03AD\u03C7\u03B5\u03B9\
+      \ \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC \u03C3\u03C5\u03BC\
+      \u03B2\u03CC\u03BB\u03BF\u03C5 (20 kS/s) \u2014 \u03B2\u03C1\u03CC\u03C7\u03BF\
+      \u03C2 Python OK (\u03CC\u03C0\u03C9\u03C2 \u03BF\n    \u03B4\u03B9\u03B1\u03BC\
+      \u03BF\u03C1\u03C6\u03C9\u03C4\u03AE\u03C2 \u0394\u03AD\u03BB\u03C4\u03B1 \u03C4\
+      \u03BF\u03C5 Lab 1 \u03C3\u03C4\u03B1 48 kS/s).\"\"\"\n\n    def __init__(self,\
+      \ mu=0.05):\n        gr.sync_block.__init__(\n            self,\n          \
+      \  name='DD-LMS \u03B4\u03B9\u03BF\u03C1\u03B8\u03C9\u03C4\u03AE\u03C2 (1 tap)',\n\
+      \            in_sig=[np.complex64],\n            out_sig=[np.complex64],\n \
+      \       )\n        self.mu = float(mu)\n        self._w = 1.0 + 0.0j\n\n   \
+      \ def work(self, input_items, output_items):\n        x = input_items[0]\n \
+      \       out = output_items[0]\n        w = self._w\n        mu = float(self.mu)\n\
+      \        for k in range(len(x)):\n            xi = complex(x[k])\n         \
+      \   y = w * xi\n            ii = y.real / _S + 1.5\n            qq = y.imag\
+      \ / _S + 1.5\n            ii = 0 if ii < 0 else (3 if ii > 3 else int(ii + 0.5))\n\
+      \            qq = 0 if qq < 0 else (3 if qq > 3 else int(qq + 0.5))\n      \
+      \      d = complex((ii - 1.5) * _S, (qq - 1.5) * _S)\n            w += mu *\
+      \ (d - y) * xi.conjugate()\n            # \u03A3\u03C4\u03B5\u03BD\u03CC \u03CC\
+      \u03C1\u03B9\u03BF |w|: \u03C4\u03BF AGC \u03B5\u03B3\u03B3\u03C5\u03AC\u03C4\
+      \u03B1\u03B9 \u03BC\u03AD\u03C3\u03BF \u03C0\u03BB\u03AC\u03C4\u03BF\u03C2 ~1,\
+      \ \u03AC\u03C1\u03B1 \u03C4\u03BF \u03C3\u03C9\u03C3\u03C4\u03CC\n         \
+      \   # |w| \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C0\u03AC\u03BD\u03C4\u03B1 ~0.9-1.1.\
+      \ \u03A7\u03C9\u03C1\u03AF\u03C2 \u03B1\u03C5\u03C4\u03CC, \u03AD\u03BD\u03B1\
+      \ \u03B1\u03C0\u03CC\u03C4\u03BF\u03BC\u03BF \u03BC\u03B5\u03C4\u03B1\u03B2\u03B1\
+      \u03C4\u03B9\u03BA\u03CC\n            # \u03BC\u03C0\u03BF\u03C1\u03B5\u03AF\
+      \ \u03BD\u03B1 \xAB\u03BA\u03B1\u03C4\u03B1\u03C1\u03C1\u03B5\u03CD\u03C3\u03B5\
+      \u03B9\xBB \u03C4\u03BF w \u03C3\u03B5 \u03C8\u03B5\u03C5\u03B4\u03BF-\u03B9\
+      \u03C3\u03BF\u03C1\u03C1\u03BF\u03C0\u03AF\u03B1 |w|~0.37 \u03CC\u03C0\u03BF\
+      \u03C5\n            # \u039F\u039B\u0391 \u03C4\u03B1 \u03C3\u03CD\u03BC\u03B2\
+      \u03BF\u03BB\u03B1 \u03B1\u03C0\u03BF\u03C6\u03B1\u03C3\u03AF\u03B6\u03BF\u03BD\
+      \u03C4\u03B1\u03B9 \u03C3\u03C4\u03B1 4 \u03B5\u03C3\u03C9\u03C4\u03B5\u03C1\
+      \u03B9\u03BA\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1\n            # (scale-collapse\
+      \ false lock, \u03B1\u03BD\u03B1\u03C0\u03B1\u03C1\u03AC\u03C7\u03B8\u03B7\u03BA\
+      \u03B5 \u03C3\u03C4\u03B7\u03BD \u03C0\u03C1\u03AC\u03BE\u03B7).\n         \
+      \   if not (0.5 < abs(w) < 2.0):\n                w = 1.0 + 0.0j\n         \
+      \   out[k] = y\n        self._w = w\n        return len(x)\n"
+    affinity: ''
     alias: ''
-    comment: ''
-    imports: |-
-      import numpy as np
-      from gnuradio import digital
-
-      # --- 16-QAM: Gray ανά άξονα (2 bits -> στάθμη I, 2 bits -> στάθμη Q),
-      # κανονικοποιημένο σε μέση ισχύ 1. ΙΔΙΟΙ πίνακες με qam_tx.grc/qam_sim.grc. ---
-      QAM16_LEVELS = [lv / np.sqrt(10.0) for lv in (-3.0, -1.0, 1.0, 3.0)]
-      _G = [0, 1, 3, 2]  # Gray 2-bit -> δείκτης στάθμης
-      QAM16_POINTS = [complex(QAM16_LEVELS[_G.index((i >> 2) & 3)],
-                              QAM16_LEVELS[_G.index(i & 3)]) for i in range(16)]
-      QAM16_CONSTELLATION = digital.constellation_calcdist(
-          QAM16_POINTS, list(range(16)), 4, 1).base()
+    comment: "\u0394\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\
+      \u03B1\u03BA\u03B1\u03C2/\u03BA\u03AD\u03C1\u03B4\u03BF\u03C5\u03C2/ \u03C5\u03C0\
+      \u03CC\u03BB\u03BF\u03B9\u03C0\u03B7\u03C2 \u03C6\u03AC\u03C3\u03B7\u03C2 \u03BC\
+      \u03B5 \u03B1\u03C0\u03BF\u03C6\u03AC\u03C3\u03B5\u03B9\u03C2 \u2014 \u03B2\u03BB\
+      . docstring"
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: dd_mu
   states:
+    _io_cache: "('DD-LMS \u03B4\u03B9\u03BF\u03C1\u03B8\u03C9\u03C4\u03AE\u03C2 (1\
+      \ tap)', 'blk', [('mu', '0.05')], [('0', 'complex', 1)], [('0', 'complex', 1)],\
+      \ \"\u0394\u03B9\u03BF\u03C1\u03B8\u03C9\u03C4\u03AE\u03C2 DD-LMS \u03B5\u03BD\
+      \u03CC\u03C2 \u03C3\u03C5\u03BD\u03C4\u03B5\u03BB\u03B5\u03C3\u03C4\u03AE (decision-directed,\
+      \ 1 complex tap).\\n\\n    \u0393\u03B9\u03B1\u03C4\u03AF \u03C7\u03C1\u03B5\
+      \u03B9\u03AC\u03B6\u03B5\u03C4\u03B1\u03B9 (\u03B2\u03C1\u03AD\u03B8\u03B7\u03BA\
+      \u03B5 \u03C3\u03C4\u03B7\u03BD \u03C0\u03C1\u03AC\u03BE\u03B7, \u03C3\u03C4\
+      \u03BF\u03BD \u03B1\u03AD\u03C1\u03B1): \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF\
+      \ Costas Loop\\n    \u03B1\u03C0\u03BF\u03BC\u03AD\u03BD\u03BF\u03C5\u03BD \u03C3\
+      \u03C6\u03AC\u03BB\u03BC\u03B1\u03C4\u03B1 \u03C0\u03BF\u03C5 \u039A\u0391\u039D\
+      \u0395\u039D\u0391 \u03B5\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\
+      \u03C5 Costas \u03B4\u03B5\u03BD \u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\
+      \u03B9:\\n    (1) \u03C3\u03C4\u03B1\u03C4\u03B9\u03BA\u03CC \u03C3\u03C6\u03AC\
+      \u03BB\u03BC\u03B1 \u039A\u039B\u0399\u039C\u0391\u039A\u0391\u03A3 \u2014 \u03C4\
+      \u03BF AGC \u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03BF\u03C0\u03BF\u03B9\u03B5\
+      \u03AF \u03C4\u03BF \u03BC\u03AD\u03C3\u03BF \u03A0\u039B\u0391\u03A4\u039F\u03A3\
+      \ \u03C3\u03C4\u03BF 1,\\n    \u03B1\u03BB\u03BB\u03AC \u03C3\u03C4\u03BF 16-QAM\
+      \ \u03BC\u03AD\u03C3\u03BF \u03C0\u03BB\u03AC\u03C4\u03BF\u03C2 \u2260 RMS \u03B9\
+      \u03C3\u03C7\u03CD\u03C2 (\u03C3\u03C4\u03BF QPSK \u03C4\u03B1\u03C5\u03C4\u03AF\
+      \u03B6\u03BF\u03BD\u03C4\u03B1\u03B9, \u03B3\u03B9' \u03B1\u03C5\u03C4\u03CC\
+      \\n    \u03B5\u03BA\u03B5\u03AF \u03B4\u03B5\u03BD \u03C6\u03B1\u03B9\u03BD\u03CC\
+      \u03C4\u03B1\u03BD), \u03BF\u03C0\u03CC\u03C4\u03B5 \u03CC\u03BB\u03BF\u03C2\
+      \ \u03BF \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03BA\
+      \u03AC\u03B8\u03B5\u03C4\u03B1\u03B9 ~5% \u03B5\u03BA\u03C4\u03CC\u03C2 \u03BA\
+      \u03BB\u03AF\u03BC\u03B1\u03BA\u03B1\u03C2\xB7\\n    (2) \u03B1\u03C1\u03B3\u03AE\
+      \ \u03B1\u03BD\u03B1\u03C0\u03BD\u03BF\u03AE \u03BA\u03AD\u03C1\u03B4\u03BF\u03C5\
+      \u03C2 \u03C4\u03BF\u03C5 AGC\xB7 (3) \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\
+      \u03BF \u03BB\u03AF\u03BA\u03BD\u03B9\u03C3\u03BC\u03B1 \u03C6\u03AC\u03C3\u03B7\
+      \u03C2 \u03C4\u03C9\u03BD\\n    \u03C4\u03B1\u03BB\u03B1\u03BD\u03C4\u03C9\u03C4\
+      \u03CE\u03BD. \u039F \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2: y = w\xB7x, \u03B1\
+      \u03C0\u03CC\u03C6\u03B1\u03C3\u03B7 d = \u03C0\u03BB\u03B7\u03C3\u03B9\u03AD\
+      \u03C3\u03C4\u03B5\u03C1\u03BF \u03C3\u03B7\u03BC\u03B5\u03AF\u03BF\\n    (\u03B4\
+      \u03B9\u03B1\u03C7\u03C9\u03C1\u03AF\u03C3\u03B9\u03BC\u03B7 \u03B1\u03BD\u03AC\
+      \ \u03AC\u03BE\u03BF\u03BD\u03B1 \u03C3\u03C4\u03BF \u03C4\u03B5\u03C4\u03C1\
+      \u03AC\u03B3\u03C9\u03BD\u03BF \u03C0\u03BB\u03AD\u03B3\u03BC\u03B1), w += \u03BC\
+      \xB7(d\u2212y)\xB7conj(x).\\n    \u039F \u03BC\u03B9\u03B3\u03B1\u03B4\u03B9\
+      \u03BA\u03CC\u03C2 \u03C3\u03C5\u03BD\u03C4\u03B5\u03BB\u03B5\u03C3\u03C4\u03AE\
+      \u03C2 w \u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9 \u039C\u0391\
+      \u0396\u0399 \u03BA\u03AD\u03C1\u03B4\u03BF\u03C2 \u039A\u0391\u0399 \u03C6\u03AC\
+      \u03C3\u03B7, \u03BC\u03B5 \u03B2\u03AC\u03C3\u03B7 \u03C4\u03B9\u03C2\\n  \
+      \  \u03AF\u03B4\u03B9\u03B5\u03C2 \u03C4\u03B9\u03C2 \u03B1\u03C0\u03BF\u03C6\
+      \u03AC\u03C3\u03B5\u03B9\u03C2 \u2014 \u03C0\u03BF\u03BB\u03CD \u03C0\u03B9\u03BF\
+      \ \xAB\u03BA\u03B1\u03B8\u03B1\u03C1\u03CC\u03C2\xBB \u03B1\u03BD\u03B9\u03C7\
+      \u03BD\u03B5\u03C5\u03C4\u03AE\u03C2 \u03B1\u03C0\u03CC \u03C4\u03BF\u03BD 4\u03B7\
+      \u03C2 \u03C4\u03AC\u03BE\u03B7\u03C2\\n    \u03C4\u03BF\u03C5 Costas (\u03C7\
+      \u03C1\u03B7\u03C3\u03B9\u03BC\u03BF\u03C0\u03BF\u03B9\u03B5\u03AF \u03BA\u03B1\
+      \u03B9 \u03C4\u03B1 16 \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1, \u03CC\u03C7\u03B9\
+      \ \u03BC\u03CC\u03BD\u03BF \u03C4\u03B1 4 \u03B3\u03C9\u03BD\u03B9\u03B1\u03BA\
+      \u03AC).\\n    \u0395\u03C0\u03B1\u03BB\u03B7\u03B8\u03B5\u03C5\u03BC\u03AD\u03BD\
+      \u03BF: EVM 11.5% -> 6.7% \u03C3\u03C4\u03B7\u03BD \u03C0\u03BB\u03AE\u03C1\u03B7\
+      \ \u03B1\u03BB\u03C5\u03C3\u03AF\u03B4\u03B1 \u03BC\u03B5 offset 8 kHz.\\n \
+      \   \u03A4\u03C1\u03AD\u03C7\u03B5\u03B9 \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\
+      \u03B8\u03BC\u03CC \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5 (20 kS/s)\
+      \ \u2014 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C2 Python OK (\u03CC\u03C0\u03C9\u03C2\
+      \ \u03BF\\n    \u03B4\u03B9\u03B1\u03BC\u03BF\u03C1\u03C6\u03C9\u03C4\u03AE\u03C2\
+      \ \u0394\u03AD\u03BB\u03C4\u03B1 \u03C4\u03BF\u03C5 Lab 1 \u03C3\u03C4\u03B1\
+      \ 48 kS/s).\", ['mu'])"
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 60]
+    coordinate: [1240, 560]
     rotation: 0
     state: enabled
-- name: low_pass_filter_0
-  id: low_pass_filter
+- name: freq_xlating_fir_filter_0
+  id: freq_xlating_fir_filter_xxx
   parameters:
     affinity: ''
     alias: ''
-    beta: '6.76'
-    comment: "Φίλτρο επιλογής καναλιού +
-      δεκατισμός στον ρυθμό quad_rate.
-      Cutoff με +10 kHz περιθώριο για το
-      σφάλμα κρυστάλλων (το διορθώνει
-      μετά το FLL) — ίδιο με psk_rx.grc.
-      width ΣΤΑΘΕΡΟ για λόγους πραγματικού
-      χρόνου (τρέχει στα 2.048 Msps)."
-    cutoff_freq: symbol_rate*(1+excess_bw)/2 + 10e3
+    center_freq: lo_offset
+    comment: "\u039C\u03B5\u03C4\u03B1\u03C4\u03CC\u03C0\u03B9\u03C3\u03B7 \u03BA\u03B1\
+      \u03C4\u03AC lo_offset (offset tuning) + \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF\
+      \ \u03B5\u03C0\u03B9\u03BB\u03BF\u03B3\u03AE\u03C2 \u03BA\u03B1\u03BD\u03B1\u03BB\
+      \u03B9\u03BF\u03CD + \u03B4\u03B5\u03BA\u03B1\u03C4\u03B9\u03C3\u03BC\u03CC\u03C2\
+      \ \u03C3\u03C4\u03BF\u03BD \u03C1\u03C5\u03B8\u03BC\u03CC quad_rate. Cutoff\
+      \ = \u03BC\u03B9\u03C3\u03CC \u03B5\u03CD\u03C1\u03BF\u03C2 \u03C3\u03AE\u03BC\
+      \u03B1\u03C4\u03BF\u03C2 + 15 kHz \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\
+      \u03B9\u03BF \u03B3\u03B9\u03B1 \u03C4\u03BF \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1\
+      \ \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C4\u03C9\u03BD\
+      \ \u03BA\u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD (\u03C4\u03BF\
+      \ \u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\u03B9 \u03BC\u03B5\u03C4\u03AC\
+      \ \u03C4\u03BF FLL)."
     decim: channel_decim
-    gain: '1'
-    interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: rtl_samp_rate
-    type: fir_filter_ccf
-    width: '5000'
-    win: window.WIN_HAMMING
+    taps: firdes.low_pass(1.0, rtl_samp_rate, symbol_rate*(1+excess_bw)/2 + 15e3,
+      5000, window.WIN_HAMMING)
+    type: ccf
   states:
     bus_sink: false
     bus_source: false
@@ -612,30 +802,101 @@ blocks:
     coordinate: [288, 384.0]
     rotation: 0
     state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: "import numpy as np\nfrom gnuradio import digital\n\n# --- 16-QAM: Gray\
+      \ \u03B1\u03BD\u03AC \u03AC\u03BE\u03BF\u03BD\u03B1 (2 bits -> \u03C3\u03C4\u03AC\
+      \u03B8\u03BC\u03B7 I, 2 bits -> \u03C3\u03C4\u03AC\u03B8\u03BC\u03B7 Q),\n#\
+      \ \u03BA\u03B1\u03BD\u03BF\u03BD\u03B9\u03BA\u03BF\u03C0\u03BF\u03B9\u03B7\u03BC\
+      \u03AD\u03BD\u03BF \u03C3\u03B5 \u03BC\u03AD\u03C3\u03B7 \u03B9\u03C3\u03C7\u03CD\
+      \ 1. \u0399\u0394\u0399\u039F\u0399 \u03C0\u03AF\u03BD\u03B1\u03BA\u03B5\u03C2\
+      \ \u03BC\u03B5 qam_tx.grc/qam_sim.grc. ---\nQAM16_LEVELS = [lv / np.sqrt(10.0)\
+      \ for lv in (-3.0, -1.0, 1.0, 3.0)]\n_G = [0, 1, 3, 2]  # Gray 2-bit -> \u03B4\
+      \u03B5\u03AF\u03BA\u03C4\u03B7\u03C2 \u03C3\u03C4\u03AC\u03B8\u03BC\u03B7\u03C2\
+      \nQAM16_POINTS = [complex(QAM16_LEVELS[_G.index((i >> 2) & 3)],\n          \
+      \              QAM16_LEVELS[_G.index(i & 3)]) for i in range(16)]\nQAM16_CONSTELLATION\
+      \ = digital.constellation_calcdist(\n    QAM16_POINTS, list(range(16)), 4, 1).base()"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 60]
+    rotation: 0
+    state: enabled
 - name: note_0
   id: note
   parameters:
     alias: ''
     comment: ''
-    note: "ΔΕΚΤΗΣ 16-QAM (Μέρος Β) — ίδια αλυσίδα συγχρονισμού με τον δέκτη QPSK
-      (psk_rx.grc): φίλτρο καναλιού -> ΑΡΓΟ AGC -> FLL Band-Edge (χονδρική διόρθωση
-      συχνότητας) -> matched RRC -> Symbol Sync (Gardner) -> [ΠΡΙΝ] -> Costas 4ης
-      τάξης -> DD-LMS διορθωτής (1 tap) -> [ΜΕΤΑ] -> μετρητής EVM. Ο DD-LMS
-      διορθωτής προστέθηκε μετά από δοκιμή στον αέρα: διορθώνει το στατικό σφάλμα
-      κλίμακας του AGC (στο 16-QAM μέσο πλάτος ≠ RMS ισχύς — στο QPSK ταυτίζονται,
-      γι' αυτό εκεί δεν φαινόταν), την αργή αναπνοή κέρδους και το υπόλοιπο
-      λίκνισμα φάσης — σφάλματα που ΚΑΝΕΝΑ εύρος βρόχου Costas δεν διορθώνει
-      (επαληθεύτηκε: ο ολισθητήρας «Costas N» δεν άλλαζε τίποτα, ενώ ο DD-LMS
-      έριξε το EVM 11.5% -> 6.7% στην πλήρη αλυσίδα). Οι διαφορές από το QPSK
-      και το γιατί:
-      (1) ΑΡΓΟ AGC (attack 1e-3 αντί 0.1) — το 16-QAM κωδικοποιεί πληροφορία ΚΑΙ
-      στο πλάτος, ένα γρήγορο AGC θα την έσβηνε· (2) στενότεροι βρόχοι Costas
-      (2π/1000) και Symbol Sync (0.01) — τα 12 μη-γωνιακά σημεία «θορυβούν» τους
-      ανιχνευτές· (3) ΧΩΡΙΣ περιστροφή +45° — το τετράγωνο 16-QAM κλειδώνει
-      ευθυγραμμισμένο με τους άξονες· (4) μετρητής EVM αντί BER — ανεξάρτητος από
-      την 4-πλή ασάφεια φάσης, δεν χρειάζεται πλαίσιο/preamble. ΡΥΘΜΟΣ ΣΥΜΒΟΛΟΥ:
-      αλλαγή του χρειάζεται Kill+Run (ο δεκατισμός του φίλτρου καναλιού είναι
-      κατασκευαστική παράμετρος)."
+    note: "\u0394\u0395\u039A\u03A4\u0397\u03A3 16-QAM (\u039C\u03AD\u03C1\u03BF\u03C2\
+      \ \u0392) \u2014 \u03AF\u03B4\u03B9\u03B1 \u03B1\u03BB\u03C5\u03C3\u03AF\u03B4\
+      \u03B1 \u03C3\u03C5\u03B3\u03C7\u03C1\u03BF\u03BD\u03B9\u03C3\u03BC\u03BF\u03CD\
+      \ \u03BC\u03B5 \u03C4\u03BF\u03BD \u03B4\u03AD\u03BA\u03C4\u03B7 QPSK (psk_rx.grc):\
+      \ \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\
+      \u03CD -> \u0391\u03A1\u0393\u039F AGC -> FLL Band-Edge (\u03C7\u03BF\u03BD\u03B4\
+      \u03C1\u03B9\u03BA\u03AE \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C3\
+      \u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2) -> matched RRC -> Symbol\
+      \ Sync (Gardner) -> [\u03A0\u03A1\u0399\u039D] -> Costas 4\u03B7\u03C2 \u03C4\
+      \u03AC\u03BE\u03B7\u03C2 -> DD-LMS \u03B4\u03B9\u03BF\u03C1\u03B8\u03C9\u03C4\
+      \u03AE\u03C2 (1 tap) -> [\u039C\u0395\u03A4\u0391] -> \u03BC\u03B5\u03C4\u03C1\
+      \u03B7\u03C4\u03AE\u03C2 EVM. \u039F DD-LMS \u03B4\u03B9\u03BF\u03C1\u03B8\u03C9\
+      \u03C4\u03AE\u03C2 \u03C0\u03C1\u03BF\u03C3\u03C4\u03AD\u03B8\u03B7\u03BA\u03B5\
+      \ \u03BC\u03B5\u03C4\u03AC \u03B1\u03C0\u03CC \u03B4\u03BF\u03BA\u03B9\u03BC\
+      \u03AE \u03C3\u03C4\u03BF\u03BD \u03B1\u03AD\u03C1\u03B1: \u03B4\u03B9\u03BF\
+      \u03C1\u03B8\u03CE\u03BD\u03B5\u03B9 \u03C4\u03BF \u03C3\u03C4\u03B1\u03C4\u03B9\
+      \u03BA\u03CC \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03BA\u03BB\u03AF\u03BC\u03B1\
+      \u03BA\u03B1\u03C2 \u03C4\u03BF\u03C5 AGC (\u03C3\u03C4\u03BF 16-QAM \u03BC\u03AD\
+      \u03C3\u03BF \u03C0\u03BB\u03AC\u03C4\u03BF\u03C2 \u2260 RMS \u03B9\u03C3\u03C7\
+      \u03CD\u03C2 \u2014 \u03C3\u03C4\u03BF QPSK \u03C4\u03B1\u03C5\u03C4\u03AF\u03B6\
+      \u03BF\u03BD\u03C4\u03B1\u03B9, \u03B3\u03B9' \u03B1\u03C5\u03C4\u03CC \u03B5\
+      \u03BA\u03B5\u03AF \u03B4\u03B5\u03BD \u03C6\u03B1\u03B9\u03BD\u03CC\u03C4\u03B1\
+      \u03BD), \u03C4\u03B7\u03BD \u03B1\u03C1\u03B3\u03AE \u03B1\u03BD\u03B1\u03C0\
+      \u03BD\u03BF\u03AE \u03BA\u03AD\u03C1\u03B4\u03BF\u03C5\u03C2 \u03BA\u03B1\u03B9\
+      \ \u03C4\u03BF \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03BF \u03BB\u03AF\
+      \u03BA\u03BD\u03B9\u03C3\u03BC\u03B1 \u03C6\u03AC\u03C3\u03B7\u03C2 \u2014 \u03C3\
+      \u03C6\u03AC\u03BB\u03BC\u03B1\u03C4\u03B1 \u03C0\u03BF\u03C5 \u039A\u0391\u039D\
+      \u0395\u039D\u0391 \u03B5\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\
+      \u03C5 Costas \u03B4\u03B5\u03BD \u03B4\u03B9\u03BF\u03C1\u03B8\u03CE\u03BD\u03B5\
+      \u03B9 (\u03B5\u03C0\u03B1\u03BB\u03B7\u03B8\u03B5\u03CD\u03C4\u03B7\u03BA\u03B5\
+      : \u03BF \u03BF\u03BB\u03B9\u03C3\u03B8\u03B7\u03C4\u03AE\u03C1\u03B1\u03C2\
+      \ \xABCostas N\xBB \u03B4\u03B5\u03BD \u03AC\u03BB\u03BB\u03B1\u03B6\u03B5 \u03C4\
+      \u03AF\u03C0\u03BF\u03C4\u03B1, \u03B5\u03BD\u03CE \u03BF DD-LMS \u03AD\u03C1\
+      \u03B9\u03BE\u03B5 \u03C4\u03BF EVM 11.5% -> 6.7% \u03C3\u03C4\u03B7\u03BD \u03C0\
+      \u03BB\u03AE\u03C1\u03B7 \u03B1\u03BB\u03C5\u03C3\u03AF\u03B4\u03B1). \u039F\
+      \u03B9 \u03B4\u03B9\u03B1\u03C6\u03BF\u03C1\u03AD\u03C2 \u03B1\u03C0\u03CC \u03C4\
+      \u03BF QPSK \u03BA\u03B1\u03B9 \u03C4\u03BF \u03B3\u03B9\u03B1\u03C4\u03AF:\
+      \ (1) \u0391\u03A1\u0393\u039F AGC (attack 1e-3 \u03B1\u03BD\u03C4\u03AF 0.1)\
+      \ \u2014 \u03C4\u03BF 16-QAM \u03BA\u03C9\u03B4\u03B9\u03BA\u03BF\u03C0\u03BF\
+      \u03B9\u03B5\u03AF \u03C0\u03BB\u03B7\u03C1\u03BF\u03C6\u03BF\u03C1\u03AF\u03B1\
+      \ \u039A\u0391\u0399 \u03C3\u03C4\u03BF \u03C0\u03BB\u03AC\u03C4\u03BF\u03C2\
+      , \u03AD\u03BD\u03B1 \u03B3\u03C1\u03AE\u03B3\u03BF\u03C1\u03BF AGC \u03B8\u03B1\
+      \ \u03C4\u03B7\u03BD \u03AD\u03C3\u03B2\u03B7\u03BD\u03B5\xB7 (2) \u03C3\u03C4\
+      \u03B5\u03BD\u03CC\u03C4\u03B5\u03C1\u03BF\u03B9 \u03B2\u03C1\u03CC\u03C7\u03BF\
+      \u03B9 Costas (2\u03C0/1000) \u03BA\u03B1\u03B9 Symbol Sync (0.01) \u2014 \u03C4\
+      \u03B1 12 \u03BC\u03B7-\u03B3\u03C9\u03BD\u03B9\u03B1\u03BA\u03AC \u03C3\u03B7\
+      \u03BC\u03B5\u03AF\u03B1 \xAB\u03B8\u03BF\u03C1\u03C5\u03B2\u03BF\u03CD\u03BD\
+      \xBB \u03C4\u03BF\u03C5\u03C2 \u03B1\u03BD\u03B9\u03C7\u03BD\u03B5\u03C5\u03C4\
+      \u03AD\u03C2\xB7 (3) \u03A7\u03A9\u03A1\u0399\u03A3 \u03C0\u03B5\u03C1\u03B9\
+      \u03C3\u03C4\u03C1\u03BF\u03C6\u03AE +45\xB0 \u2014 \u03C4\u03BF \u03C4\u03B5\
+      \u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF 16-QAM \u03BA\u03BB\u03B5\u03B9\u03B4\
+      \u03CE\u03BD\u03B5\u03B9 \u03B5\u03C5\u03B8\u03C5\u03B3\u03C1\u03B1\u03BC\u03BC\
+      \u03B9\u03C3\u03BC\u03AD\u03BD\u03BF \u03BC\u03B5 \u03C4\u03BF\u03C5\u03C2 \u03AC\
+      \u03BE\u03BF\u03BD\u03B5\u03C2\xB7 (4) \u03BC\u03B5\u03C4\u03C1\u03B7\u03C4\u03AE\
+      \u03C2 EVM \u03B1\u03BD\u03C4\u03AF BER \u2014 \u03B1\u03BD\u03B5\u03BE\u03AC\
+      \u03C1\u03C4\u03B7\u03C4\u03BF\u03C2 \u03B1\u03C0\u03CC \u03C4\u03B7\u03BD 4-\u03C0\
+      \u03BB\u03AE \u03B1\u03C3\u03AC\u03C6\u03B5\u03B9\u03B1 \u03C6\u03AC\u03C3\u03B7\
+      \u03C2, \u03B4\u03B5\u03BD \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03B5\u03C4\u03B1\
+      \u03B9 \u03C0\u03BB\u03B1\u03AF\u03C3\u03B9\u03BF/preamble. \u03A1\u03A5\u0398\
+      \u039C\u039F\u03A3 \u03A3\u03A5\u039C\u0392\u039F\u039B\u039F\u03A5: \u03B1\u03BB\
+      \u03BB\u03B1\u03B3\u03AE \u03C4\u03BF\u03C5 \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\
+      \u03B5\u03C4\u03B1\u03B9 Kill+Run (\u03BF \u03B4\u03B5\u03BA\u03B1\u03C4\u03B9\
+      \u03C3\u03BC\u03CC\u03C2 \u03C4\u03BF\u03C5 \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF\
+      \u03C5 \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD \u03B5\u03AF\u03BD\u03B1\
+      \u03B9 \u03BA\u03B1\u03C4\u03B1\u03C3\u03BA\u03B5\u03C5\u03B1\u03C3\u03C4\u03B9\
+      \u03BA\u03AE \u03C0\u03B1\u03C1\u03AC\u03BC\u03B5\u03C4\u03C1\u03BF\u03C2)."
   states:
     bus_sink: false
     bus_source: false
@@ -670,11 +931,13 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Αστερισμός ΜΕΤΑ τη διόρθωση
-      φάσης — 16 σημεία σε πλέγμα 4x4"
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u039C\u0395\
+      \u03A4\u0391 \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\
+      \u03AC\u03C3\u03B7\u03C2 \u2014 16 \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1 \u03C3\
+      \u03B5 \u03C0\u03BB\u03AD\u03B3\u03BC\u03B1 4x4"
     grid: 'True'
     gui_hint: qtgui_tab_widget_0@2
-    label1: "μετά"
+    label1: "\u03BC\u03B5\u03C4\u03AC"
     label10: ''
     label2: ''
     label3: ''
@@ -695,7 +958,7 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: "\"μετά\""
+    name: "\"\u03BC\u03B5\u03C4\u03AC\""
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -763,14 +1026,18 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Αστερισμός ΠΡΙΝ τη διόρθωση
-      φάσης (έξοδος Symbol Sync) — με
-      υπόλοιπο σφάλμα συχνότητας: 3
-      περιστρεφόμενοι δακτύλιοι (οι 3
-      στάθμες ισχύος του 16-QAM)"
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03A0\u03A1\
+      \u0399\u039D \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\
+      \u03AC\u03C3\u03B7\u03C2 (\u03AD\u03BE\u03BF\u03B4\u03BF\u03C2 Symbol Sync)\
+      \ \u2014 \u03BC\u03B5 \u03C5\u03C0\u03CC\u03BB\u03BF\u03B9\u03C0\u03BF \u03C3\
+      \u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\
+      \u03B1\u03C2: 3 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03B5\u03C6\u03CC\
+      \u03BC\u03B5\u03BD\u03BF\u03B9 \u03B4\u03B1\u03BA\u03C4\u03CD\u03BB\u03B9\u03BF\
+      \u03B9 (\u03BF\u03B9 3 \u03C3\u03C4\u03AC\u03B8\u03BC\u03B5\u03C2 \u03B9\u03C3\
+      \u03C7\u03CD\u03BF\u03C2 \u03C4\u03BF\u03C5 16-QAM)"
     grid: 'True'
     gui_hint: qtgui_tab_widget_0@1
-    label1: "πριν"
+    label1: "\u03C0\u03C1\u03B9\u03BD"
     label10: ''
     label2: ''
     label3: ''
@@ -791,7 +1058,7 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: "\"πριν\""
+    name: "\"\u03C0\u03C1\u03B9\u03BD\""
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -861,8 +1128,9 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Φάσμα βασικής ζώνης πριν/μετά
-      το FLL"
+    comment: "\u03A6\u03AC\u03C3\u03BC\u03B1 \u03B2\u03B1\u03C3\u03B9\u03BA\u03AE\u03C2\
+      \ \u03B6\u03CE\u03BD\u03B7\u03C2 \u03C0\u03C1\u03B9\u03BD/\u03BC\u03B5\u03C4\
+      \u03AC \u03C4\u03BF FLL"
     ctrlpanel: 'True'
     fc: '0'
     fftsize: '1024'
@@ -870,9 +1138,9 @@ blocks:
     grid: 'True'
     gui_hint: qtgui_tab_widget_0@0
     label: Relative Gain
-    label1: "πριν FLL"
+    label1: "\u03C0\u03C1\u03B9\u03BD FLL"
     label10: ''''''
-    label2: "μετά FLL"
+    label2: "\u03BC\u03B5\u03C4\u03AC FLL"
     label3: ''''''
     label4: ''''''
     label5: ''''''
@@ -931,8 +1199,10 @@ blocks:
     color7: ("black", "black")
     color8: ("black", "black")
     color9: ("black", "black")
-    comment: "Τυπικές τιμές: <10% καθαρό,
-      ~20% οριακό, >30% λάθη συμβόλων"
+    comment: "\u03A4\u03C5\u03C0\u03B9\u03BA\u03AD\u03C2 \u03C4\u03B9\u03BC\u03AD\u03C2\
+      : <10% \u03BA\u03B1\u03B8\u03B1\u03C1\u03CC, ~20% \u03BF\u03C1\u03B9\u03B1\u03BA\
+      \u03CC, >30% \u03BB\u03AC\u03B8\u03B7 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03C9\
+      \u03BD"
     factor1: '1'
     factor10: '1'
     factor2: '1'
@@ -957,7 +1227,7 @@ blocks:
     label9: ''
     max: '50'
     min: '0'
-    name: "\"EVM (%)\""
+    name: '"EVM (%)"'
     nconnections: '1'
     type: float
     unit1: '"%"'
@@ -984,8 +1254,9 @@ blocks:
     alias: ''
     comment: ''
     gui_hint: 4,0,1,4
-    label0: "Φάσμα RF"
-    label1: "Πριν διόρθωση (Costas)"
+    label0: "\u03A6\u03AC\u03C3\u03BC\u03B1 RF"
+    label1: "\u03A0\u03C1\u03B9\u03BD \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7\
+      \ (Costas)"
     label10: Tab 10
     label11: Tab 11
     label12: Tab 12
@@ -996,7 +1267,7 @@ blocks:
     label17: Tab 17
     label18: Tab 18
     label19: Tab 19
-    label2: "Μετά διόρθωση"
+    label2: "\u039C\u03B5\u03C4\u03AC \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7"
     label3: Tab 3
     label4: Tab 4
     label5: Tab 5
@@ -1018,9 +1289,11 @@ blocks:
     affinity: ''
     alias: ''
     alpha: excess_bw
-    comment: "Matched φίλτρο RRC (χωρίς
-      επαναδειγματοληψία — ίδιος ρυθμός
-      εισόδου/εξόδου, quad_rate)"
+    comment: "Matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF RRC (\u03C7\u03C9\u03C1\
+      \u03AF\u03C2 \u03B5\u03C0\u03B1\u03BD\u03B1\u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\
+      \u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\u03B1 \u2014 \u03AF\u03B4\u03B9\u03BF\u03C2\
+      \ \u03C1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03B5\u03B9\u03C3\u03CC\u03B4\u03BF\u03C5\
+      /\u03B5\u03BE\u03CC\u03B4\u03BF\u03C5, quad_rate)"
     decim: '1'
     gain: '1'
     interp: '1'
@@ -1037,6 +1310,91 @@ blocks:
     coordinate: [760, 420]
     rotation: 0
     state: enabled
+- name: snippet_square_const
+  id: snippet
+  parameters:
+    alias: ''
+    code: "# \u039A\u03C1\u03B1\u03C4\u03AC \u03C4\u03BF\u03C5\u03C2 \u03B1\u03C3\u03C4\
+      \u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03CD\u03C2 \u03A4\u0395\u03A4\u03A1\u0391\
+      \u0393\u03A9\u039D\u039F\u03A5\u03A3 (\u03AF\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\
+      \u03B1\u03BA\u03B1 \u03C3\u03C4\u03BF\u03C5\u03C2 \u03AC\u03BE\u03BF\u03BD\u03B5\
+      \u03C2 I \u03BA\u03B1\u03B9 Q),\n# \u03CC\u03C0\u03BF\u03B9\u03BF \u03BC\u03AD\
+      \u03B3\u03B5\u03B8\u03BF\u03C2 \u03BA\u03B9 \u03B1\u03BD \u03AD\u03C7\u03B5\u03B9\
+      \ \u03C4\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF (\u03C0.\u03C7\
+      . \u03C3\u03B5 \u03C0\u03BB\u03AE\u03C1\u03B7 \u03BF\u03B8\u03CC\u03BD\u03B7\
+      ).\n# \u03A4\u03BF QT GUI Constellation Sink \u03B4\u03B5\u03BD \u03AD\u03C7\
+      \u03B5\u03B9 \u03C4\u03AD\u03C4\u03BF\u03B9\u03B1 \u03B5\u03C0\u03B9\u03BB\u03BF\
+      \u03B3\u03AE, \u03BF\u03C0\u03CC\u03C4\u03B5 \u03BA\u03AC\u03B8\u03B5\n# \u03B1\
+      \u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C4\u03C5\u03BB\u03AF\
+      \u03B3\u03B5\u03C4\u03B1\u03B9 \u03C3\u03B5 \u03AD\u03BD\u03B1 \u03C0\u03BB\u03B1\
+      \u03AF\u03C3\u03B9\u03BF \u03C0\u03BF\u03C5 \u03C4\u03BF\u03BD \u03BA\u03B5\u03BD\
+      \u03C4\u03C1\u03AC\u03C1\u03B5\u03B9 \u03BA\u03B1\u03B9 \u03BA\u03C1\u03B1\u03C4\
+      \u03AC\n# \u03C4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03B7 \u03C4\u03B7\
+      \u03BD \u03C0\u03B5\u03C1\u03B9\u03BF\u03C7\u03AE \u03C3\u03C7\u03B5\u03B4\u03AF\
+      \u03B1\u03C3\u03B7\u03C2 (canvas) \u03C4\u03BF\u03C5 \u03B3\u03C1\u03B1\u03C6\
+      \u03AE\u03BC\u03B1\u03C4\u03BF\u03C2.\nfrom PyQt5 import Qt, QtCore\n\nclass\
+      \ SquarePlot(Qt.QWidget):\n    def __init__(self, inner):\n        Qt.QWidget.__init__(self)\n\
+      \        self.inner = inner\n        self.setMinimumSize(260, 260)\n       \
+      \ self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)\n\n\
+      \    def sizeHint(self):\n        return QtCore.QSize(480, 480)\n\n    def canvas(self):\n\
+      \        for w in self.inner.findChildren(Qt.QWidget):\n            if w.metaObject().className()\
+      \ == 'QwtPlotCanvas':\n                return w\n        return None\n\n   \
+      \ def fit(self):\n        # \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\
+      \u03B1 = \u03C4\u03AF\u03C4\u03BB\u03BF\u03C2, \u03AC\u03BE\u03BF\u03BD\u03B5\
+      \u03C2, \u03C5\u03C0\u03CC\u03BC\u03BD\u03B7\u03BC\u03B1 (\u03CC,\u03C4\u03B9\
+      \ \u03B4\u03B5\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 canvas)\n        mw = mh\
+      \ = 0\n        c = self.canvas()\n        if c is not None and c.width() > 1\
+      \ and c.height() > 1:\n            mw = self.inner.width() - c.width()\n   \
+      \         mh = self.inner.height() - c.height()\n        side = max(50, min(self.width()\
+      \ - mw, self.height() - mh))\n        w, h = side + mw, side + mh\n        self.inner.setGeometry((self.width()\
+      \ - w) // 2,\n                               (self.height() - h) // 2, w, h)\n\
+      \n    def resizeEvent(self, event):\n        self.fit()\n        # \u03B4\u03B5\
+      \u03CD\u03C4\u03B5\u03C1\u03BF \u03C0\u03AD\u03C1\u03B1\u03C3\u03BC\u03B1, \u03B1\
+      \u03C6\u03BF\u03CD \u03C4\u03BF \u03B3\u03C1\u03AC\u03C6\u03B7\u03BC\u03B1 \u03BE\
+      \u03B1\u03BD\u03B1\u03CB\u03C0\u03BF\u03BB\u03BF\u03B3\u03AF\u03C3\u03B5\u03B9\
+      \ \u03C4\u03B1 \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03AC \u03C4\
+      \u03BF\u03C5\n        QtCore.QTimer.singleShot(0, self.fit)\n        QtCore.QTimer.singleShot(100,\
+      \ self.fit)\n\ndef find_layout(layout, widget):\n    for i in range(layout.count()):\n\
+      \        item = layout.itemAt(i)\n        if item.widget() is widget:\n    \
+      \        return layout\n        if item.layout() is not None:\n            found\
+      \ = find_layout(item.layout(), widget)\n            if found is not None:\n\
+      \                return found\n    return None\n\nself._square_plots = []\n\
+      for name in sorted(vars(self)):\n    if not (name.startswith('_qtgui_const_sink_x')\
+      \ and name.endswith('_win')):\n        continue\n    win = getattr(self, name)\n\
+      \    parent = win.parentWidget()\n    layout = find_layout(parent.layout(),\
+      \ win) if parent is not None else None\n    if layout is None:\n        continue\n\
+      \    box = SquarePlot(win)\n    layout.replaceWidget(win, box)\n    win.setParent(box)\n\
+      \    win.show()\n    self._square_plots.append(box)\n    # \u03A3\u03C4\u03BF\
+      \ \u03C0\u03BB\u03AD\u03B3\u03BC\u03B1: \u03B7 \u03B3\u03C1\u03B1\u03BC\u03BC\
+      \u03AE \u03C4\u03C9\u03BD \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CE\
+      \u03BD \u03C0\u03B1\u03AF\u03C1\u03BD\u03B5\u03B9 \u03C4\u03BF \u03C0\u03B5\u03C1\
+      \u03B9\u03C3\u03C3\u03CC\u03C4\u03B5\u03C1\u03BF \u03CD\u03C8\u03BF\u03C2,\n\
+      \    # \u03BF\u03B9 \u03B3\u03C1\u03B1\u03BC\u03BC\u03AD\u03C2 \u03BC\u03B5\
+      \ \u03BF\u03BB\u03B9\u03C3\u03B8\u03B7\u03C4\u03AE\u03C1\u03B5\u03C2 \u03BC\u03CC\
+      \u03BD\u03BF \u03CC\u03C3\u03BF \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03BF\u03BD\
+      \u03C4\u03B1\u03B9.\n    if isinstance(layout, Qt.QGridLayout):\n        plots\
+      \ = [getattr(self, n) for n in vars(self)\n                 if n.startswith('_qtgui_')\
+      \ and n.endswith('_win')\n                 and 'number_sink' not in n and 'const_sink'\
+      \ not in n]\n        for i in range(layout.count()):\n            row = layout.getItemPosition(i)[0]\n\
+      \            w = layout.itemAt(i).widget()\n            if isinstance(w, SquarePlot):\n\
+      \                layout.setRowStretch(row, 3)\n            elif any(w is p for\
+      \ p in plots):\n                layout.setRowStretch(row, 2)\n            elif\
+      \ layout.rowStretch(row) == 1:\n                layout.setRowStretch(row, 0)"
+    comment: "\u03A4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF\u03B9 \u03B1\u03C3\
+      \u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03AF: \u03BA\u03C1\u03B1\u03C4\u03AC\
+      \ \u03AF\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\u03B1\u03BA\u03B1 I/Q \u03C3\u03B5\
+      \ \u03BA\u03AC\u03B8\u03B5 \u03BC\u03AD\u03B3\u03B5\u03B8\u03BF\u03C2 \u03C0\
+      \u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\u03C5 (\u03BA\u03B1\u03B9 \u03C3\u03B5\
+      \ \u03C0\u03BB\u03AE\u03C1\u03B7 \u03BF\u03B8\u03CC\u03BD\u03B7)"
+    priority: '0'
+    section: main_after_init
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 700]
+    rotation: 0
+    state: enabled
 - name: soapy_rtlsdr_source_0
   id: soapy_rtlsdr_source
   parameters:
@@ -1045,8 +1403,9 @@ blocks:
     alias: ''
     bias: 'False'
     bufflen: '16384'
-    center_freq: freq*1e6
-    comment: "RTL-SDR dongle (μόνο λήψη, RX only)"
+    center_freq: freq*1e6 - lo_offset
+    comment: "RTL-SDR dongle (\u03BC\u03CC\u03BD\u03BF \u03BB\u03AE\u03C8\u03B7, RX\
+      \ only)"
     dev_args: ''
     freq_correction: '0'
     gain: rf_gain
@@ -1061,119 +1420,21 @@ blocks:
     coordinate: [40, 420]
     rotation: 0
     state: enabled
-- name: snippet_square_const
-  id: snippet
-  parameters:
-    alias: ''
-    code: |-
-      # Κρατά τους αστερισμούς ΤΕΤΡΑΓΩΝΟΥΣ (ίση κλίμακα στους άξονες I και Q),
-      # όποιο μέγεθος κι αν έχει το παράθυρο (π.χ. σε πλήρη οθόνη).
-      # Το QT GUI Constellation Sink δεν έχει τέτοια επιλογή, οπότε κάθε
-      # αστερισμός τυλίγεται σε ένα πλαίσιο που τον κεντράρει και κρατά
-      # τετράγωνη την περιοχή σχεδίασης (canvas) του γραφήματος.
-      from PyQt5 import Qt, QtCore
-
-      class SquarePlot(Qt.QWidget):
-          def __init__(self, inner):
-              Qt.QWidget.__init__(self)
-              self.inner = inner
-              self.setMinimumSize(260, 260)
-              self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)
-
-          def sizeHint(self):
-              return QtCore.QSize(480, 480)
-
-          def canvas(self):
-              for w in self.inner.findChildren(Qt.QWidget):
-                  if w.metaObject().className() == 'QwtPlotCanvas':
-                      return w
-              return None
-
-          def fit(self):
-              # περιθώρια = τίτλος, άξονες, υπόμνημα (ό,τι δεν είναι canvas)
-              mw = mh = 0
-              c = self.canvas()
-              if c is not None and c.width() > 1 and c.height() > 1:
-                  mw = self.inner.width() - c.width()
-                  mh = self.inner.height() - c.height()
-              side = max(50, min(self.width() - mw, self.height() - mh))
-              w, h = side + mw, side + mh
-              self.inner.setGeometry((self.width() - w) // 2,
-                                     (self.height() - h) // 2, w, h)
-
-          def resizeEvent(self, event):
-              self.fit()
-              # δεύτερο πέρασμα, αφού το γράφημα ξαναϋπολογίσει τα περιθώριά του
-              QtCore.QTimer.singleShot(0, self.fit)
-              QtCore.QTimer.singleShot(100, self.fit)
-
-      def find_layout(layout, widget):
-          for i in range(layout.count()):
-              item = layout.itemAt(i)
-              if item.widget() is widget:
-                  return layout
-              if item.layout() is not None:
-                  found = find_layout(item.layout(), widget)
-                  if found is not None:
-                      return found
-          return None
-
-      self._square_plots = []
-      for name in sorted(vars(self)):
-          if not (name.startswith('_qtgui_const_sink_x') and name.endswith('_win')):
-              continue
-          win = getattr(self, name)
-          parent = win.parentWidget()
-          layout = find_layout(parent.layout(), win) if parent is not None else None
-          if layout is None:
-              continue
-          box = SquarePlot(win)
-          layout.replaceWidget(win, box)
-          win.setParent(box)
-          win.show()
-          self._square_plots.append(box)
-          # Στο πλέγμα: η γραμμή των αστερισμών παίρνει το περισσότερο ύψος,
-          # οι γραμμές με ολισθητήρες μόνο όσο χρειάζονται.
-          if isinstance(layout, Qt.QGridLayout):
-              plots = [getattr(self, n) for n in vars(self)
-                       if n.startswith('_qtgui_') and n.endswith('_win')
-                       and 'number_sink' not in n and 'const_sink' not in n]
-              for i in range(layout.count()):
-                  row = layout.getItemPosition(i)[0]
-                  w = layout.itemAt(i).widget()
-                  if isinstance(w, SquarePlot):
-                      layout.setRowStretch(row, 3)
-                  elif any(w is p for p in plots):
-                      layout.setRowStretch(row, 2)
-                  elif layout.rowStretch(row) == 1:
-                      layout.setRowStretch(row, 0)
-    comment: "Τετράγωνοι αστερισμοί: κρατά ίση
-      κλίμακα I/Q σε κάθε μέγεθος παραθύρου
-      (και σε πλήρη οθόνη)"
-    priority: '0'
-    section: main_after_init
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 700]
-    rotation: 0
-    state: enabled
 
 connections:
 - [analog_agc2_xx_0, '0', digital_fll_band_edge_cc_0, '0']
 - [analog_agc2_xx_0, '0', qtgui_freq_sink_x_0, '0']
 - [digital_costas_loop_cc_0, '0', epy_block_1, '0']
-- [epy_block_1, '0', epy_block_0, '0']
-- [epy_block_1, '0', qtgui_const_sink_x_after, '0']
 - [digital_fll_band_edge_cc_0, '0', qtgui_freq_sink_x_0, '1']
 - [digital_fll_band_edge_cc_0, '0', root_raised_cosine_filter_0, '0']
 - [digital_symbol_sync_xx_0, '0', digital_costas_loop_cc_0, '0']
 - [digital_symbol_sync_xx_0, '0', qtgui_const_sink_x_before, '0']
 - [epy_block_0, '0', qtgui_number_sink_0, '0']
-- [low_pass_filter_0, '0', analog_agc2_xx_0, '0']
+- [epy_block_1, '0', epy_block_0, '0']
+- [epy_block_1, '0', qtgui_const_sink_x_after, '0']
+- [freq_xlating_fir_filter_0, '0', analog_agc2_xx_0, '0']
 - [root_raised_cosine_filter_0, '0', digital_symbol_sync_xx_0, '0']
-- [soapy_rtlsdr_source_0, '0', low_pass_filter_0, '0']
+- [soapy_rtlsdr_source_0, '0', freq_xlating_fir_filter_0, '0']
 
 metadata:
   file_format: 1

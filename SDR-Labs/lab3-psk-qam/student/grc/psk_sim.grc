@@ -6,9 +6,16 @@ options:
     cmake_opt: ''
     comment: ''
     copyright: ''
-    description: "QPSK προσομοίωση σε πραγματικό χρόνο (χωρίς SDR): TX -> μοντέλο
-      καναλιού -> RX, με ρυθμιζόμενο θόρυβο, σφάλμα συχνότητας φέροντος και σφάλμα
-      ρολογιού. student (lab3-psk-qam)."
+    description: "QPSK \u03C0\u03C1\u03BF\u03C3\u03BF\u03BC\u03BF\u03AF\u03C9\u03C3\
+      \u03B7 \u03C3\u03B5 \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC\
+      \ \u03C7\u03C1\u03CC\u03BD\u03BF (\u03C7\u03C9\u03C1\u03AF\u03C2 SDR): TX ->\
+      \ \u03BC\u03BF\u03BD\u03C4\u03AD\u03BB\u03BF \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\
+      \u03BF\u03CD -> RX, \u03BC\u03B5 \u03C1\u03C5\u03B8\u03BC\u03B9\u03B6\u03CC\u03BC\
+      \u03B5\u03BD\u03BF \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF, \u03C3\u03C6\u03AC\u03BB\
+      \u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C6\
+      \u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 \u03BA\u03B1\u03B9 \u03C3\u03C6\u03AC\
+      \u03BB\u03BC\u03B1 \u03C1\u03BF\u03BB\u03BF\u03B3\u03B9\u03BF\u03CD. student\
+      \ (lab3-psk-qam)."
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
@@ -24,13 +31,14 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: "QPSK Προσομοίωση (χωρίς SDR)"
+    title: "QPSK \u03A0\u03C1\u03BF\u03C3\u03BF\u03BC\u03BF\u03AF\u03C9\u03C3\u03B7\
+      \ (\u03C7\u03C9\u03C1\u03AF\u03C2 SDR)"
     window_size: (1300,1000)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [976, 64.0]
     rotation: 0
     state: enabled
 
@@ -38,12 +46,16 @@ blocks:
 - name: clock_ppm
   id: variable_qtgui_range
   parameters:
-    comment: "Σφάλμα ρολογιού δειγματοληψίας
-      του «δέκτη» σε ppm — το epsilon του
-      μοντέλου καναλιού. Πραγματικοί
-      κρύσταλλοι: 1-50 ppm."
+    comment: "\u03A3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C1\u03BF\u03BB\u03BF\u03B3\u03B9\
+      \u03BF\u03CD \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\u03BB\u03B7\u03C8\
+      \u03AF\u03B1\u03C2 \u03C4\u03BF\u03C5 \xAB\u03B4\u03AD\u03BA\u03C4\u03B7\xBB\
+      \ \u03C3\u03B5 ppm\n \u2014 \u03C4\u03BF epsilon \u03C4\u03BF\u03C5 \u03BC\u03BF\
+      \u03BD\u03C4\u03AD\u03BB\u03BF\u03C5 \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\
+      \u03CD. \n\u03A0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03BF\u03AF\
+      \ \u03BA\u03C1\u03CD\u03C3\u03C4\u03B1\u03BB\u03BB\u03BF\u03B9: 1-50 ppm."
     gui_hint: 1,0,1,3
-    label: "Σφάλμα ρολογιού (ppm)"
+    label: "\u03A3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C1\u03BF\u03BB\u03BF\u03B3\u03B9\
+      \u03BF\u03CD (ppm)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
@@ -56,55 +68,62 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 12]
+    coordinate: [688, 48.0]
     rotation: 0
     state: enabled
 - name: costas_bw
   id: variable
   parameters:
-    comment: "Εύρος βρόχου Costas (σταθερό)"
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ Costas (\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03CC)"
     value: 2*np.pi/100.0
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [648, 156]
+    coordinate: [536, 264.0]
     rotation: 0
     state: enabled
 - name: excess_bw
   id: variable
   parameters:
-    comment: "Roll-off συντελεστής RRC"
+    comment: "Roll-off \u03C3\u03C5\u03BD\u03C4\u03B5\u03BB\u03B5\u03C3\u03C4\u03AE\
+      \u03C2 RRC"
     value: '0.35'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 156]
+    coordinate: [72, 80.0]
     rotation: 0
     state: enabled
 - name: fll_bw
   id: variable
   parameters:
-    comment: "Εύρος βρόχου FLL Band-Edge
-      (χονδρική διόρθωση συχνότητας)"
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ FLL Band-Edge \n(\u03C7\u03BF\u03BD\u03B4\u03C1\u03B9\u03BA\u03AE \u03B4\u03B9\
+      \u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\
+      \u03C4\u03B1\u03C2)"
     value: 2*np.pi/250.0
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 156]
+    coordinate: [704, 264.0]
     rotation: 0
     state: enabled
 - name: freq_offset_hz
   id: variable_qtgui_range
   parameters:
-    comment: "Σφάλμα συχνότητας φέροντος
-      TX-RX (Hz). Στα 434 MHz, 20 ppm
-      διαφορά κρυστάλλων = ~8,7 kHz —
-      δοκιμάστε το!"
+    comment: "\u03A3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\
+      \u03B7\u03C4\u03B1\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 TX-RX\
+      \ (Hz). \n\u03A3\u03C4\u03B1 434 MHz, 20 ppm \n\u03B4\u03B9\u03B1\u03C6\u03BF\
+      \u03C1\u03AC \u03BA\u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD =\
+      \ ~8,7 kHz\n \u2014 \u03B4\u03BF\u03BA\u03B9\u03BC\u03AC\u03C3\u03C4\u03B5 \u03C4\
+      \u03BF!"
     gui_hint: 0,3,1,3
-    label: "Σφάλμα συχνότητας φέροντος (Hz)"
+    label: "\u03A3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\
+      \u03B7\u03C4\u03B1\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 (Hz)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
@@ -117,80 +136,85 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 12]
+    coordinate: [408, 56.0]
     rotation: 0
     state: enabled
 - name: noise_voltage
   id: variable_qtgui_range
   parameters:
-    comment: "Τάση θορύβου AWGN του
-      μοντέλου καναλιού"
+    comment: "\u03A4\u03AC\u03C3\u03B7 \u03B8\u03BF\u03C1\u03CD\u03B2\u03BF\u03C5\
+      \ AWGN \u03C4\u03BF\u03C5 \n\u03BC\u03BF\u03BD\u03C4\u03AD\u03BB\u03BF\u03C5\
+      \ \u03BA\u03B1\u03BD\u03B1\u03BB\u03B9\u03BF\u03CD"
     gui_hint: 0,0,1,3
-    label: "Θόρυβος (τάση)"
+    label: "\u0398\u03CC\u03C1\u03C5\u03B2\u03BF\u03C2 (\u03C4\u03AC\u03C3\u03B7)"
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '0.01'
-    stop: '0.5'
+    stop: '5'
     value: '0.05'
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 12]
+    coordinate: [216, 56.0]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
-    comment: "Ρυθμός δειγματοληψίας
-      προσομοίωσης = ρυθμός συμβόλου
-      x δείγματα/σύμβολο"
+    comment: "\u03A1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\
+      \u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\u03B1\u03C2 \u03C0\u03C1\u03BF\u03C3\u03BF\
+      \u03BC\u03BF\u03AF\u03C9\u03C3\u03B7\u03C2 \n= \u03C1\u03C5\u03B8\u03BC\u03CC\
+      \u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5 x \u03B4\u03B5\u03AF\
+      \u03B3\u03BC\u03B1\u03C4\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF"
     value: symbol_rate*sps
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [392, 156]
+    coordinate: [312, 264.0]
     rotation: 0
     state: enabled
 - name: sps
   id: variable
   parameters:
-    comment: "Δείγματα ανά σύμβολο"
+    comment: "\u0394\u03B5\u03AF\u03B3\u03BC\u03B1\u03C4\u03B1 \u03B1\u03BD\u03AC\
+      \ \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF"
     value: '4'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [136, 156]
+    coordinate: [8, 264.0]
     rotation: 0
     state: enabled
 - name: symbol_rate
   id: variable
   parameters:
-    comment: "Ρυθμός συμβόλου (baud) —
-      ίδιος με psk_tx.grc/psk_rx.grc"
+    comment: "\u03A1\u03C5\u03B8\u03BC\u03CC\u03C2 \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\
+      \u03BF\u03C5 (baud) \u2014 \n\u03AF\u03B4\u03B9\u03BF\u03C2 \u03BC\u03B5 psk_tx.grc/psk_rx.grc"
     value: '20000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 156]
+    coordinate: [144, 264.0]
     rotation: 0
     state: enabled
 - name: sync_bw
   id: variable
   parameters:
-    comment: "Εύρος βρόχου Symbol Sync (σταθερό)"
+    comment: "\u0395\u03CD\u03C1\u03BF\u03C2 \u03B2\u03C1\u03CC\u03C7\u03BF\u03C5\
+      \ Symbol Sync \n(\u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03CC)"
     value: '0.045'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 156]
+    coordinate: [880, 264.0]
     rotation: 0
     state: enabled
 - name: analog_agc2_xx_0
@@ -199,8 +223,9 @@ blocks:
     affinity: ''
     alias: ''
     attack_rate: '0.1'
-    comment: "Εξομάλυνση ισχύος —
-      ίδιο στάδιο με το psk_rx.grc"
+    comment: "\u0395\u03BE\u03BF\u03BC\u03AC\u03BB\u03C5\u03BD\u03C3\u03B7 \u03B9\u03C3\
+      \u03C7\u03CD\u03BF\u03C2 \u2014\n \u03AF\u03B4\u03B9\u03BF \u03C3\u03C4\u03AC\
+      \u03B4\u03B9\u03BF \u03BC\u03B5 \u03C4\u03BF psk_rx.grc"
     decay_rate: 1e-2
     gain: '1.0'
     max_gain: '1000'
@@ -212,7 +237,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 692]
+    coordinate: [32, 872.0]
     rotation: 0
     state: enabled
 - name: analog_random_source_x_0
@@ -220,11 +245,13 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Τυχαία bytes = τυχαία
-      ροή bits προς μετάδοση"
+    comment: "\u03A4\u03C5\u03C7\u03B1\u03AF\u03B1 bytes = \u03C4\u03C5\u03C7\u03B1\
+      \u03AF\u03B1 \u03C1\u03BF\u03AE \nbits \u03C0\u03C1\u03BF\u03C2 \u03BC\u03B5\
+      \u03C4\u03AC\u03B4\u03BF\u03C3\u03B7"
     max: '256'
     maxoutbuf: '0'
     min: '0'
+    minoutbuf: '0'
     num_samps: '10000'
     repeat: 'True'
     type: byte
@@ -232,7 +259,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 300]
+    coordinate: [16, 472.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_0
@@ -240,9 +267,12 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Σταθερή περιστροφή +45° μετά
-      το Costas Loop (κλειδώνει σε διαγώνιο
-      QPSK) — ίδια σύμβαση με το psk_rx.grc"
+    comment: "\u03A3\u03C4\u03B1\u03B8\u03B5\u03C1\u03AE \u03C0\u03B5\u03C1\u03B9\u03C3\
+      \u03C4\u03C1\u03BF\u03C6\u03AE +45\xB0 \u03BC\u03B5\u03C4\u03AC \u03C4\u03BF\
+      \ Costas Loop \n(\u03BA\u03BB\u03B5\u03B9\u03B4\u03CE\u03BD\u03B5\u03B9 \u03C3\
+      \u03B5 \u03B4\u03B9\u03B1\u03B3\u03CE\u03BD\u03B9\u03BF QPSK) \u2014 \n\u03AF\
+      \u03B4\u03B9\u03B1 \u03C3\u03CD\u03BC\u03B2\u03B1\u03C3\u03B7 \u03BC\u03B5 \u03C4\
+      \u03BF psk_rx.grc"
     const: DEROTATE
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -252,7 +282,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 692]
+    coordinate: [1304, 856.0]
     rotation: 0
     state: enabled
 - name: blocks_packed_to_unpacked_xx_0
@@ -271,7 +301,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 300]
+    coordinate: [200, 488.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle_0
@@ -279,9 +309,12 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Ρυθμίζει την προσομοίωση σε
-      πραγματικό χρόνο (δεν υπάρχει
-      hardware να δώσει ρυθμό)"
+    comment: "\u03A1\u03C5\u03B8\u03BC\u03AF\u03B6\u03B5\u03B9 \u03C4\u03B7\u03BD\
+      \ \u03C0\u03C1\u03BF\u03C3\u03BF\u03BC\u03BF\u03AF\u03C9\u03C3\u03B7 \u03C3\u03B5\
+      \ \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03C7\u03C1\u03CC\
+      \u03BD\u03BF\n (\u03B4\u03B5\u03BD \u03C5\u03C0\u03AC\u03C1\u03C7\u03B5\u03B9\
+      \ hardware \u03BD\u03B1 \u03B4\u03CE\u03C3\u03B5\u03B9 \u03C1\u03C5\u03B8\u03BC\
+      \u03CC)"
     ignoretag: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -292,7 +325,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1352, 300]
+    coordinate: [1328, 512.0]
     rotation: 0
     state: enabled
 - name: channels_channel_model_0
@@ -301,12 +334,37 @@ blocks:
     affinity: ''
     alias: ''
     block_tags: 'False'
-    comment: "ΤΟ «ΑΣΥΡΜΑΤΟ ΚΑΝΑΛΙ» ΤΗΣ
-      ΠΡΟΣΟΜΟΙΩΣΗΣ: προσθέτει AWGN
-      θόρυβο, σφάλμα συχνότητας φέροντος
-      (διαφορά κρυστάλλων TX/RX) και
-      σφάλμα ρολογιού δειγματοληψίας —
-      τα τρία πράγματα που αντιμετωπίζει κάθε πραγματικός δέκτης. ΣΗΜ.: το σφάλμα συχνότητας πολλαπλασιάζεται επί 1.00137, ώστε ο λόγος Δf/Rs να μην είναι «στρογγυλός» — αλλιώς ο δακτύλιος του αστερισμού «πριν» θα φαινόταν σαν λίγες ακίνητες κουκκίδες (στροβοσκοπικό φαινόμενο). Οι πραγματικοί κρύσταλλοι δεν είναι ποτέ «στρογγυλοί»."
+    comment: "\u03A4\u039F \xAB\u0391\u03A3\u03A5\u03A1\u039C\u0391\u03A4\u039F \u039A\
+      \u0391\u039D\u0391\u039B\u0399\xBB \u03A4\u0397\u03A3 \u03A0\u03A1\u039F\u03A3\
+      \u039F\u039C\u039F\u0399\u03A9\u03A3\u0397\u03A3: \u03C0\u03C1\u03BF\u03C3\u03B8\
+      \u03AD\u03C4\u03B5\u03B9 \nAWGN \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF, \u03C3\
+      \u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\
+      \u03B1\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2\n (\u03B4\u03B9\
+      \u03B1\u03C6\u03BF\u03C1\u03AC \u03BA\u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\
+      \u03C9\u03BD TX/RX) \u03BA\u03B1\u03B9 \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1\
+      \ \u03C1\u03BF\u03BB\u03BF\u03B3\u03B9\u03BF\u03CD \n\u03B4\u03B5\u03B9\u03B3\
+      \u03BC\u03B1\u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\u03B1\u03C2 \u2014 \u03C4\u03B1\
+      \ \u03C4\u03C1\u03AF\u03B1 \u03C0\u03C1\u03AC\u03B3\u03BC\u03B1\u03C4\u03B1\
+      \ \u03C0\u03BF\u03C5 \u03B1\u03BD\u03C4\u03B9\u03BC\u03B5\u03C4\u03C9\u03C0\u03AF\
+      \u03B6\u03B5\u03B9 \n\u03BA\u03AC\u03B8\u03B5 \u03C0\u03C1\u03B1\u03B3\u03BC\
+      \u03B1\u03C4\u03B9\u03BA\u03CC\u03C2 \u03B4\u03AD\u03BA\u03C4\u03B7\u03C2. \u03A3\
+      \u0397\u039C.: \u03C4\u03BF \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\
+      \u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \n\u03C0\u03BF\u03BB\u03BB\u03B1\
+      \u03C0\u03BB\u03B1\u03C3\u03B9\u03AC\u03B6\u03B5\u03C4\u03B1\u03B9 \u03B5\u03C0\
+      \u03AF 1.00137, \u03CE\u03C3\u03C4\u03B5 \u03BF \u03BB\u03CC\u03B3\u03BF\u03C2\
+      \ \u0394f/Rs \u03BD\u03B1 \n\u03BC\u03B7\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9\
+      \ \xAB\u03C3\u03C4\u03C1\u03BF\u03B3\u03B3\u03C5\u03BB\u03CC\u03C2\xBB \u2014\
+      \ \u03B1\u03BB\u03BB\u03B9\u03CE\u03C2 \u03BF \u03B4\u03B1\u03BA\u03C4\u03CD\
+      \u03BB\u03B9\u03BF\u03C2 \u03C4\u03BF\u03C5 \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\
+      \u03C3\u03BC\u03BF\u03CD \n\xAB\u03C0\u03C1\u03B9\u03BD\xBB \u03B8\u03B1 \u03C6\
+      \u03B1\u03B9\u03BD\u03CC\u03C4\u03B1\u03BD \u03C3\u03B1\u03BD \u03BB\u03AF\u03B3\
+      \u03B5\u03C2 \u03B1\u03BA\u03AF\u03BD\u03B7\u03C4\u03B5\u03C2 \u03BA\u03BF\u03C5\
+      \u03BA\u03BA\u03AF\u03B4\u03B5\u03C2 \n(\u03C3\u03C4\u03C1\u03BF\u03B2\u03BF\
+      \u03C3\u03BA\u03BF\u03C0\u03B9\u03BA\u03CC \u03C6\u03B1\u03B9\u03BD\u03CC\u03BC\
+      \u03B5\u03BD\u03BF). \u039F\u03B9 \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\u03C4\
+      \u03B9\u03BA\u03BF\u03AF \u03BA\u03C1\u03CD\u03C3\u03C4\u03B1\u03BB\u03BB\u03BF\
+      \u03B9 \n\u03B4\u03B5\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C0\u03BF\u03C4\
+      \u03AD \xAB\u03C3\u03C4\u03C1\u03BF\u03B3\u03B3\u03C5\u03BB\u03BF\u03AF\xBB."
     epsilon: 1.0 + clock_ppm*1e-6
     freq_offset: 1.00137*freq_offset_hz/samp_rate
     maxoutbuf: '0'
@@ -318,7 +376,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1560, 280]
+    coordinate: [1608, 472.0]
     rotation: 0
     state: enabled
 - name: digital_chunks_to_symbols_xx_0
@@ -326,8 +384,10 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Χαρτογράφηση σε σύμβολα QPSK
-      (1 δείγμα/σύμβολο, ακριβή σημεία)"
+    comment: "\u03A7\u03B1\u03C1\u03C4\u03BF\u03B3\u03C1\u03AC\u03C6\u03B7\u03C3\u03B7\
+      \ \u03C3\u03B5 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1 QPSK\n (1 \u03B4\u03B5\
+      \u03AF\u03B3\u03BC\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF, \u03B1\u03BA\
+      \u03C1\u03B9\u03B2\u03AE \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1)"
     dimension: '1'
     in_type: byte
     maxoutbuf: '0'
@@ -339,7 +399,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 300]
+    coordinate: [864, 504.0]
     rotation: 0
     state: enabled
 - name: digital_costas_loop_cc_0
@@ -347,8 +407,10 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "ΛΕΠΤΗ διόρθωση φάσης/συχνότητας
-      φέροντος (4ης τάξης, για QPSK)"
+    comment: "\u039B\u0395\u03A0\u03A4\u0397 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\
+      \u03B7 \u03C6\u03AC\u03C3\u03B7\u03C2/\u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\
+      \u03C4\u03B1\u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 \n(4\u03B7\
+      \u03C2 \u03C4\u03AC\u03BE\u03B7\u03C2, \u03B3\u03B9\u03B1 QPSK)"
     maxoutbuf: '0'
     minoutbuf: '0'
     order: '4'
@@ -358,7 +420,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1016, 692]
+    coordinate: [1032, 808.0]
     rotation: 0
     state: enabled
 - name: digital_diff_encoder_bb_0
@@ -367,10 +429,13 @@ blocks:
     affinity: ''
     alias: ''
     coding: digital.DIFF_DIFFERENTIAL
-    comment: "Διαφορική κωδικοποίηση —
-      η πληροφορία στη ΜΕΤΑΒΟΛΗ φάσης
-      (λύνει την 4-πλή ασάφεια φάσης
-      του δέκτη)"
+    comment: "\u0394\u03B9\u03B1\u03C6\u03BF\u03C1\u03B9\u03BA\u03AE \u03BA\u03C9\u03B4\
+      \u03B9\u03BA\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\u03B7 \u2014 \n\u03B7 \u03C0\
+      \u03BB\u03B7\u03C1\u03BF\u03C6\u03BF\u03C1\u03AF\u03B1 \u03C3\u03C4\u03B7 \u039C\
+      \u0395\u03A4\u0391\u0392\u039F\u039B\u0397 \u03C6\u03AC\u03C3\u03B7\u03C2 \n\
+      (\u03BB\u03CD\u03BD\u03B5\u03B9 \u03C4\u03B7\u03BD 4-\u03C0\u03BB\u03AE \u03B1\
+      \u03C3\u03AC\u03C6\u03B5\u03B9\u03B1 \u03C6\u03AC\u03C3\u03B7\u03C2 \u03C4\u03BF\
+      \u03C5 \u03B4\u03AD\u03BA\u03C4\u03B7)"
     maxoutbuf: '0'
     minoutbuf: '0'
     modulus: '4'
@@ -378,7 +443,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [640, 300]
+    coordinate: [560, 488.0]
     rotation: 0
     state: enabled
 - name: digital_fll_band_edge_cc_0
@@ -386,15 +451,23 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "ΧΟΝΔΡΙΚΗ διόρθωση συχνότητας
-      φέροντος (FLL Band-Edge). Χωρίς αυτό,
-      σφάλμα > ~1 kHz είναι έξω από την
-      περιοχή έλξης του Costas και ο
-      αστερισμός γυρίζει συνεχώς —
-      δοκιμάστε να το απενεργοποιήσετε
-      (bypass) και ανεβάστε το σφάλμα
-      συχνότητας!"
+    comment: "\u03A7\u039F\u039D\u0394\u03A1\u0399\u039A\u0397 \u03B4\u03B9\u03CC\u03C1\
+      \u03B8\u03C9\u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\
+      \u03C2 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2 \n(FLL Band-Edge). \u03A7\
+      \u03C9\u03C1\u03AF\u03C2 \u03B1\u03C5\u03C4\u03CC, \u03C3\u03C6\u03AC\u03BB\u03BC\
+      \u03B1 > ~1 kHz \n\u03B5\u03AF\u03BD\u03B1\u03B9 \u03AD\u03BE\u03C9 \u03B1\u03C0\
+      \u03CC \u03C4\u03B7\u03BD \u03C0\u03B5\u03C1\u03B9\u03BF\u03C7\u03AE \u03AD\u03BB\
+      \u03BE\u03B7\u03C2 \u03C4\u03BF\u03C5 Costas \u03BA\u03B1\u03B9 \u03BF \n\u03B1\
+      \u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03B3\u03C5\u03C1\u03AF\
+      \u03B6\u03B5\u03B9 \u03C3\u03C5\u03BD\u03B5\u03C7\u03CE\u03C2 \u2014 \n\u03B4\
+      \u03BF\u03BA\u03B9\u03BC\u03AC\u03C3\u03C4\u03B5 \u03BD\u03B1 \u03C4\u03BF \u03B1\
+      \u03C0\u03B5\u03BD\u03B5\u03C1\u03B3\u03BF\u03C0\u03BF\u03B9\u03AE\u03C3\u03B5\
+      \u03C4\u03B5 (bypass) \u03BA\u03B1\u03B9 \n\u03B1\u03BD\u03B5\u03B2\u03AC\u03C3\
+      \u03C4\u03B5 \u03C4\u03BF \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\
+      \u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2!"
     filter_size: 11*sps+1
+    maxoutbuf: '0'
+    minoutbuf: '0'
     rolloff: excess_bw
     samps_per_sym: sps
     type: cc
@@ -403,7 +476,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 692]
+    coordinate: [200, 768.0]
     rotation: 0
     state: enabled
 - name: digital_map_bb_0
@@ -411,8 +484,10 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Αναδιάταξη Gray πριν τη
-      διαφορική κωδικοποίηση"
+    comment: "\u0391\u03BD\u03B1\u03B4\u03B9\u03AC\u03C4\u03B1\u03BE\u03B7 Gray \u03C0\
+      \u03C1\u03B9\u03BD \n\u03C4\u03B7 \u03B4\u03B9\u03B1\u03C6\u03BF\u03C1\u03B9\
+      \u03BA\u03AE \u03BA\u03C9\u03B4\u03B9\u03BA\u03BF\u03C0\u03BF\u03AF\u03B7\u03C3\
+      \u03B7"
     map: QPSK_GRAY_MAP
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -420,7 +495,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 300]
+    coordinate: [400, 496.0]
     rotation: 0
     state: enabled
 - name: digital_symbol_sync_xx_0
@@ -428,10 +503,13 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: "Ανάκτηση χρονισμού συμβόλου
-      (Gardner TED — ανεξάρτητος από
-      περιστροφή αστερισμού) — παράγει
-      1 δείγμα/σύμβολο"
+    comment: "\u0391\u03BD\u03AC\u03BA\u03C4\u03B7\u03C3\u03B7 \u03C7\u03C1\u03BF\u03BD\
+      \u03B9\u03C3\u03BC\u03BF\u03CD \u03C3\u03C5\u03BC\u03B2\u03CC\u03BB\u03BF\u03C5\
+      \ (Gardner TED \u2014 \n\u03B1\u03BD\u03B5\u03BE\u03AC\u03C1\u03C4\u03B7\u03C4\
+      \u03BF\u03C2 \u03B1\u03C0\u03CC \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03BF\
+      \u03C6\u03AE \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03CD) \u2014\
+      \ \n\u03C0\u03B1\u03C1\u03AC\u03B3\u03B5\u03B9 1 \u03B4\u03B5\u03AF\u03B3\u03BC\
+      \u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF"
     constellation: QPSK_CONSTELLATION
     damping: '1.0'
     loop_bw: sync_bw
@@ -450,7 +528,42 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [648, 692]
+    coordinate: [696, 788.0]
+    rotation: 0
+    state: enabled
+- name: digital_symbol_sync_xx_raw
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: "\u039A\u039B\u0391\u0394\u039F\u03A3 \u0395\u03A0\u0399\u0394\u0395\u0399\
+      \u039E\u0397\u03A3 \xAB\u03C0\u03C1\u03B9\u03BD\xBB: \n\u03BC\u03CC\u03BD\u03BF\
+      \ \u03B1\u03BD\u03AC\u03BA\u03C4\u03B7\u03C3\u03B7 \u03C7\u03C1\u03BF\u03BD\u03B9\
+      \u03C3\u03BC\u03BF\u03CD (Gardner), \n\u03CE\u03C3\u03C4\u03B5 \u03BD\u03B1\
+      \ \u03B2\u03BB\u03AD\u03C0\u03BF\u03C5\u03BC\u03B5 1 \u03B4\u03B5\u03AF\u03B3\
+      \u03BC\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF \u03C7\u03C9\u03C1\u03AF\
+      \u03C2 \n\u03BA\u03B1\u03BC\u03AF\u03B1 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\
+      \u03C3\u03B7 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2/\u03C6\
+      \u03AC\u03C3\u03B7\u03C2"
+    constellation: QPSK_CONSTELLATION
+    damping: '1.0'
+    loop_bw: sync_bw
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: '1'
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: sps
+    ted_gain: '1.0'
+    ted_type: digital.TED_GARDNER
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 1260.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -458,24 +571,19 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    imports: |-
-      import numpy as np
-      from math import pi
-      from cmath import exp
-      from gnuradio import digital
-      from gnuradio.digital.utils import gray_code
-
-      # Ίδια σύμβολα/αντιστοίχιση με psk_tx.grc / psk_rx.grc
-      QPSK_POINTS = [complex(exp(2 * pi * (0 + 1j) * i / 4)) for i in range(4)]
-      QPSK_GRAY_MAP = list(gray_code.gray_code(4))
-      QPSK_CONSTELLATION = digital.constellation_calcdist(
-          QPSK_POINTS, list(range(4)), 4, 1).base()
-      DEROTATE = complex(np.cos(np.pi / 4), np.sin(np.pi / 4))
+    imports: "import numpy as np\nfrom math import pi\nfrom cmath import exp\nfrom\
+      \ gnuradio import digital\nfrom gnuradio.digital.utils import gray_code\n\n\
+      # \u038A\u03B4\u03B9\u03B1 \u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1/\u03B1\
+      \u03BD\u03C4\u03B9\u03C3\u03C4\u03BF\u03AF\u03C7\u03B9\u03C3\u03B7 \u03BC\u03B5\
+      \ psk_tx.grc / psk_rx.grc\nQPSK_POINTS = [complex(exp(2 * pi * (0 + 1j) * i\
+      \ / 4)) for i in range(4)]\nQPSK_GRAY_MAP = list(gray_code.gray_code(4))\nQPSK_CONSTELLATION\
+      \ = digital.constellation_calcdist(\n    QPSK_POINTS, list(range(4)), 4, 1).base()\n\
+      DEROTATE = complex(np.cos(np.pi / 4), np.sin(np.pi / 4))"
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 84]
+    coordinate: [16, 16.0]
     rotation: 0
     state: enabled
 - name: note_0
@@ -483,19 +591,64 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    note: "ΠΡΟΣΟΜΟΙΩΣΗ QPSK ΧΩΡΙΣ SDR: ολόκληρη η ζεύξη (πομπός -> κανάλι -> δέκτης)
-      τρέχει σε πραγματικό χρόνο μέσα στον υπολογιστή. Ο πομπός και ο δέκτης είναι
-      οι ΙΔΙΕΣ αλυσίδες με τα psk_tx.grc / psk_rx.grc. Το μοντέλο καναλιού
-      προσθέτει τις τρεις πραγματικές ατέλειες: θόρυβο AWGN, σφάλμα συχνότητας
-      φέροντος (διαφορά κρυστάλλων TX/RX) και σφάλμα ρολογιού δειγματοληψίας.
-      Πειραματιστείτε: (1) με όλα στο μηδέν ο αστερισμός «πριν» και «μετά» είναι
-      σχεδόν ίδιοι· (2) ανεβάστε το σφάλμα συχνότητας στα ~2 kHz — ο αστερισμός «πριν» (κλάδος ΧΩΡΙΣ καμία διόρθωση φέροντος) γίνεται δακτύλιος (περιστρέφεται), αλλά FLL + Costas τον σταθεροποιούν στον «μετά»· στα ~8 kHz (τυπική διαφορά κρυστάλλων στα 434 MHz) ο δακτύλιος «γεμίζει», γιατί το σήμα πέφτει εν μέρει έξω από το matched φίλτρο — γι' αυτό το FLL μπαίνει ΠΡΙΝ από αυτό· (3) ανεβάστε τον θόρυβο και
-      δείτε τα 4 σημεία να «φουσκώνουν» μέχρι να αρχίσουν λάθη."
+    note: "\u03A0\u03A1\u039F\u03A3\u039F\u039C\u039F\u0399\u03A9\u03A3\u0397 QPSK\
+      \ \u03A7\u03A9\u03A1\u0399\u03A3 SDR: \u03BF\u03BB\u03CC\u03BA\u03BB\u03B7\u03C1\
+      \u03B7 \u03B7 \u03B6\u03B5\u03CD\u03BE\u03B7 (\u03C0\u03BF\u03BC\u03C0\u03CC\
+      \u03C2 -> \u03BA\u03B1\u03BD\u03AC\u03BB\u03B9 -> \u03B4\u03AD\u03BA\u03C4\u03B7\
+      \u03C2) \u03C4\u03C1\u03AD\u03C7\u03B5\u03B9 \u03C3\u03B5 \u03C0\u03C1\u03B1\
+      \u03B3\u03BC\u03B1\u03C4\u03B9\u03BA\u03CC \u03C7\u03C1\u03CC\u03BD\u03BF \u03BC\
+      \u03AD\u03C3\u03B1 \u03C3\u03C4\u03BF\u03BD \u03C5\u03C0\u03BF\u03BB\u03BF\u03B3\
+      \u03B9\u03C3\u03C4\u03AE. \u039F \u03C0\u03BF\u03BC\u03C0\u03CC\u03C2 \u03BA\
+      \u03B1\u03B9 \u03BF \u03B4\u03AD\u03BA\u03C4\u03B7\u03C2 \u03B5\u03AF\u03BD\u03B1\
+      \u03B9 \u03BF\u03B9 \u0399\u0394\u0399\u0395\u03A3 \u03B1\u03BB\u03C5\u03C3\u03AF\
+      \u03B4\u03B5\u03C2 \u03BC\u03B5 \u03C4\u03B1 psk_tx.grc / psk_rx.grc. \u03A4\
+      \u03BF \u03BC\u03BF\u03BD\u03C4\u03AD\u03BB\u03BF \u03BA\u03B1\u03BD\u03B1\u03BB\
+      \u03B9\u03BF\u03CD \u03C0\u03C1\u03BF\u03C3\u03B8\u03AD\u03C4\u03B5\u03B9 \u03C4\
+      \u03B9\u03C2 \u03C4\u03C1\u03B5\u03B9\u03C2 \u03C0\u03C1\u03B1\u03B3\u03BC\u03B1\
+      \u03C4\u03B9\u03BA\u03AD\u03C2 \u03B1\u03C4\u03AD\u03BB\u03B5\u03B9\u03B5\u03C2\
+      : \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF AWGN, \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1\
+      \ \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C6\u03AD\u03C1\
+      \u03BF\u03BD\u03C4\u03BF\u03C2 (\u03B4\u03B9\u03B1\u03C6\u03BF\u03C1\u03AC \u03BA\
+      \u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD TX/RX) \u03BA\u03B1\u03B9\
+      \ \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C1\u03BF\u03BB\u03BF\u03B3\u03B9\u03BF\
+      \u03CD \u03B4\u03B5\u03B9\u03B3\u03BC\u03B1\u03C4\u03BF\u03BB\u03B7\u03C8\u03AF\
+      \u03B1\u03C2. \u03A0\u03B5\u03B9\u03C1\u03B1\u03BC\u03B1\u03C4\u03B9\u03C3\u03C4\
+      \u03B5\u03AF\u03C4\u03B5: (1) \u03BC\u03B5 \u03CC\u03BB\u03B1 \u03C3\u03C4\u03BF\
+      \ \u03BC\u03B7\u03B4\u03AD\u03BD \u03BF \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\
+      \u03C3\u03BC\u03CC\u03C2 \xAB\u03C0\u03C1\u03B9\u03BD\xBB \u03BA\u03B1\u03B9\
+      \ \xAB\u03BC\u03B5\u03C4\u03AC\xBB \u03B5\u03AF\u03BD\u03B1\u03B9 \u03C3\u03C7\
+      \u03B5\u03B4\u03CC\u03BD \u03AF\u03B4\u03B9\u03BF\u03B9\xB7 (2) \u03B1\u03BD\
+      \u03B5\u03B2\u03AC\u03C3\u03C4\u03B5 \u03C4\u03BF \u03C3\u03C6\u03AC\u03BB\u03BC\
+      \u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2 \u03C3\u03C4\
+      \u03B1 ~2 kHz \u2014 \u03BF \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\
+      \u03CC\u03C2 \xAB\u03C0\u03C1\u03B9\u03BD\xBB (\u03BA\u03BB\u03AC\u03B4\u03BF\
+      \u03C2 \u03A7\u03A9\u03A1\u0399\u03A3 \u03BA\u03B1\u03BC\u03AF\u03B1 \u03B4\u03B9\
+      \u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\
+      \u03C2) \u03B3\u03AF\u03BD\u03B5\u03C4\u03B1\u03B9 \u03B4\u03B1\u03BA\u03C4\u03CD\
+      \u03BB\u03B9\u03BF\u03C2 (\u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\
+      \u03B5\u03C4\u03B1\u03B9), \u03B1\u03BB\u03BB\u03AC FLL + Costas \u03C4\u03BF\
+      \u03BD \u03C3\u03C4\u03B1\u03B8\u03B5\u03C1\u03BF\u03C0\u03BF\u03B9\u03BF\u03CD\
+      \u03BD \u03C3\u03C4\u03BF\u03BD \xAB\u03BC\u03B5\u03C4\u03AC\xBB\xB7 \u03C3\u03C4\
+      \u03B1 ~8 kHz (\u03C4\u03C5\u03C0\u03B9\u03BA\u03AE \u03B4\u03B9\u03B1\u03C6\
+      \u03BF\u03C1\u03AC \u03BA\u03C1\u03C5\u03C3\u03C4\u03AC\u03BB\u03BB\u03C9\u03BD\
+      \ \u03C3\u03C4\u03B1 434 MHz) \u03BF \u03B4\u03B1\u03BA\u03C4\u03CD\u03BB\u03B9\
+      \u03BF\u03C2 \xAB\u03B3\u03B5\u03BC\u03AF\u03B6\u03B5\u03B9\xBB, \u03B3\u03B9\
+      \u03B1\u03C4\u03AF \u03C4\u03BF \u03C3\u03AE\u03BC\u03B1 \u03C0\u03AD\u03C6\u03C4\
+      \u03B5\u03B9 \u03B5\u03BD \u03BC\u03AD\u03C1\u03B5\u03B9 \u03AD\u03BE\u03C9\
+      \ \u03B1\u03C0\u03CC \u03C4\u03BF matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF\
+      \ \u2014 \u03B3\u03B9' \u03B1\u03C5\u03C4\u03CC \u03C4\u03BF FLL \u03BC\u03C0\
+      \u03B1\u03AF\u03BD\u03B5\u03B9 \u03A0\u03A1\u0399\u039D \u03B1\u03C0\u03CC \u03B1\
+      \u03C5\u03C4\u03CC\xB7 (3) \u03B1\u03BD\u03B5\u03B2\u03AC\u03C3\u03C4\u03B5\
+      \ \u03C4\u03BF\u03BD \u03B8\u03CC\u03C1\u03C5\u03B2\u03BF \u03BA\u03B1\u03B9\
+      \ \u03B4\u03B5\u03AF\u03C4\u03B5 \u03C4\u03B1 4 \u03C3\u03B7\u03BC\u03B5\u03AF\
+      \u03B1 \u03BD\u03B1 \xAB\u03C6\u03BF\u03C5\u03C3\u03BA\u03CE\u03BD\u03BF\u03C5\
+      \u03BD\xBB \u03BC\u03AD\u03C7\u03C1\u03B9 \u03BD\u03B1 \u03B1\u03C1\u03C7\u03AF\
+      \u03C3\u03BF\u03C5\u03BD \u03BB\u03AC\u03B8\u03B7."
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 396]
+    coordinate: [16, 640.0]
     rotation: 0
     state: enabled
 - name: qtgui_const_sink_x_after
@@ -525,11 +678,13 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Αστερισμός ΜΕΤΑ τη διόρθωση
-      φάσης (Costas + 45°) — 4 καθαρά σημεία"
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u039C\u0395\
+      \u03A4\u0391 \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\
+      \u03AC\u03C3\u03B7\u03C2 \n(Costas + 45\xB0) \u2014 4 \u03BA\u03B1\u03B8\u03B1\
+      \u03C1\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1"
     grid: 'True'
     gui_hint: 2,4,1,2
-    label1: "μετά"
+    label1: "\u03BC\u03B5\u03C4\u03AC"
     label10: ''
     label2: ''
     label3: ''
@@ -550,7 +705,8 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: "\"3. RX μετά τη διόρθωση\""
+    name: "\"3. RX \u03BC\u03B5\u03C4\u03AC \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\
+      \u03C9\u03C3\u03B7\""
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -588,7 +744,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1408, 692]
+    coordinate: [1576, 840.0]
     rotation: 0
     state: enabled
 - name: qtgui_const_sink_x_before
@@ -618,15 +774,21 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Αστερισμός ΠΡΙΝ τη διόρθωση
-      φάσματος/φάσης — ξεχωριστός κλάδος
-      (RRC + Symbol Sync, ΧΩΡΙΣ FLL/Costas):
-      με μηδενικό σφάλμα συχνότητας δείχνει
-      καθαρά σημεία· με σφάλμα
-      συχνότητας περιστρέφεται (δακτύλιος)"
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03A0\u03A1\
+      \u0399\u039D \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\
+      \u03AC\u03C3\u03BC\u03B1\u03C4\u03BF\u03C2/\u03C6\u03AC\u03C3\u03B7\u03C2 \u2014\
+      \ \n\u03BE\u03B5\u03C7\u03C9\u03C1\u03B9\u03C3\u03C4\u03CC\u03C2 \u03BA\u03BB\
+      \u03AC\u03B4\u03BF\u03C2 (RRC + Symbol Sync, \u03A7\u03A9\u03A1\u0399\u03A3\
+      \ FLL/Costas):\n \u03BC\u03B5 \u03BC\u03B7\u03B4\u03B5\u03BD\u03B9\u03BA\u03CC\
+      \ \u03C3\u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\
+      \u03C4\u03B1\u03C2 \u03B4\u03B5\u03AF\u03C7\u03BD\u03B5\u03B9 \u03BA\u03B1\u03B8\
+      \u03B1\u03C1\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1\xB7 \n\u03BC\u03B5 \u03C3\
+      \u03C6\u03AC\u03BB\u03BC\u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\
+      \u03B1\u03C2 \u03C0\u03B5\u03C1\u03B9\u03C3\u03C4\u03C1\u03AD\u03C6\u03B5\u03C4\
+      \u03B1\u03B9 (\u03B4\u03B1\u03BA\u03C4\u03CD\u03BB\u03B9\u03BF\u03C2)"
     grid: 'True'
     gui_hint: 2,2,1,2
-    label1: "πριν"
+    label1: "\u03C0\u03C1\u03B9\u03BD"
     label10: ''
     label2: ''
     label3: ''
@@ -647,7 +809,8 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: "\"2. RX πριν τη διόρθωση\""
+    name: "\"2. RX \u03C0\u03C1\u03B9\u03BD \u03C4\u03B7 \u03B4\u03B9\u03CC\u03C1\u03B8\
+      \u03C9\u03C3\u03B7\""
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -685,7 +848,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 1040]
+    coordinate: [800, 1256.0]
     rotation: 0
     state: enabled
 - name: qtgui_const_sink_x_tx
@@ -715,11 +878,13 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Αστερισμός πομπού — τα 4
-      ιδανικά σημεία QPSK (πριν το RRC)"
+    comment: "\u0391\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C0\u03BF\
+      \u03BC\u03C0\u03BF\u03CD \u2014 \u03C4\u03B1 4 \u03B9\u03B4\u03B1\u03BD\u03B9\
+      \u03BA\u03AC \u03C3\u03B7\u03BC\u03B5\u03AF\u03B1 QPSK (\u03C0\u03C1\u03B9\u03BD\
+      \ \u03C4\u03BF RRC)"
     grid: 'True'
     gui_hint: 2,0,1,2
-    label1: "TX"
+    label1: TX
     label10: ''
     label2: ''
     label3: ''
@@ -740,7 +905,7 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: "\"1. Σύμβολα TX\""
+    name: "\"1. \u03A3\u03CD\u03BC\u03B2\u03BF\u03BB\u03B1 TX\""
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -778,7 +943,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 452]
+    coordinate: [1120, 656.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -810,10 +975,13 @@ blocks:
     color7: '"yellow"'
     color8: '"dark red"'
     color9: '"dark green"'
-    comment: "Φάσμα πριν/μετά το FLL —
-      με σφάλμα συχνότητας το «πριν»
-      είναι μετατοπισμένο, το «μετά»
-      κεντραρισμένο"
+    comment: "\u03A6\u03AC\u03C3\u03BC\u03B1 \u03C0\u03C1\u03B9\u03BD/\u03BC\u03B5\
+      \u03C4\u03AC \u03C4\u03BF FLL \u2014 \u03BC\u03B5 \u03C3\u03C6\u03AC\u03BB\u03BC\
+      \u03B1 \u03C3\u03C5\u03C7\u03BD\u03CC\u03C4\u03B7\u03C4\u03B1\u03C2\n \u03C4\
+      \u03BF \xAB\u03C0\u03C1\u03B9\u03BD\xBB \u03B5\u03AF\u03BD\u03B1\u03B9 \u03BC\
+      \u03B5\u03C4\u03B1\u03C4\u03BF\u03C0\u03B9\u03C3\u03BC\u03AD\u03BD\u03BF, \u03C4\
+      \u03BF \xAB\u03BC\u03B5\u03C4\u03AC\xBB \u03BA\u03B5\u03BD\u03C4\u03C1\u03B1\
+      \u03C1\u03B9\u03C3\u03BC\u03AD\u03BD\u03BF"
     ctrlpanel: 'False'
     fc: '0'
     fftsize: '1024'
@@ -821,9 +989,9 @@ blocks:
     grid: 'True'
     gui_hint: 3,0,1,6
     label: Relative Gain
-    label1: "πριν FLL"
+    label1: "\u03C0\u03C1\u03B9\u03BD FLL"
     label10: ''''''
-    label2: "μετά FLL"
+    label2: "\u03BC\u03B5\u03C4\u03AC FLL"
     label3: ''''''
     label4: ''''''
     label5: ''''''
@@ -834,7 +1002,7 @@ blocks:
     legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    name: "\"Φάσμα δέκτη\""
+    name: "\"\u03A6\u03AC\u03C3\u03BC\u03B1 \u03B4\u03AD\u03BA\u03C4\u03B7\""
     nconnections: '2'
     norm_window: 'False'
     showports: 'False'
@@ -862,7 +1030,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 852]
+    coordinate: [272, 1072.0]
     rotation: 0
     state: enabled
 - name: root_raised_cosine_filter_rx
@@ -871,7 +1039,8 @@ blocks:
     affinity: ''
     alias: ''
     alpha: excess_bw
-    comment: "Matched φίλτρο RRC του δέκτη"
+    comment: "Matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF RRC \u03C4\u03BF\u03C5\
+      \ \u03B4\u03AD\u03BA\u03C4\u03B7"
     decim: '1'
     gain: '1'
     interp: '1'
@@ -885,7 +1054,35 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 692]
+    coordinate: [472, 808.0]
+    rotation: 0
+    state: enabled
+- name: root_raised_cosine_filter_rx_raw
+  id: root_raised_cosine_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: excess_bw
+    comment: "\u039A\u039B\u0391\u0394\u039F\u03A3 \u0395\u03A0\u0399\u0394\u0395\u0399\
+      \u039E\u0397\u03A3 \xAB\u03C0\u03C1\u03B9\u03BD\xBB: \n\u03AF\u03B4\u03B9\u03BF\
+      \ matched \u03C6\u03AF\u03BB\u03C4\u03C1\u03BF RRC, \u03B1\u03BB\u03BB\u03AC\
+      \ \n\u03A7\u03A9\u03A1\u0399\u03A3 FLL \u03BC\u03C0\u03C1\u03BF\u03C3\u03C4\u03AC\
+      \ \u03C4\u03BF\u03C5 \u2014 \n\u03BA\u03B1\u03BC\u03AF\u03B1 \u03B4\u03B9\u03CC\
+      \u03C1\u03B8\u03C9\u03C3\u03B7 \u03C6\u03AD\u03C1\u03BF\u03BD\u03C4\u03BF\u03C2"
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: 11*sps+1
+    samp_rate: sps
+    sym_rate: '1.0'
+    type: fir_filter_ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 1280.0]
     rotation: 0
     state: enabled
 - name: root_raised_cosine_filter_tx
@@ -894,9 +1091,10 @@ blocks:
     affinity: ''
     alias: ''
     alpha: excess_bw
-    comment: "Φίλτρο μορφοποίησης RRC
-      του πομπού (interpolating, sps
-      δείγματα/σύμβολο)"
+    comment: "\u03A6\u03AF\u03BB\u03C4\u03C1\u03BF \u03BC\u03BF\u03C1\u03C6\u03BF\u03C0\
+      \u03BF\u03AF\u03B7\u03C3\u03B7\u03C2 RRC \u03C4\u03BF\u03C5 \u03C0\u03BF\u03BC\
+      \u03C0\u03BF\u03CD\n (interpolating, sps \u03B4\u03B5\u03AF\u03B3\u03BC\u03B1\
+      \u03C4\u03B1/\u03C3\u03CD\u03BC\u03B2\u03BF\u03BB\u03BF)"
     decim: '1'
     gain: sps
     interp: sps
@@ -910,160 +1108,92 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 284]
+    coordinate: [1112, 472.0]
     rotation: 0
     state: enabled
 - name: snippet_square_const
   id: snippet
   parameters:
     alias: ''
-    code: |-
-      # Κρατά τους αστερισμούς ΤΕΤΡΑΓΩΝΟΥΣ (ίση κλίμακα στους άξονες I και Q),
-      # όποιο μέγεθος κι αν έχει το παράθυρο (π.χ. σε πλήρη οθόνη).
-      # Το QT GUI Constellation Sink δεν έχει τέτοια επιλογή, οπότε κάθε
-      # αστερισμός τυλίγεται σε ένα πλαίσιο που τον κεντράρει και κρατά
-      # τετράγωνη την περιοχή σχεδίασης (canvas) του γραφήματος.
-      from PyQt5 import Qt, QtCore
-
-      class SquarePlot(Qt.QWidget):
-          def __init__(self, inner):
-              Qt.QWidget.__init__(self)
-              self.inner = inner
-              self.setMinimumSize(260, 260)
-              self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)
-
-          def sizeHint(self):
-              return QtCore.QSize(480, 480)
-
-          def canvas(self):
-              for w in self.inner.findChildren(Qt.QWidget):
-                  if w.metaObject().className() == 'QwtPlotCanvas':
-                      return w
-              return None
-
-          def fit(self):
-              # περιθώρια = τίτλος, άξονες, υπόμνημα (ό,τι δεν είναι canvas)
-              mw = mh = 0
-              c = self.canvas()
-              if c is not None and c.width() > 1 and c.height() > 1:
-                  mw = self.inner.width() - c.width()
-                  mh = self.inner.height() - c.height()
-              side = max(50, min(self.width() - mw, self.height() - mh))
-              w, h = side + mw, side + mh
-              self.inner.setGeometry((self.width() - w) // 2,
-                                     (self.height() - h) // 2, w, h)
-
-          def resizeEvent(self, event):
-              self.fit()
-              # δεύτερο πέρασμα, αφού το γράφημα ξαναϋπολογίσει τα περιθώριά του
-              QtCore.QTimer.singleShot(0, self.fit)
-              QtCore.QTimer.singleShot(100, self.fit)
-
-      def find_layout(layout, widget):
-          for i in range(layout.count()):
-              item = layout.itemAt(i)
-              if item.widget() is widget:
-                  return layout
-              if item.layout() is not None:
-                  found = find_layout(item.layout(), widget)
-                  if found is not None:
-                      return found
-          return None
-
-      self._square_plots = []
-      for name in sorted(vars(self)):
-          if not (name.startswith('_qtgui_const_sink_x') and name.endswith('_win')):
-              continue
-          win = getattr(self, name)
-          parent = win.parentWidget()
-          layout = find_layout(parent.layout(), win) if parent is not None else None
-          if layout is None:
-              continue
-          box = SquarePlot(win)
-          layout.replaceWidget(win, box)
-          win.setParent(box)
-          win.show()
-          self._square_plots.append(box)
-          # Στο πλέγμα: η γραμμή των αστερισμών παίρνει το περισσότερο ύψος,
-          # οι γραμμές με ολισθητήρες μόνο όσο χρειάζονται.
-          if isinstance(layout, Qt.QGridLayout):
-              plots = [getattr(self, n) for n in vars(self)
-                       if n.startswith('_qtgui_') and n.endswith('_win')
-                       and 'number_sink' not in n and 'const_sink' not in n]
-              for i in range(layout.count()):
-                  row = layout.getItemPosition(i)[0]
-                  w = layout.itemAt(i).widget()
-                  if isinstance(w, SquarePlot):
-                      layout.setRowStretch(row, 3)
-                  elif any(w is p for p in plots):
-                      layout.setRowStretch(row, 2)
-                  elif layout.rowStretch(row) == 1:
-                      layout.setRowStretch(row, 0)
-    comment: "Τετράγωνοι αστερισμοί: κρατά ίση
-      κλίμακα I/Q σε κάθε μέγεθος παραθύρου
-      (και σε πλήρη οθόνη)"
+    code: "# \u039A\u03C1\u03B1\u03C4\u03AC \u03C4\u03BF\u03C5\u03C2 \u03B1\u03C3\u03C4\
+      \u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03CD\u03C2 \u03A4\u0395\u03A4\u03A1\u0391\
+      \u0393\u03A9\u039D\u039F\u03A5\u03A3 (\u03AF\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\
+      \u03B1\u03BA\u03B1 \u03C3\u03C4\u03BF\u03C5\u03C2 \u03AC\u03BE\u03BF\u03BD\u03B5\
+      \u03C2 I \u03BA\u03B1\u03B9 Q),\n# \u03CC\u03C0\u03BF\u03B9\u03BF \u03BC\u03AD\
+      \u03B3\u03B5\u03B8\u03BF\u03C2 \u03BA\u03B9 \u03B1\u03BD \u03AD\u03C7\u03B5\u03B9\
+      \ \u03C4\u03BF \u03C0\u03B1\u03C1\u03AC\u03B8\u03C5\u03C1\u03BF (\u03C0.\u03C7\
+      . \u03C3\u03B5 \u03C0\u03BB\u03AE\u03C1\u03B7 \u03BF\u03B8\u03CC\u03BD\u03B7\
+      ).\n# \u03A4\u03BF QT GUI Constellation Sink \u03B4\u03B5\u03BD \u03AD\u03C7\
+      \u03B5\u03B9 \u03C4\u03AD\u03C4\u03BF\u03B9\u03B1 \u03B5\u03C0\u03B9\u03BB\u03BF\
+      \u03B3\u03AE, \u03BF\u03C0\u03CC\u03C4\u03B5 \u03BA\u03AC\u03B8\u03B5\n# \u03B1\
+      \u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CC\u03C2 \u03C4\u03C5\u03BB\u03AF\
+      \u03B3\u03B5\u03C4\u03B1\u03B9 \u03C3\u03B5 \u03AD\u03BD\u03B1 \u03C0\u03BB\u03B1\
+      \u03AF\u03C3\u03B9\u03BF \u03C0\u03BF\u03C5 \u03C4\u03BF\u03BD \u03BA\u03B5\u03BD\
+      \u03C4\u03C1\u03AC\u03C1\u03B5\u03B9 \u03BA\u03B1\u03B9 \u03BA\u03C1\u03B1\u03C4\
+      \u03AC\n# \u03C4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03B7 \u03C4\u03B7\
+      \u03BD \u03C0\u03B5\u03C1\u03B9\u03BF\u03C7\u03AE \u03C3\u03C7\u03B5\u03B4\u03AF\
+      \u03B1\u03C3\u03B7\u03C2 (canvas) \u03C4\u03BF\u03C5 \u03B3\u03C1\u03B1\u03C6\
+      \u03AE\u03BC\u03B1\u03C4\u03BF\u03C2.\nfrom PyQt5 import Qt, QtCore\n\nclass\
+      \ SquarePlot(Qt.QWidget):\n    def __init__(self, inner):\n        Qt.QWidget.__init__(self)\n\
+      \        self.inner = inner\n        self.setMinimumSize(260, 260)\n       \
+      \ self.setSizePolicy(Qt.QSizePolicy.Expanding, Qt.QSizePolicy.Expanding)\n\n\
+      \    def sizeHint(self):\n        return QtCore.QSize(480, 480)\n\n    def canvas(self):\n\
+      \        for w in self.inner.findChildren(Qt.QWidget):\n            if w.metaObject().className()\
+      \ == 'QwtPlotCanvas':\n                return w\n        return None\n\n   \
+      \ def fit(self):\n        # \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\
+      \u03B1 = \u03C4\u03AF\u03C4\u03BB\u03BF\u03C2, \u03AC\u03BE\u03BF\u03BD\u03B5\
+      \u03C2, \u03C5\u03C0\u03CC\u03BC\u03BD\u03B7\u03BC\u03B1 (\u03CC,\u03C4\u03B9\
+      \ \u03B4\u03B5\u03BD \u03B5\u03AF\u03BD\u03B1\u03B9 canvas)\n        mw = mh\
+      \ = 0\n        c = self.canvas()\n        if c is not None and c.width() > 1\
+      \ and c.height() > 1:\n            mw = self.inner.width() - c.width()\n   \
+      \         mh = self.inner.height() - c.height()\n        side = max(50, min(self.width()\
+      \ - mw, self.height() - mh))\n        w, h = side + mw, side + mh\n        self.inner.setGeometry((self.width()\
+      \ - w) // 2,\n                               (self.height() - h) // 2, w, h)\n\
+      \n    def resizeEvent(self, event):\n        self.fit()\n        # \u03B4\u03B5\
+      \u03CD\u03C4\u03B5\u03C1\u03BF \u03C0\u03AD\u03C1\u03B1\u03C3\u03BC\u03B1, \u03B1\
+      \u03C6\u03BF\u03CD \u03C4\u03BF \u03B3\u03C1\u03AC\u03C6\u03B7\u03BC\u03B1 \u03BE\
+      \u03B1\u03BD\u03B1\u03CB\u03C0\u03BF\u03BB\u03BF\u03B3\u03AF\u03C3\u03B5\u03B9\
+      \ \u03C4\u03B1 \u03C0\u03B5\u03C1\u03B9\u03B8\u03CE\u03C1\u03B9\u03AC \u03C4\
+      \u03BF\u03C5\n        QtCore.QTimer.singleShot(0, self.fit)\n        QtCore.QTimer.singleShot(100,\
+      \ self.fit)\n\ndef find_layout(layout, widget):\n    for i in range(layout.count()):\n\
+      \        item = layout.itemAt(i)\n        if item.widget() is widget:\n    \
+      \        return layout\n        if item.layout() is not None:\n            found\
+      \ = find_layout(item.layout(), widget)\n            if found is not None:\n\
+      \                return found\n    return None\n\nself._square_plots = []\n\
+      for name in sorted(vars(self)):\n    if not (name.startswith('_qtgui_const_sink_x')\
+      \ and name.endswith('_win')):\n        continue\n    win = getattr(self, name)\n\
+      \    parent = win.parentWidget()\n    layout = find_layout(parent.layout(),\
+      \ win) if parent is not None else None\n    if layout is None:\n        continue\n\
+      \    box = SquarePlot(win)\n    layout.replaceWidget(win, box)\n    win.setParent(box)\n\
+      \    win.show()\n    self._square_plots.append(box)\n    # \u03A3\u03C4\u03BF\
+      \ \u03C0\u03BB\u03AD\u03B3\u03BC\u03B1: \u03B7 \u03B3\u03C1\u03B1\u03BC\u03BC\
+      \u03AE \u03C4\u03C9\u03BD \u03B1\u03C3\u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03CE\
+      \u03BD \u03C0\u03B1\u03AF\u03C1\u03BD\u03B5\u03B9 \u03C4\u03BF \u03C0\u03B5\u03C1\
+      \u03B9\u03C3\u03C3\u03CC\u03C4\u03B5\u03C1\u03BF \u03CD\u03C8\u03BF\u03C2,\n\
+      \    # \u03BF\u03B9 \u03B3\u03C1\u03B1\u03BC\u03BC\u03AD\u03C2 \u03BC\u03B5\
+      \ \u03BF\u03BB\u03B9\u03C3\u03B8\u03B7\u03C4\u03AE\u03C1\u03B5\u03C2 \u03BC\u03CC\
+      \u03BD\u03BF \u03CC\u03C3\u03BF \u03C7\u03C1\u03B5\u03B9\u03AC\u03B6\u03BF\u03BD\
+      \u03C4\u03B1\u03B9.\n    if isinstance(layout, Qt.QGridLayout):\n        plots\
+      \ = [getattr(self, n) for n in vars(self)\n                 if n.startswith('_qtgui_')\
+      \ and n.endswith('_win')\n                 and 'number_sink' not in n and 'const_sink'\
+      \ not in n]\n        for i in range(layout.count()):\n            row = layout.getItemPosition(i)[0]\n\
+      \            w = layout.itemAt(i).widget()\n            if isinstance(w, SquarePlot):\n\
+      \                layout.setRowStretch(row, 3)\n            elif any(w is p for\
+      \ p in plots):\n                layout.setRowStretch(row, 2)\n            elif\
+      \ layout.rowStretch(row) == 1:\n                layout.setRowStretch(row, 0)"
+    comment: "\u03A4\u03B5\u03C4\u03C1\u03AC\u03B3\u03C9\u03BD\u03BF\u03B9 \u03B1\u03C3\
+      \u03C4\u03B5\u03C1\u03B9\u03C3\u03BC\u03BF\u03AF: \u03BA\u03C1\u03B1\u03C4\u03AC\
+      \ \u03AF\u03C3\u03B7 \u03BA\u03BB\u03AF\u03BC\u03B1\u03BA\u03B1\n I/Q \u03C3\
+      \u03B5 \u03BA\u03AC\u03B8\u03B5 \u03BC\u03AD\u03B3\u03B5\u03B8\u03BF\u03C2 \u03C0\
+      \u03B1\u03C1\u03B1\u03B8\u03CD\u03C1\u03BF\u03C5 (\u03BA\u03B1\u03B9 \u03C3\u03B5\
+      \ \u03C0\u03BB\u03AE\u03C1\u03B7 \u03BF\u03B8\u03CC\u03BD\u03B7)"
     priority: '0'
     section: main_after_init
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1100, 1060]
-    rotation: 0
-    state: enabled
-- name: root_raised_cosine_filter_rx_raw
-  id: root_raised_cosine_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha: excess_bw
-    comment: "ΚΛΑΔΟΣ ΕΠΙΔΕΙΞΗΣ «πριν»: ίδιο matched
-      φίλτρο RRC, αλλά ΧΩΡΙΣ FLL μπροστά του
-      — καμία διόρθωση φέροντος"
-    decim: '1'
-    gain: '1'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    ntaps: 11*sps+1
-    samp_rate: sps
-    sym_rate: '1.0'
-    type: fir_filter_ccf
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [456, 1060]
-    rotation: 0
-    state: enabled
-- name: digital_symbol_sync_xx_raw
-  id: digital_symbol_sync_xx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: "ΚΛΑΔΟΣ ΕΠΙΔΕΙΞΗΣ «πριν»: μόνο ανάκτηση
-      χρονισμού (Gardner), ώστε να βλέπουμε
-      1 δείγμα/σύμβολο χωρίς καμία
-      διόρθωση συχνότητας/φάσης"
-    constellation: QPSK_CONSTELLATION
-    damping: '1.0'
-    loop_bw: sync_bw
-    max_dev: '1.5'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    nfilters: '128'
-    osps: '1'
-    pfb_mf_taps: '[]'
-    resamp_type: digital.IR_MMSE_8TAP
-    sps: sps
-    ted_gain: '1.0'
-    ted_type: digital.TED_GARDNER
-    type: cc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [648, 1060]
+    coordinate: [1048, 1040.0]
     rotation: 0
     state: enabled
 
